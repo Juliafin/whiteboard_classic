@@ -1,0 +1,29 @@
+{
+  "name": "backend_node_capstone_curriculum_and_student_manager",
+  "version": "0.0.1",
+  "description": "A curriculum manager for teachers and mentors to manage student's info and their progress.",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha ./tests",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juliafin/backend_node_capstone_curriculum_and_student_manager.git"
+  },
+  "keywords": [
+    "node",
+    "capstone",
+    "curriculum",
+    "manager",
+    "student",
+    "teacher",
+    "mentor"
+  ],
+  "author": "Julia Finarovsky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juliafin/backend_node_capstone_curriculum_and_student_manager/issues"
+  },
+  "homepage": "https://github.com/Juliafin/backend_node_capstone_curriculum_and_student_manager#readme"
+}
