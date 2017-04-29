@@ -1,43 +1,57 @@
 const mongoose = require('mongoose');
 
+const zipcodeValid = [/^\d{5}(?:[-\s]\d{4})?$/, 'The zipcode must either be in the format XXXXX or XXXXX-XXXX'];
+const maxlength = [20, 'The length is longer than 20 characters'];
+// const nameValid
 
-// const studentAddressSchema = new Schema ({
-//   country: {type:String},
-//   street_name: {type:String},
-//   house_number: {type:Number},
-//   apartment_number: Schema.Types.Mixed,
-//   zipcode: {type:Number}
+const studentAddressSchema = new mongoose.Schema ({
+  street_address: {type:String, required:true, trim:true},
+  apartment_number: mongoose.Schema.Types.Mixed,
+  state: {type:String, required:true, minlength:2, maxlength:2},
+  zipcode: {type:String, required:true, match: zipcodeValid},
+});
 
-// })
+const studentLessonTimeSchema = new mongoose.Schema ({
+  startDate: {type: Date, required:true, default: Date()},
+  weekday: {type: String, required:true},
+  startTime: {type: Date, required: true},
+  endTime: {type: Date, required: true}
+});
+// object that has weekday and time 
+// student_start_date when student 
 
 // const project_date
+// TDOD
 
 const studentSchema = mongoose.Schema( {
-  first_name: {type:String, required: true},
-  last_name: {type:String, required: true},  
-  // email: {type:String, required: true},
-  // parent_name: {type:String, required: false},
-  // address: {type: studentAddressSchema, required:true},
-  // parents_name: {type:String, required:false},
-  // student_curriculum: [{
-  //   project_date:{type:Object, default:Date.now, required:true},
-  //   project_name: {type:String, required:true},
-  //   project_notes: {type:String, required:false},
-  //   teacher_project_comments: {type:String, required:false}        
-  // }],
-  // student_lesson_time: {type: Date, required: true},
-  // teacher_comments: {type:String, required: false}, // private to students (only teachers can see)
-})
-
+  first_name: {type:String, required: true, maxlength: maxlength, trim:true},
+  last_name: {type:String, required: true, maxlength: maxlength, trim:true},  
+  email: {type:String, required: true, trim:true},
+  parent_first_name: {type:String, maxlength: maxlength, trim:true},
+  parent_last_name: {type:String, maxlength: maxlength, trim:true},
+  address: {type: studentAddressSchema, required:true},
+  student_curriculum: [{
+    project_date:{type:Date, default:Date.now(), required:true},
+    project_name: {type:String, required:true, trim:true},
+    project_description: {type:String, required:true},
+    teacher_project_comments: {type:String}        
+  }],
+  student_lesson_time: {type: studentLessonTimeSchema, required: true},
+  teacher_comments: {type:String}, // private to students (only teachers can see)
+});
 
 studentSchema.methods.apiView = function () {
 
   return {
-
+    id: this._id,
     first_name: this.first_name,
-    last_name: this.last_name
-  }
-}
+    last_name: this.last_name,
+    email: this.email,
+    student_lesson_time: this.student_lesson_time,
+    student_curriculum: this.student_curriculum
+
+  };
+};
 
 const Curriculum = mongoose.model('student-teacher-db', studentSchema);
 
