@@ -9,8 +9,10 @@ mongoose.Promise = global.Promise;
 const {PORT, DATABASE_URL} = require('./config_variables');
 
 const app = express();
+const {Curriculum} = require('./student_models/models') 
 
 const curriculum_router = require('./curriculum_router/curriculum_router');
+const {generateFakeCurriculumData} = require('./tests/curriculum_test');
 
 app.use(morgan('combined'));
 
@@ -33,19 +35,31 @@ function runServer(databaseUrl= DATABASE_URL, port=PORT) {
       }
       server = app.listen(port, () => {
         console.log(`Your app is listening on port ${port}`);
+        
         resolve(server);
-
-      }).on('error', err => {
+      })
+      .on('error', err => {
         mongoose.disconnect();
         reject(err);
       });
-    });
-  });
+    })
+    mongoose.connection.once('open', () => {
+
+      Curriculum.count()
+        .then(function(count) {
+          if (count === 0) {
+            generateFakeCurriculumData(19);      
+          }
+        });
+      console.log('mongoose connected');} )
+  })
+  
 }
 
 function closeServer() {
-  
+
   return mongoose.disconnect().then( () => { 
+  console.log('mongoose disconnecting');
     return new Promise( (resolve, reject) => {
       console.log('Closing server');
       server.close(err => {
