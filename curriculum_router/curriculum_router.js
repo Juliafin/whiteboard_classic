@@ -129,7 +129,8 @@ curriculum_router.post('/', (req, res) => {
 });
 
 
-curriculum_router.put(':id', (req, res) => {
+curriculum_router.put('/:id', (req, res) => {
+  console.log (req.body);
 
   if (!(req.params.id === req.body.id)) {
     const mismatchedId = `
@@ -158,7 +159,7 @@ curriculum_router.put(':id', (req, res) => {
       })
       .then((student_record) => {
         return res.status(201).json({
-          updated: student_record.apiView()
+          updated: student_record
         });
       })
       .catch((err) => {

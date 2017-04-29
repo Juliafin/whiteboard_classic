@@ -38,10 +38,28 @@ Content-Type: application/json
             "project_date": "Thu Apr 17 2016 13:45:55 GMT-0400 (Eastern Daylight Time)"
         },
         {
-            "project_name": "A new musical creation",
+            "project_name": "asdflkn",
             "project_description": "This piece is going to be amazing.",
             "teacher_project_comments": "Work on your phrasing.",
             "project_date": "Thu Apr 17 2016 13:45:55 GMT-0400 (Eastern Daylight Time)"
         }
     ]
+  }
+
+
+
+
+
+
+### PUT Test with address
+
+PUT http://localhost:8080/cu-manager/590409f77fef454f80511bfd
+Content-Type: application/json
+
+  {
+   "id": "590409f77fef454f80511bfd",
+    "address": {
+        "street_address": "Some other address",
+        "state": "CA",
+        "zipcode": "85154"  }
   }
