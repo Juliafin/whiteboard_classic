@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
 const faker = require('faker');
 const should = chai.should();
-const {DATABASE_URL} = require('./../config_variables');
+const {TEST_DATABASE_URL} = require('./../config_variables');
 const {Curriculum} = require('../student_models/models');
 const{app, runServer, closeServer} = require('./../server');
 
@@ -14,11 +14,11 @@ mongoose.Promise = global.Promise;
 // function fake
 
 function generateFakeCurriculumData (numberOfStudentRecords) {
-  console.log('starting generating fake data');
+  console.log('Generating fake data');
   console.log(numberOfStudentRecords);
 
   for (let i=0; i < numberOfStudentRecords; i++) {
-    console.log('creating curriculum object');
+    // console.log('creating curriculum object');
     Curriculum
     .create({
       first_name:faker.name.firstName(),
@@ -63,25 +63,55 @@ function dismantleDB() {
 }
 
 
-// describe('Student Curriculum Endpoints', function () {
+describe('Student Curriculum Endpoints', function () {
 
 
-//   before(function () {
-//     return runServer(TEST_DATABASE_URL);
-//   });
+  before(function () {
+    return runServer(TEST_DATABASE_URL);
+  });
 
-//   beforeEach(function () {
-//     return seedCurriculumDb(generateFakeCurriculumData(19));
-//   });
+  beforeEach(function () {
+    return generateFakeCurriculumData(20);
+  });
 
-//   afterEach(function () {
-//     // return dismantleDB();
-//   });
+  afterEach(function () {
+    return dismantleDB();
+  });
 
-//   after(function () {
-//     return closeServer();
-//   });
+  after(function () {
+    return closeServer();
+  });
 
 
 
-// })
+  describe('GET endpoint', function() {
+
+    it('should return all existing blogs', function () {
+
+      let curric;
+
+      return chai.request(app)
+        .get('/cu-manager')
+        .then(function(_curric) {
+
+          curric = _curric
+
+          res.should.have.status(200);
+          res.body.student_records.should.have.length.of.at.least(1);
+
+          return Curriculum.count();
+
+        })
+        .then(function(count) {
+          res.body.student_records.should.have.length.of(count);
+        })
+        .catch( (err) => {console.error(err);});
+
+    });
+
+
+  });
+
+})
+
+

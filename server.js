@@ -16,7 +16,6 @@ const {generateFakeCurriculumData} = require('./tests/curriculum_test');
 
 app.use(morgan('combined'));
 
-
 app.use('/cu-manager', curriculum_router);
 
 app.use('*', (req, res) => {
