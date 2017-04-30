@@ -130,7 +130,7 @@ curriculum_router.post('/', (req, res) => {
 
 
 curriculum_router.put('/:id', (req, res) => {
-  console.log (req.body);
+  console.log(req.body);
 
   if (!(req.params.id === req.body.id)) {
     const mismatchedId = `
@@ -152,11 +152,38 @@ curriculum_router.put('/:id', (req, res) => {
   */
 
 
-  if ('address' in req.body || 'student_lesson_time' in req.body) {
+  // if ('address' in req.body) {
+  //   Curriculum
+  //     .findByIdAndUpdate(req.params.id, 
+  //     {$set: {address: req.body['address']}},
+  //     {new:true} 
+  //     )
+  //     .then((student_record) => {
+  //       return res.status(201).json({
+  //         updated: student_record
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       return res.status(500).json({
+  //         error: 'Internal server error, could not update the record.'
+  //       });
+
+  //     });
+  // }
+
+
+
+
+  if ('student_curriculum' in req.body) {
+    const index = req.body.index;
+    const student_curriculum_index = `student_curriculum.${index}`;
+    console.log(student_curriculum_index)
     Curriculum
-      .findByIdAndUpdate(req.params.id, {
-        $set: req.body['address'] || req.body['student_lesson_time']
-      })
+      .findByIdAndUpdate(req.params.id, 
+      {$set: {"student_curriculum.[0]": req.body['student_curriculum']}},
+      {new:true} 
+      )
       .then((student_record) => {
         return res.status(201).json({
           updated: student_record
@@ -169,21 +196,57 @@ curriculum_router.put('/:id', (req, res) => {
         });
 
       });
-  }
+  } 
+  // else {
+  //   delete req.body.id;
+  //   Curriculum
+  //     .findByIdAndUpdate(req.params.id, {
+  //       $set: req.body
+  //     })
+  //     .then((student_record) => {
+  //       return res.status(201).json({
+  //         updated: student_record
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       return res.status(500).json({
+  //         error: 'Internal server error, could not update the record.'
+  //       });
 
-
-  if ('student_curriculum' in req.body) {
-    Curriculum
-      .findByIdAndUpdate(req.params.id), {
-        set: req.body
-      };
-
-  }
-
-
-
-
+  //     })
+  // }
 });
+
+curriculum_router.delete('/:id', (req, res) => {
+  Curriculum
+    .findByIdAndRemove(req.params.id)
+    .then( (blog) => {
+      return res.status(200).json({item_deleted: blog});
+    })
+    .catch( (err) => {
+      console.error(err);
+      res.status(500).json({message: "Internal server error, item not found."});
+    });
+});
+
+curriculum_router.delete('/:id/student-project', (req, res) => {
+  Curriculum
+    .findByIdAndRemove(req.params.id)
+    .then( (blog) => {
+      return res.status(200).json({item_deleted: blog});
+    })
+    .catch( (err) => {
+      console.error(err);
+      res.status(500).json({message: "Internal server error, item not found."});
+    });
+});
+
+
+
+
+
+
 
 
 

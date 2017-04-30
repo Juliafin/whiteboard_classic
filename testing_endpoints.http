@@ -53,13 +53,49 @@ Content-Type: application/json
 
 ### PUT Test with address
 
-PUT http://localhost:8080/cu-manager/590409f77fef454f80511bfd
+PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4a99
 Content-Type: application/json
 
   {
-   "id": "590409f77fef454f80511bfd",
+    "id": "59052ceaad296b4974ed4a99",
     "address": {
         "street_address": "Some other address",
         "state": "CA",
         "zipcode": "85154"  }
   }
+
+
+
+
+### PUT Test with parent_first_name
+
+PUT http://localhost:8080/cu-manager/590508f3879a2a4070f1aea4
+Content-Type: application/json
+
+  {
+    "id": "590508f3879a2a4070f1aea4",
+    "parent_first_name": "Jane"
+  }
+
+
+
+### PUT Test with parent_first_name
+
+PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4a95
+Content-Type: application/json
+
+  {
+    "index": "0",
+    "id": "59052ceaad296b4974ed4a95",
+      "student_curriculum":
+        {
+          "project_name": "some other thing",
+          "project_description": "Testing this.",
+          "teacher_project_comments": "New comments.",
+          "_id": "5905165542c15b3040ece23e",
+          "project_date": "2017-04-29T22:40:20.455Z"
+        }
+      
+  }
+
+# 5905165542c15b3040ece238
