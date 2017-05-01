@@ -130,117 +130,64 @@ curriculum_router.post('/', (req, res) => {
 
 
 curriculum_router.put('/:id', (req, res) => {
-  // console.log(req.body);
 
-  if (!(req.params.id === req.body.id)) {
-    const mismatchedId = `
-      The request path id ${req.params.id} and the reqest body id ${req.body.id} do not match.`;
-    console.error(mismatchedId);
-    return res.status(400).json({
-      message: mismatchedId
-    });
-  }
+  let student_record;
+
+  Curriculum
+    .findByIdAndUpdate(req.params.id)
+    .then((student_record) => {
 
 
-// console.log(req.body.student_curriculum);
-// console.log(req.body.index);
-  // Accept an object with fields needed to be changed
-  // if the fields are in student_curriculum, object must include document ID, index like:
-  /*  {
-        id:_
-        student_curriculum:
-          all object properties
-        index: number
-      }
-  */
-
-
-
-
-  if ('address' in req.body) {
-    Curriculum
-      .findByIdAndUpdate(req.params.id, 
-      {$set: {address: req.body['address']}},
-      {new:true, runValidators:true} 
-      )
-      .then((student_record) => {
-
-
+      if ('address' in req.body) {
+        student_record.address = req.body.address;
         delete req.body.address;
-        return res.status(201).json({
-          updated: student_record
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-        return res.status(500).json({
-          error: 'Internal server error, could not update the record.'
-        });
+      }
 
-      });
-  }
+      if ('student_lesson_time' in req.body) {
+        student_record.student_lesson_time = req.body.student_lesson_time;
+        delete req.body.student_lesson_time;
+      }
 
-
-
-
-  if ('student_curriculum' in req.body) {
-    const index = req.body.index;
-    const student_curriculum_index = "student_curriculum." + index;
-
-    Curriculum
-      .findByIdAndUpdate(req.params.id,
-      {$set: {[student_curriculum_index] : req.body.student_curriculum}},
-      {new:true, runValidators: true} 
-      )
-      .then((student_record) => {
+      if ('student_curriculum' in req.body) {
+        student_record.student_curriculum[req.body.index] = req.body.student_curriculum;
         delete req.body.student_curriculum;
-        console.log('req.body deleting student curriculum', req.body)
-        return res.status(201).json({
-          updated: student_record
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-        return res.status(500).json({
-          error: 'Internal server error, could not update the record.'
-        });
+        delete req.body.index;
+      }
 
+      let topLevelKeys = Object.keys(req.body);
+      topLevelKeys.forEach((key) => {
+        student_record.key = req.body[key];
       });
-  }
 
+      return Curriculum
+        .save()
+        .then((_student_record) => {
+          _student_record = student_record;
+          return res.status(201).json({updated: student_record});
 
-
-  else {
-    Curriculum
-      .findByIdAndUpdate(req.params.id, {
-        $set: req.body
-      })
-      .then((student_record) => {
-        return res.status(201).json({
-          updated: student_record
+        })
+        .catch((err) => {
+          console.error(err);
+          return res.status(500).json({message: "Internal server error, document could not be updated."});
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        return res.status(500).json({
-          error: 'Internal server error, could not update the record.'
-        });
-
-      })
-  }
+    });
 });
 
 curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
-  
+
   if ('student_curriculum' in req.body) {
     const index = req.body.index;
     const student_curriculum_index = "student_curriculum." + index;
 
     Curriculum
-      .findByIdAndUpdate(req.params.id,
-      {$push: {["student_curriculum"] : req.body.student_curriculum}},
-      {new:true, runValidators: true} 
-      )
+      .findByIdAndUpdate(req.params.id, {
+        $push: {
+          ["student_curriculum"]: req.body.student_curriculum
+        }
+      }, {
+        new: true,
+        runValidators: true
+      })
       .then((student_record) => {
         return res.status(201).json({
           updated: student_record
@@ -253,19 +200,23 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
         });
 
       });
-  } 
-})
+  }
+});
 
 
 curriculum_router.delete('/:id', (req, res) => {
   Curriculum
     .findByIdAndRemove(req.params.id)
-    .then( (blog) => {
-      return res.status(200).json({item_deleted: blog});
+    .then((blog) => {
+      return res.status(200).json({
+        item_deleted: blog
+      });
     })
-    .catch( (err) => {
+    .catch((err) => {
       console.error(err);
-      res.status(500).json({message: "Internal server error, item not found."});
+      res.status(500).json({
+        message: "Internal server error, item not found."
+      });
     });
 });
 
@@ -275,12 +226,16 @@ curriculum_router.delete('/:id', (req, res) => {
 curriculum_router.delete('/student-curriculum-projects/:id', (req, res) => {
   Curriculum
     .findByIdAndRemove(req.params.id)
-    .then( (blog) => {
-      return res.status(200).json({item_deleted: blog});
+    .then((blog) => {
+      return res.status(200).json({
+        item_deleted: blog
+      });
     })
-    .catch( (err) => {
+    .catch((err) => {
       console.error(err);
-      res.status(500).json({message: "Internal server error, item not found."});
+      res.status(500).json({
+        message: "Internal server error, item not found."
+      });
     });
 });
 
