@@ -81,21 +81,32 @@ Content-Type: application/json
 
 ### PUT Test with parent_first_name
 
-PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4a95
+PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4ac5
 Content-Type: application/json
 
   {
     "index": "0",
-    "id": "59052ceaad296b4974ed4a95",
+    "id": "59052ceaad296b4974ed4ac5",
       "student_curriculum":
         {
           "project_name": "some other thing",
           "project_description": "Testing this.",
           "teacher_project_comments": "New comments.",
-          "_id": "5905165542c15b3040ece23e",
           "project_date": "2017-04-29T22:40:20.455Z"
-        }
-      
+        }    
   }
 
 # 5905165542c15b3040ece238
+### 
+
+# db['student-teacher-dbs'].updateOne (
+# {"_id" : ObjectId("59052ceaad296b4974ed4a85") }, 
+# { $set: { "student_curriculum.0": 
+# {
+#   "project_name": "some other thing",
+#   "project_description": "Testing this.",
+#   "teacher_project_comments": "New comments.",
+#   "_id": ObjectId("5905165542c15b3040ece23e"),
+#   "project_date": "2017-04-29T22:40:20.455Z"
+#   }}}, 
+#   {new:true} )
