@@ -53,14 +53,14 @@ Content-Type: application/json
 
 ### PUT Test with address
 
-PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4a99
+PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4aad
 Content-Type: application/json
 
   {
-    "id": "59052ceaad296b4974ed4a99",
     "address": {
         "street_address": "Some other address",
         "state": "CA",
+        "city":"San Francisco",
         "zipcode": "85154"  }
   }
 
