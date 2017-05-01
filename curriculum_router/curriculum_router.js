@@ -137,7 +137,8 @@ curriculum_router.put('/:id', (req, res) => {
     .findByIdAndUpdate(req.params.id)
     .then((student_record) => {
 
-
+      // Check whether there are updates for nested properties. 
+      // Then delete them, and update tier 1 properties according to the req.body
       if ('address' in req.body) {
         student_record.address = req.body.address;
         delete req.body.address;
@@ -155,8 +156,12 @@ curriculum_router.put('/:id', (req, res) => {
       }
 
       let topLevelKeys = Object.keys(req.body);
+      // console.log(topLevelKeys)
       topLevelKeys.forEach((key) => {
-        student_record.key = req.body[key];
+      // console.log(req.body[key]);
+      // console.log(key);
+      // console.log(student_record[key])
+        student_record[key] = req.body[key];
       });
 
       student_record

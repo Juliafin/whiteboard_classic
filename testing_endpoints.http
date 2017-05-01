@@ -7,6 +7,7 @@ GET http://localhost:8080/cu-manager
 GET http://localhost:8080/cu-manager?email=Cesar.Waelchi13@gmail.com
 
 
+###
 
 ### Post Test
 POST http://localhost:8080/cu-manager
@@ -22,6 +23,7 @@ Content-Type: application/json
         "street_address": "1523 Main Drive",
         "state": "NC",
         "zipcode": "31154",
+        "city": "Greensboro",
         "country": "United States"
         },
     "student_lesson_time": {
@@ -47,7 +49,7 @@ Content-Type: application/json
   }
 
 
-
+###
 
 
 
@@ -57,24 +59,24 @@ PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4aad
 Content-Type: application/json
 
   {
+    "first_name": "Bono",
     "address": {
         "street_address": "Some other address",
-        "state": "CA",
-        "city":"San Francisco",
-        "zipcode": "85154"  }
+        "state": "NY",
+        "city":"New York",
+        "zipcode": "11251"  }
   }
 
-
+###
 
 
 ### PUT Test with parent_first_name
 
-PUT http://localhost:8080/cu-manager/590508f3879a2a4070f1aea4
+PUT http://localhost:8080/cu-manager/5907840a45bd3b4f2866d509
 Content-Type: application/json
 
   {
-    "id": "590508f3879a2a4070f1aea4",
-    "parent_first_name": "Jane"
+    "parent_first_name": "Josie"
   }
 
 
