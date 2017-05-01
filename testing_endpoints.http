@@ -81,12 +81,12 @@ Content-Type: application/json
 
 ### PUT Test with parent_first_name
 
-PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4ac5
+PUT http://localhost:8080/cu-manager/59052ceaad296b4974ed4aa1
 Content-Type: application/json
 
   {
     "index": "0",
-    "id": "59052ceaad296b4974ed4ac5",
+    "id": "59052ceaad296b4974ed4aa1",
       "student_curriculum":
         {
           "project_name": "some other thing",

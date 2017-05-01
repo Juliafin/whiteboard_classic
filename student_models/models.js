@@ -33,7 +33,8 @@ const studentLessonTimeSchema = new mongoose.Schema ({
     default: Date()},
   weekday: {
     type: String, 
-    required:true
+    required:true,
+    trim:true
   },
   startTime: {
     type: Date, 
@@ -64,15 +65,18 @@ const studentSchema = mongoose.Schema( {
   email: {
     type:String, 
     required: true, 
-    trim:true},
+    trim:true
+  },
   parent_first_name: {
     type:String, 
     maxlength: maxlength, 
-    trim:true},
+    trim:true
+  },
   parent_last_name: {
     type:String, 
     maxlength: maxlength, 
-    trim:true},
+    trim:true
+  },
   address: {
     type: studentAddressSchema, 
     required:true},
@@ -89,10 +93,14 @@ const studentSchema = mongoose.Schema( {
     },
     project_description: {
       type:String, 
-      required:true
+      required:true,
+      trim:true
     },
+    // array of comments TODO
     teacher_project_comments: {
-      type:String}        
+      type:String,
+      trim:true
+    }        
   }],
   student_lesson_time: {
     type: studentLessonTimeSchema, 
@@ -103,6 +111,7 @@ const studentSchema = mongoose.Schema( {
 });
 
 studentSchema.methods.apiView = function () {
+  // if statements to check user role
 
   return {
     id: this._id,
