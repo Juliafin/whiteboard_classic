@@ -130,7 +130,7 @@ curriculum_router.post('/', (req, res) => {
 
 
 curriculum_router.put('/:id', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   if (!(req.params.id === req.body.id)) {
     const mismatchedId = `
@@ -141,6 +141,9 @@ curriculum_router.put('/:id', (req, res) => {
     });
   }
 
+
+// console.log(req.body.student_curriculum);
+// console.log(req.body.index);
   // Accept an object with fields needed to be changed
   // if the fields are in student_curriculum, object must include document ID, index like:
   /*  {
@@ -150,6 +153,8 @@ curriculum_router.put('/:id', (req, res) => {
         index: number
       }
   */
+
+
 
 
   // if ('address' in req.body) {
@@ -177,11 +182,13 @@ curriculum_router.put('/:id', (req, res) => {
 
   if ('student_curriculum' in req.body) {
     const index = req.body.index;
-    const student_curriculum_index = `student_curriculum.${index}`;
-    console.log(student_curriculum_index)
+    const student_curriculum_index = "student_curriculum." + index;
+    // console.log(student_curriculum_index);
+    console.log({$set: {"student_curriculum.0" : req.body.student_curriculum}});
+    console.log({$set: {[student_curriculum_index] : req.body.student_curriculum}});
     Curriculum
-      .findByIdAndUpdate(req.params.id, 
-      {$set: {"student_curriculum.[0]": req.body['student_curriculum']}},
+      .findByIdAndUpdate(req.params.id,
+      {$set: {"student_curriculum.0" : req.body.student_curriculum}},
       {new:true} 
       )
       .then((student_record) => {
@@ -230,7 +237,7 @@ curriculum_router.delete('/:id', (req, res) => {
     });
 });
 
-curriculum_router.delete('/:id/student-project', (req, res) => {
+curriculum_router.delete('/student-project/:id', (req, res) => {
   Curriculum
     .findByIdAndRemove(req.params.id)
     .then( (blog) => {

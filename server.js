@@ -12,7 +12,7 @@ const app = express();
 const {Curriculum} = require('./student_models/models') 
 
 const curriculum_router = require('./curriculum_router/curriculum_router');
-const {generateFakeCurriculumData} = require('./tests/curriculum_test');
+const {generateFakeCurriculumData} = require('./student_models/seedDB');
 
 app.use(morgan('combined'));
 

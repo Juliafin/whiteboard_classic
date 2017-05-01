@@ -10,6 +10,11 @@ const studentAddressSchema = new mongoose.Schema ({
     required:true, 
     trim:true},
   apartment_number: mongoose.Schema.Types.Mixed,
+  city: {
+    type:String,
+    required:true,
+    trim:true
+  },
   state: {
     type:String, 
     required:true, 
