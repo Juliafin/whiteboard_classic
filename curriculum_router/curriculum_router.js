@@ -159,7 +159,7 @@ curriculum_router.put('/:id', (req, res) => {
         student_record.key = req.body[key];
       });
 
-      return Curriculum
+      student_record
         .save()
         .then((_student_record) => {
           _student_record = student_record;
