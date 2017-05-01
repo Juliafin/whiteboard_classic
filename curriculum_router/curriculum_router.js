@@ -157,25 +157,28 @@ curriculum_router.put('/:id', (req, res) => {
 
 
 
-  // if ('address' in req.body) {
-  //   Curriculum
-  //     .findByIdAndUpdate(req.params.id, 
-  //     {$set: {address: req.body['address']}},
-  //     {new:true} 
-  //     )
-  //     .then((student_record) => {
-  //       return res.status(201).json({
-  //         updated: student_record
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       return res.status(500).json({
-  //         error: 'Internal server error, could not update the record.'
-  //       });
+  if ('address' in req.body) {
+    Curriculum
+      .findByIdAndUpdate(req.params.id, 
+      {$set: {address: req.body['address']}},
+      {new:true, runValidators:true} 
+      )
+      .then((student_record) => {
 
-  //     });
-  // }
+
+        delete req.body.address;
+        return res.status(201).json({
+          updated: student_record
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({
+          error: 'Internal server error, could not update the record.'
+        });
+
+      });
+  }
 
 
 
@@ -183,13 +186,60 @@ curriculum_router.put('/:id', (req, res) => {
   if ('student_curriculum' in req.body) {
     const index = req.body.index;
     const student_curriculum_index = "student_curriculum." + index;
-    // console.log(student_curriculum_index);
-    console.log({$set: {"student_curriculum.0" : req.body.student_curriculum}});
-    console.log({$set: {[student_curriculum_index] : req.body.student_curriculum}});
+
     Curriculum
       .findByIdAndUpdate(req.params.id,
-      {$set: {"student_curriculum.0" : req.body.student_curriculum}},
-      {new:true} 
+      {$set: {[student_curriculum_index] : req.body.student_curriculum}},
+      {new:true, runValidators: true} 
+      )
+      .then((student_record) => {
+        delete req.body.student_curriculum;
+        console.log('req.body deleting student curriculum', req.body)
+        return res.status(201).json({
+          updated: student_record
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({
+          error: 'Internal server error, could not update the record.'
+        });
+
+      });
+  }
+
+
+
+  else {
+    Curriculum
+      .findByIdAndUpdate(req.params.id, {
+        $set: req.body
+      })
+      .then((student_record) => {
+        return res.status(201).json({
+          updated: student_record
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({
+          error: 'Internal server error, could not update the record.'
+        });
+
+      })
+  }
+});
+
+curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
+  
+  if ('student_curriculum' in req.body) {
+    const index = req.body.index;
+    const student_curriculum_index = "student_curriculum." + index;
+
+    Curriculum
+      .findByIdAndUpdate(req.params.id,
+      {$push: {["student_curriculum"] : req.body.student_curriculum}},
+      {new:true, runValidators: true} 
       )
       .then((student_record) => {
         return res.status(201).json({
@@ -204,26 +254,8 @@ curriculum_router.put('/:id', (req, res) => {
 
       });
   } 
-  // else {
-  //   delete req.body.id;
-  //   Curriculum
-  //     .findByIdAndUpdate(req.params.id, {
-  //       $set: req.body
-  //     })
-  //     .then((student_record) => {
-  //       return res.status(201).json({
-  //         updated: student_record
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       return res.status(500).json({
-  //         error: 'Internal server error, could not update the record.'
-  //       });
+})
 
-  //     })
-  // }
-});
 
 curriculum_router.delete('/:id', (req, res) => {
   Curriculum
@@ -237,7 +269,10 @@ curriculum_router.delete('/:id', (req, res) => {
     });
 });
 
-curriculum_router.delete('/student-project/:id', (req, res) => {
+
+// TODO figure out how to delete a specific student project
+
+curriculum_router.delete('/student-curriculum-projects/:id', (req, res) => {
   Curriculum
     .findByIdAndRemove(req.params.id)
     .then( (blog) => {
