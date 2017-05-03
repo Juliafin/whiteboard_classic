@@ -127,7 +127,7 @@ studentSchema.methods.apiView = function () {
   };
 };
 
-const Curriculum = mongoose.model('student-teacher-db', studentSchema);
+const Curriculum = mongoose.model('student_records', studentSchema);
 
 module.exports = {Curriculum};
 

@@ -187,7 +187,7 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
     Curriculum
       .findByIdAndUpdate(req.params.id, {
         $push: {
-          ["student_curriculum"]: req.body.student_curriculum
+          [student_curriculum_index]: req.body.student_curriculum
         }
       }, {
         new: true,
@@ -208,7 +208,7 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
   }
 });
 
-
+// delete a student
 curriculum_router.delete('/:id', (req, res) => {
   Curriculum
     .findByIdAndRemove(req.params.id)
@@ -226,22 +226,34 @@ curriculum_router.delete('/:id', (req, res) => {
 });
 
 
-// TODO figure out how to delete a specific student project
+// delete a specific student project
+// expects full curriculum object to be provided
 
 curriculum_router.delete('/student-curriculum-projects/:id', (req, res) => {
-  Curriculum
-    .findByIdAndRemove(req.params.id)
-    .then((blog) => {
-      return res.status(200).json({
-        item_deleted: blog
+  
+  if ('student_curriculum' in req.body) {
+
+    Curriculum
+      .findByIdAndUpdate(req.params.id, {
+        $pull: {
+          "student_curriculum": req.body.student_curriculum
+        }
+      }, {
+        new: true        
+      })
+      .then((student_record) => {
+        return res.status(201).json({
+          delete: student_record
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({
+          error: 'Internal server error, could not delete the record.'
+        });
+
       });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({
-        message: "Internal server error, item not found."
-      });
-    });
+  }
 });
 
 
