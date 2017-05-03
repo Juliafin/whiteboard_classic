@@ -30,7 +30,8 @@ const studentLessonTimeSchema = new mongoose.Schema ({
   startDate: {
     type: Date, 
     required:true, 
-    default: Date()},
+    default: Date()
+  },
   weekday: {
     type: String, 
     required:true,
@@ -40,8 +41,10 @@ const studentLessonTimeSchema = new mongoose.Schema ({
     type: Date, 
     required: true
   },
-  endTime: {type: Date, 
-    required: true}
+  endTime: {
+    type: Date, 
+    required: true
+  }
 });
 // object that has weekday and time 
 // student_start_date when student 
