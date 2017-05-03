@@ -75,9 +75,9 @@ describe('Student Curriculum Endpoints', function () {
             record.should.be.a('object');
             record.should.include.keys('id', 'address', 'first_name', 'last_name', 'email', 'student_lesson_time', 'student_curriculum');
             record.address.should.be.a('object');
-            record.address.should.include.keys('street_address', 'city', 'state', 'zipcode', '_id');
+            record.address.should.include.keys('street_address', 'city', 'state', 'zipcode');
             record.student_curriculum.should.be.a('array');
-            record.student_curriculum[0].should.include.keys('project_name', 'project_description', 'teacher_project_comments', '_id', 'project_date');
+            record.student_curriculum[0].should.include.keys('project_name', 'project_description', 'teacher_project_comments', 'project_date');
           });
 
           student_record = res.body.student_records[0];
@@ -94,21 +94,117 @@ describe('Student Curriculum Endpoints', function () {
           _student_record.email.should.equal(student_record.email);
           student_record.student_lesson_time.should.be.a('object');
           _student_record.student_lesson_time.weekday.should.equal(student_record.student_lesson_time.weekday);
+          // console.log(_student_record.student_lesson_time.startTime);
           // console.log(student_record.student_lesson_time.startTime);
-          // console.log(JSON.stringify(_student_record.student_lesson_time.startTime));
-          // _student_record.student_lesson_time.startTime.should.equal(student_record.student_lesson_time.startTime);
-          // _student_record.student_lesson_time.endTime.should.equal(student_record.student_lesson_time.endTime);
-          // console.log(typeof(student_record.student_lesson_time._id)); 
-          console.log(typeof(JSON.stringify(_student_record.student_lesson_time._id)));
-          console.log((JSON.stringify(_student_record.student_lesson_time._id)));
-          
-          // student_record.student_lesson_time._id.should.equal(JSON.stringify(_student_record.student_lesson_time._id));
-          
-        })
-    })
+          JSON.stringify(_student_record.student_lesson_time.startTime).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.startTime)));
+          JSON.stringify(_student_record.student_lesson_time.endTime).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.endTime)));
+          JSON.stringify(_student_record.student_lesson_time.startDate).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.startDate)));
+          console.log("DOG", (_student_record.student_lesson_time));          
+          _student_record.student_curriculum.should.be.a('array');
+          _student_record.student_curriculum[0].project_name.should.equal(student_record.student_curriculum[0].project_name);
+          _student_record.student_curriculum[0].project_description.should.equal(student_record.student_curriculum[0].project_description);
+          _student_record.student_curriculum[0].teacher_project_comments.should.equal(student_record.student_curriculum[0].teacher_project_comments);
+          JSON.stringify(_student_record.student_curriculum[0].project_date).should.equal(JSON.stringify(new Date (student_record.student_curriculum[0].project_date)));
+        });
+    }); // end student records test
 
 });
 
+  describe('POST endpoint', function() {
+    it('Should add a new student record', function() {
+
+      const fakeStudentRecord = generateFakeCurriculumData(1);
+      console.log(fakeStudentRecord);
+
+      return chai.request(app)
+        .post('/cu-manager')
+        .send(fakeStudentRecord)
+        .then(function (res) {
+
+          res.should.have.status(201);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.should.include.keys('id', 'address', 'first_name', 'last_name', 'email', 'student_lesson_time', 'student_curriculum');
+          res.address.should.be.a('object');
+          res.address.should.include.keys('street_address', 'city', 'state', 'zipcode');
+          res.student_curriculum.should.be.a('array');
+          res.student_curriculum[0].should.include.keys('project_name', 'project_description', 'teacher_project_comments', 'project_date');
+
+        })
+        .catch( (err) => {console.log(err);})
+
+    });
+  });
+
+  describe('PUT endpoint', function () {
+
+    it('Should update student fields on a PUT request', function() {
+
+      const updatedStudentRecord = generateFakeCurriculumData(1);
+      console.log(updatedStudentRecord);
+
+      return Curriculum
+        .findOne()
+        .then(function (record) {
+          updatedStudentRecord.id = record.id;
+
+          return chai.request(app)
+            .put(`/cu-manager/${updatedStudentRecord.id}`)
+            .send(updatedStudentRecord)
+        })
+        .then(function(res) {
+          res.should.have.status(201);
+          
+          return Curriculum.findById(updatedStudentRecord.id);
+        })
+        .then(function(updated_record) {
+
+          updated_record.address.street_address.should.equal(updatedStudentRecord.address.street_address)
+          updated_record.address.state.should.equal(updatedStudentRecord.address.state);
+          updated_record.address.zipcode.should.equal(updatedStudentRecord.address.zipcode);
+          updated_record.address.city.should.equal(updatedStudentRecord.address.city);
+          updated_record.first_name.should.equal(updatedStudentRecord.first_name);
+          updated_record.last_name.should.equal(updatedStudentRecord.last_name);
+          updated_record.email.should.equal(updatedStudentRecord.email);
+          updated_record.student_lesson_time.weekday.should.equal(updatedStudentRecord.student_lesson_time.weekday);
+          JSON.stringify(updated_record.student_lesson_time.startTime).should.equal(JSON.stringify(new Date(updatedStudentRecord.student_lesson_time.startTime)));
+          JSON.stringify(updated_record.student_lesson_time.endTime).should.equal(JSON.stringify(new Date(updatedStudentRecord.student_lesson_time.endTime)));
+          JSON.stringify(updated_record.student_lesson_time.startDate).should.equal(JSON.stringify(new Date(updatedStudentRecord.student_lesson_time.startDate)));
+          // updated_record.student_curriculum[0].project_name.should.equal(updatedStudentRecord.student_curriculum[0].project_name);
+        });
+    });
+  });
+
+  describe('DELETE endpoint', function() {
+
+    it('Should delete a student record by ID', function() {
+
+      let deletedStudentRecord;
+
+      return Curriculum
+        .findOne()
+        .then(function(record) {
+          deletedStudentRecord = record;
+          return chai.request(app)
+            .delete(`/cu-manager/${record.id}`)
+        })
+        .then(function(res) {
+          res.should.have.status(200);
+
+          return Curriculum.findById(deletedStudentRecord.id);
+        })
+        .then(function(deletedRecord){
+          should.not.exist(deletedRecord);
+        })
+        .catch( (err) => {console.error(err)});
+    })
+  })
+
+  describe('Should delete student curriculum project with provided index', function() {
+
+  })
+
 })
+
 
 
