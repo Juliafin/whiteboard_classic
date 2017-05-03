@@ -9,7 +9,6 @@ const {
 } = require('../student_models/models');
 curriculum_router.use(bodyParser.json());
 
-
 curriculum_router.get('/', (req, res) => {
   const filtersToSearch = {};
   const queryableFields = ['first_name', 'last_name', 'email', 'parent_first_name', 'parent_last_name', 'student_lesson_time'];
@@ -52,10 +51,10 @@ curriculum_router.get('/:id', (req, res) => {
 
 
 curriculum_router.post('/', (req, res) => {
-  console.log('This is the req.body', req.body);
+  // console.log('This is the req.body', req.body);
 
   const requiredFields = ['first_name', 'last_name', 'email', 'address', 'student_lesson_time', 'student_curriculum'];
-  const addressFields = ['street_address', 'state', 'zipcode', 'country'];
+  const addressFields = ['street_address', 'state', 'city','zipcode'];
   const studentCurriculumFields = ['project_name', 'project_description'];
   const studentLessonTime = ['weekday', 'startTime', 'endTime'];
   let missing = {};
