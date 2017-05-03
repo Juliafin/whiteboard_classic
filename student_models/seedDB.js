@@ -5,7 +5,7 @@ const {Curriculum} = require('./../student_models/models');
 const faker = require('faker');
 
 function generateFakeCurriculumData (numberOfStudentRecords) {
-  console.log('Generating fake data');
+  console.log('Generating fake student data');
   console.log(numberOfStudentRecords);
 
   for (let i=0; i < numberOfStudentRecords; i++) {
@@ -37,7 +37,7 @@ function generateFakeCurriculumData (numberOfStudentRecords) {
     })
     .catch(err => console.log(err));
    }
-
+   console.log('Student records generated.')
   } // ends for loop
 
 
