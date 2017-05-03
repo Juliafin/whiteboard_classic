@@ -46,7 +46,7 @@ describe('Student Curriculum Endpoints', function () {
         .get('/cu-manager')
         .then(function(curric) {
 
-          curric = _curric
+          curric = _curric;
 
           curric.should.have.status(200);
           curric.body.student_records.should.have.length.of.at.least(1);
@@ -131,7 +131,7 @@ describe('Student Curriculum Endpoints', function () {
           res.student_curriculum[0].should.include.keys('project_name', 'project_description', 'teacher_project_comments', 'project_date');
 
         })
-        .catch( (err) => {console.log(err);})
+        .catch( (err) => {console.log(err);});
 
     });
   });
@@ -150,7 +150,7 @@ describe('Student Curriculum Endpoints', function () {
 
           return chai.request(app)
             .put(`/cu-manager/${updatedStudentRecord.id}`)
-            .send(updatedStudentRecord)
+            .send(updatedStudentRecord);
         })
         .then(function(res) {
           res.should.have.status(201);
@@ -159,7 +159,7 @@ describe('Student Curriculum Endpoints', function () {
         })
         .then(function(updated_record) {
 
-          updated_record.address.street_address.should.equal(updatedStudentRecord.address.street_address)
+          updated_record.address.street_address.should.equal(updatedStudentRecord.address.street_address);
           updated_record.address.state.should.equal(updatedStudentRecord.address.state);
           updated_record.address.zipcode.should.equal(updatedStudentRecord.address.zipcode);
           updated_record.address.city.should.equal(updatedStudentRecord.address.city);
@@ -186,7 +186,7 @@ describe('Student Curriculum Endpoints', function () {
         .then(function(record) {
           deletedStudentRecord = record;
           return chai.request(app)
-            .delete(`/cu-manager/${record.id}`)
+            .delete(`/cu-manager/${record.id}`);
         })
         .then(function(res) {
           res.should.have.status(200);
@@ -196,15 +196,38 @@ describe('Student Curriculum Endpoints', function () {
         .then(function(deletedRecord){
           should.not.exist(deletedRecord);
         })
-        .catch( (err) => {console.error(err)});
+        .catch( (err) => {console.error(err);});
+    });
+  });
+
+  describe('Should delete student curriculum project ', function() {
+
+  const deletedProject = {
+
+    student_curriculum: {
+      project_name: `${faker.hacker.verb()} ${faker.hacker.noun()}`,
+      project_description: faker.lorem.paragraph(),
+      teacher_project_comments: faker.lorem.paragraph(),
+      project_date: faker.date.recent().toISOString()
+    } 
+  };
+
+  Curriculum
+    .findOne()
+    .then(function(student_record) {
+      return chai.request(app)
+      .delete(`/cu-manager/student-curriculum-projects/${student_record.id}`)
+      .send(deletedProject)
     })
-  })
+    .then(function(res){
+      console.log(res);
+      res.should.have.status(201);
+    })
 
-  describe('Should delete student curriculum project with provided index', function() {
 
-  })
+  });
 
-})
+});
 
 
 
