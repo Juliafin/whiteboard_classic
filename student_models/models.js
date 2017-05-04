@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
-const zipcodeValid = [/^\d{5}(?:[-\s]\d{4})?$/, 'The zipcode must either be in the format XXXXX or XXXXX-XXXX'];
-const maxlength = [20, 'The length is longer than 20 characters'];
-// const nameValid
+const zipcodeValid = [/^\d{5}(?:[-\s]\d{4})?$/, 'The zipcode must either be in the format XXXXX or XXXXX-XXXX.'];
+const maxlength = [20, 'The length is longer than 20 characters.'];
+const emailValid = [/^.+@{1}.+\.[a-zA-Z]{2,4}$/, 'The email must be valid.']
+// const nameValid 
 
 const studentAddressSchema = new mongoose.Schema({
   street_address: {
@@ -73,7 +74,8 @@ const studentSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    match: emailValid
   },
   parent_first_name: {
     type: String,
