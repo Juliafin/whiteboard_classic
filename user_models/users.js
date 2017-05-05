@@ -25,6 +25,20 @@ const userSchema = mongoose.Schema( {
     type:String,
     required: true,
     match: roleValidation
+  },
+  first_name: {
+    type: String,
+    minlength: 3,
+    maxlength: maxlength,
+    required: true,
+    trim: true
+  },
+  last_name: {
+    type: String,
+    minlength: 3,
+    maxlength: maxlength,
+    required: true,
+    trim: true
   }
 });
 

@@ -134,3 +134,8 @@ Content-Type: application/json
 #   "project_date": "2017-04-29T22:40:20.455Z"
 #   }}}, 
 #   {new:true} )
+
+
+### testing Authenticate
+
+GET http://localhost:8080/api/authenticate
