@@ -9,11 +9,13 @@ mongoose.Promise = global.Promise;
 const {PORT, DATABASE_URL} = require('./config_variables');
 
 const app = express();
-const {Curriculum} = require('./student_models/models') 
+const {Curriculum} = require('./student_models/models');
+const {User} = require('./user_models/users'); 
 
 const curriculum_router = require('./curriculum_router/curriculum_router');
 const login_router = require('./login_router/login');
 const {generateFakeCurriculumData} = require('./student_models/seedDB');
+const generateUser = require('./user_models/seedUsers');
 
 app.use(morgan('combined'));
 
@@ -47,6 +49,12 @@ function runServer(databaseUrl= DATABASE_URL, port=PORT) {
     })
     mongoose.connection.once('open', () => {
 
+      User.count()
+        .then(function(count) {
+          if (count === 0){
+            generateUser();
+          }
+        })
       Curriculum.count()
         .then(function(count) {
           if (count === 0) {
