@@ -12,11 +12,14 @@ const app = express();
 const {Curriculum} = require('./student_models/models') 
 
 const curriculum_router = require('./curriculum_router/curriculum_router');
+const login_router = require('./login_router/login');
 const {generateFakeCurriculumData} = require('./student_models/seedDB');
 
 app.use(morgan('combined'));
 
 app.use('/cu-manager', curriculum_router);
+app.use('/api', login_router)
+
 
 app.use('*', (req, res) => {
   res.status(404).send('Nothing found at this endpoint. Please do not try again.');
