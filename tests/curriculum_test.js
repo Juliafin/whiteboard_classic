@@ -243,6 +243,7 @@ describe('Authentication endpoints', function () {
   });
 
   after(function () {
+    dismantleDB();
     return closeServer();
   });
 
@@ -250,7 +251,7 @@ describe('Authentication endpoints', function () {
   describe('Registration endpoint', function () {
 
     it('Should register a new user', function () {
-      console.log(fakeUser);
+      // console.log(fakeUser);
       return chai.request(app)
         .post('/auth/register')
         .send(fakeUser)
@@ -263,7 +264,20 @@ describe('Authentication endpoints', function () {
           res.body.role.should.equal(fakeUser.role);
           res.body.first_name.should.equal(fakeUser.first_name);
           res.body.last_name.should.equal(fakeUser.last_name);
-           
+        })
+        .then(function(){
+          User
+            .findOne({'username': fakeUser.username})
+            .then(function(user){
+              // console.log(user);
+              user.username.should.equal(fakeUser.username);
+              user.first_name.should.equal(fakeUser.first_name);
+              user.last_name.should.equal(fakeUser.last_name);
+              user.role.should.equal(fakeUser.role);
+            })
+            .catch(function (err) {
+              console.error(err);
+            });
         });
     });
 
@@ -276,10 +290,47 @@ describe('Authentication endpoints', function () {
           somethingTrue.should.equal(false);
         })
         .catch(function(err) {
-          console.log(err.response.);
+          console.log(err.response.body);
           err.should.have.status(422);
-          // err.should.contain.key('message');
-      })
+          err.response.body.should.contain.key('message');
+          err.response.body.message.should.be.a('string');
+          err.response.body.message.should.equal('username already taken');
+        });
+    });
+  });
+
+  describe('login endpoint', function() {
+
+    it ('Should allow an existing user to log in', function() {
+
+      return chai.request(app)
+        .post('/auth/login')
+        .send({
+          username: fakeUser.username,
+          password: fakeUser.password 
+        })
+        .then(function(res) {
+          res.should.have.status(200);
+          res.body.should.have.key('token');
+        });
+    });
+
+    it('should throw an unauthorized error if provided with the wrong password', function() {
+      return chai.request(app)
+        .post('/auth/login')
+        .send({
+          username: fakeUser.username,
+          password: 'somerandomstring' 
+        })
+        .catch(function(err) {
+          // console.log(err);
+          (err.response.body);
+          err.should.have.status(401);
+          err.response.body.should.contain.key('error');
+          err.response.body.error.should.be.a('string');
+          err.response.body.error.should.equal('unauthorized');
+        });
+
     });
   });
 });
