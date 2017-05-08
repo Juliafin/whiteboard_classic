@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-const userValidation = [/^\w{4,}$/, 'Username must contain alphanumberic characters'];
+mongoose.Promise = global.Promise;
+
+const userValidation = [/^\w{4,}$/, 'Username must contain only alphanumberic characters'];
+// TODO use passvalidation on front end!
 const passValidation = [/^(?=.*\d)(?=.*[A-Za-z])[a-zA-Z\d@!\?\^\\\{\}()#$%_-]{8,20}$/, 'Password must be 8 to 20 characters, and contain one letter, one number, and one special character'];
 const maxlength = [20, 'The length is longer than 20 characters.'];
-const roleValidation = [/(?=^student$)|(?=^teacher$)/, 'Role must be a teacher or a student']
-const userSchema = mongoose.Schema( {
+const roleValidation = [/(?=^student$)|(?=^teacher$)|(?=^admin$)/, 'Role must be a teacher or a student']
+const userSchema = mongoose.Schema({
   username: {
-    type:String,
+    type: String,
     required: true,
     minlength: 4,
     maxlength: maxlength,
@@ -14,15 +18,13 @@ const userSchema = mongoose.Schema( {
     trim: true
   },
   password: {
-    type:String,
+    type: String,
     required: true,
     minlength: 8,
-    maxlength: 18,
-    match: passValidation,
     trim: true
   },
   role: {
-    type:String,
+    type: String,
     required: true,
     match: roleValidation
   },
@@ -42,15 +44,25 @@ const userSchema = mongoose.Schema( {
   }
 });
 
-userSchema.methods.showUser = function() {
+userSchema.methods.showUser = function () {
   return {
-  username: this.username,
-  role: this.role
-  }
+    username: this.username,
+    first_name: this.first_name,
+    last_name: this.last_name,
+    role: this.role
+  };  
 };
+
+userSchema.statics.hashPassword = function(password) {
+  return bcrypt.hash(password, 10);
+};
+
+userSchema.methods.validatePassword = function(password) {
+  return bcrypt.compare(password, this.password);
+}
 
 const User = mongoose.model('user', userSchema);
 
-module.exports = {User};
-
-
+module.exports = {
+  User
+};

@@ -5,9 +5,11 @@ const faker = require('faker');
 const should = chai.should();
 const {TEST_DATABASE_URL} = require('./../config_variables');
 const {Curriculum} = require('../student_models/models');
-const{app, runServer, closeServer} = require('./../server');
+const {app, runServer, closeServer} = require('./../server');
 const {generateFakeCurriculumData, dismantleDB} = require('./../student_models/seedDB.js');
+const {User} = require('../user_models/users');
 
+const {generateUser} = require('../user_models/seedUsers');
 
 chai.use(chaiHttp);
 mongoose.Promise = global.Promise;
@@ -16,7 +18,6 @@ mongoose.Promise = global.Promise;
 
 
 describe('Student Curriculum Endpoints', function () {
-
 
   before(function () {
     return runServer(TEST_DATABASE_URL);
@@ -34,9 +35,7 @@ describe('Student Curriculum Endpoints', function () {
     return closeServer();
   });
 
-
-
-  describe('GET endpoint', function() {
+  describe('GET endpoint', function () {
 
     it('should return all existing blogs', function () {
 
@@ -44,7 +43,7 @@ describe('Student Curriculum Endpoints', function () {
 
       return chai.request(app)
         .get('/cu-manager')
-        .then(function(curric) {
+        .then(function (_curric) {
 
           curric = _curric;
 
@@ -54,24 +53,26 @@ describe('Student Curriculum Endpoints', function () {
           return Curriculum.count();
 
         })
-        .then(function(count) {
+        .then(function (count) {
           curric.body.student_records.should.have.length.of(count);
         })
-        .catch( (err) => {console.error(err);});
+        .catch((err) => {
+          console.error(err);
+        });
 
-    });// end testing for all student records returned
+    }); // end testing for all student records returned
 
-    it('Should return student records with the correct fields', function() {
+    it('Should return student records with the correct fields', function () {
 
       let student_record;
       return chai.request(app)
         .get('/cu-manager')
-        .then(function(res){
+        .then(function (res) {
           res.should.have.status(200);
           res.should.be.json;
           res.body.student_records.should.have.length.of.at.least(1);
-          
-          res.body.student_records.forEach(function(record) {
+
+          res.body.student_records.forEach(function (record) {
             record.should.be.a('object');
             record.should.include.keys('id', 'address', 'first_name', 'last_name', 'email', 'student_lesson_time', 'student_curriculum');
             record.address.should.be.a('object');
@@ -83,7 +84,7 @@ describe('Student Curriculum Endpoints', function () {
           student_record = res.body.student_records[0];
           return Curriculum.findById(student_record.id);
         })
-        .then(function(_student_record) {
+        .then(function (_student_record) {
           _student_record.id.should.equal(student_record.id);
           _student_record.address.street_address.should.equal(student_record.address.street_address);
           _student_record.address.city.should.equal(student_record.address.city);
@@ -99,22 +100,22 @@ describe('Student Curriculum Endpoints', function () {
           JSON.stringify(_student_record.student_lesson_time.startTime).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.startTime)));
           JSON.stringify(_student_record.student_lesson_time.endTime).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.endTime)));
           JSON.stringify(_student_record.student_lesson_time.startDate).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.startDate)));
-          console.log("DOG", (_student_record.student_lesson_time));          
+          // console.log("DOG", (_student_record.student_lesson_time));
           _student_record.student_curriculum.should.be.a('array');
           _student_record.student_curriculum[0].project_name.should.equal(student_record.student_curriculum[0].project_name);
           _student_record.student_curriculum[0].project_description.should.equal(student_record.student_curriculum[0].project_description);
           _student_record.student_curriculum[0].teacher_project_comments.should.equal(student_record.student_curriculum[0].teacher_project_comments);
-          JSON.stringify(_student_record.student_curriculum[0].project_date).should.equal(JSON.stringify(new Date (student_record.student_curriculum[0].project_date)));
+          JSON.stringify(_student_record.student_curriculum[0].project_date).should.equal(JSON.stringify(new Date(student_record.student_curriculum[0].project_date)));
         });
     }); // end student records test
 
-});
+  });
 
-  describe('POST endpoint', function() {
-    it('Should add a new student record', function() {
+  describe('POST endpoint', function () {
+    it('Should add a new student record', function () {
 
       const fakeStudentRecord = generateFakeCurriculumData(1);
-      console.log(fakeStudentRecord);
+      // console.log(fakeStudentRecord);
 
       return chai.request(app)
         .post('/cu-manager')
@@ -131,17 +132,19 @@ describe('Student Curriculum Endpoints', function () {
           res.student_curriculum[0].should.include.keys('project_name', 'project_description', 'teacher_project_comments', 'project_date');
 
         })
-        .catch( (err) => {console.log(err);});
+        .catch((err) => {
+          console.log(err);
+        });
 
     });
   });
 
   describe('PUT endpoint', function () {
 
-    it('Should update student fields on a PUT request', function() {
+    it('Should update student fields on a PUT request', function () {
 
       const updatedStudentRecord = generateFakeCurriculumData(1);
-      console.log(updatedStudentRecord);
+      // console.log(updatedStudentRecord);
 
       return Curriculum
         .findOne()
@@ -152,12 +155,12 @@ describe('Student Curriculum Endpoints', function () {
             .put(`/cu-manager/${updatedStudentRecord.id}`)
             .send(updatedStudentRecord);
         })
-        .then(function(res) {
+        .then(function (res) {
           res.should.have.status(201);
-          
+
           return Curriculum.findById(updatedStudentRecord.id);
         })
-        .then(function(updated_record) {
+        .then(function (updated_record) {
 
           updated_record.address.street_address.should.equal(updatedStudentRecord.address.street_address);
           updated_record.address.state.should.equal(updatedStudentRecord.address.state);
@@ -175,59 +178,108 @@ describe('Student Curriculum Endpoints', function () {
     });
   });
 
-  describe('DELETE endpoint', function() {
+  describe('DELETE endpoint', function () {
 
-    it('Should delete a student record by ID', function() {
+    it('Should delete a student record by ID', function () {
 
       let deletedStudentRecord;
 
       return Curriculum
         .findOne()
-        .then(function(record) {
+        .then(function (record) {
           deletedStudentRecord = record;
           return chai.request(app)
             .delete(`/cu-manager/${record.id}`);
         })
-        .then(function(res) {
+        .then(function (res) {
           res.should.have.status(200);
 
           return Curriculum.findById(deletedStudentRecord.id);
         })
-        .then(function(deletedRecord){
+        .then(function (deletedRecord) {
           should.not.exist(deletedRecord);
         })
-        .catch( (err) => {console.error(err);});
+        .catch((err) => {
+          console.error(err);
+        });
     });
   });
 
-  describe('Should delete student curriculum project ', function() {
+  it('Should delete student curriculum project ', function () {
 
-  const deletedProject = {
+    const deletedProject = {
 
-    student_curriculum: {
-      project_name: `${faker.hacker.verb()} ${faker.hacker.noun()}`,
-      project_description: faker.lorem.paragraph(),
-      teacher_project_comments: faker.lorem.paragraph(),
-      project_date: faker.date.recent().toISOString()
-    } 
-  };
+      student_curriculum: {
+        project_name: `${faker.hacker.verb()} ${faker.hacker.noun()}`,
+        project_description: faker.lorem.paragraph(),
+        teacher_project_comments: faker.lorem.paragraph(),
+        project_date: faker.date.recent().toISOString()
+      }
+    };
 
-  Curriculum
-    .findOne()
-    .then(function(student_record) {
-      return chai.request(app)
-      .delete(`/cu-manager/student-curriculum-projects/${student_record.id}`)
-      .send(deletedProject)
-    })
-    .then(function(res){
-      console.log(res);
-      res.should.have.status(201);
-    })
+    Curriculum
+      .findOne()
+      .then(function (student_record) {
+        return chai.request(app)
+          .delete(`/cu-manager/student-curriculum-projects/${student_record.id}`)
+          .send(deletedProject);
+      })
+      .then(function (res) {
+        // console.log(res);
+        res.should.have.status(201);
+      }).catch(function (err) {
+        console.error(err);
+      });
 
 
   });
 
 });
 
+describe('Authentication endpoints', function () {
+  
+  before(function () {
+    return runServer(TEST_DATABASE_URL);
+  });
 
+  after(function () {
+    return closeServer();
+  });
 
+  const fakeUser = generateUser();
+  describe('Registration endpoint', function () {
+
+    it('Should register a new user', function () {
+      console.log(fakeUser);
+      return chai.request(app)
+        .post('/auth/register')
+        .send(fakeUser)
+        .then(function(res) {
+          // console.log(res)
+          res.should.have.status(201);
+          res.body.should.be.a('object');
+          res.body.should.have.keys('username', 'role', 'first_name', 'last_name');
+          res.body.username.should.equal(fakeUser.username);
+          res.body.role.should.equal(fakeUser.role);
+          res.body.first_name.should.equal(fakeUser.first_name);
+          res.body.last_name.should.equal(fakeUser.last_name);
+           
+        });
+    });
+
+    it('should show that a user is taken when sent a user that exists', function() {
+      return chai.request(app)
+        .post('/auth/register')
+        .send(fakeUser)
+        .then(function() {
+          let somethingTrue = true;
+          somethingTrue.should.equal(false);
+        })
+        .catch(function(err) {
+          console.log(err.response.);
+          err.should.have.status(422);
+          // err.should.contain.key('message');
+      })
+    });
+  });
+});

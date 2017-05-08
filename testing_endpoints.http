@@ -138,4 +138,65 @@ Content-Type: application/json
 
 ### testing Authenticate
 
-GET http://localhost:8080/api/authenticate
+GET http://localhost:8080/auth/authenticate
+
+
+### get all users
+
+GET http://localhost:8080/auth/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOnsiX2lkIjoiNTkwYzI0ZWJlMzEzMDEyMzQ0NzdmZGY4IiwiZmlyc3RfbmFtZSI6Ik5pa2l0YSIsImxhc3RfbmFtZSI6IlRlcnJ5Iiwicm9sZSI6InN0dWRlbnQiLCJwYXNzd29yZCI6Ikk0cEk2Znk0V2xsdmRsdCIsInVzZXJuYW1lIjoiR3VpZG9fQW5kZXJzb24iLCJfX3YiOjB9LCJpYXQiOjE0OTQwMDAxOTZ9.Y2rVv2A5I-0Lb2yEoqH1faunNtp6AzSdRTFejh3JT1I
+
+
+
+### Try to login with a user
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{        
+      "password": "I4pI6fy4Wllvdlt",
+      "username": "Guido_Anderson"   
+}
+
+
+### Register a new user with missing fields
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{        
+      "password": "I4pI6fy4Wllvdlt",
+      "username": "John"   
+}
+
+
+### Register a new user with correct fields
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{        
+      "password": "SomeREally#%1nicE!",
+      "username": "JanetFranks",
+      "first_name": "Janet",
+      "last_name": "Franks",
+      "role": "teacher"   
+}
+
+
+### Login with user data
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{        
+    "password": "SomeREally#%1nicE!",
+    "username": "JanetFranks"
+}
+
+
+### Another jwt token test
+GET http://localhost:8080/auth/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiOiI1OTBkMzhmNjI0NmYwNjQ2NDhlMmEyOTMiLCJ1c2VybmFtZSI6IkphbmV0RnJhbmtzIiwicGFzc3dvcmQiOiIkMmEkMTAkc1I1VXBZUlN4RTBNRHpDVHc1WUNmZWJDWTV2Sk9qM2JUWWlNczcuMHoyTFE4NENEdS8vRm0iLCJyb2xlIjoidGVhY2hlciIsImZpcnN0X25hbWUiOiJKYW5ldCIsImxhc3RfbmFtZSI6IkZyYW5rcyIsIl9fdiI6MH0sImlhdCI6MTQ5NDA0NzY5Mn0.jxXc6HkCQoC-eFPbG9DJG1x-l6JQdr4DT2tBBCkwPc0
+
+
+### Random words
+
+GET http://localhost:8080/api/stuff
