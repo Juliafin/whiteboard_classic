@@ -1,6 +1,18 @@
 ### GET endpoint
 GET http://localhost:8080/cu-manager
 
+### GET endpoint with auth as teacher
+GET http://localhost:8080/cu-manager/
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiOiI1OTBkMzhmNjI0NmYwNjQ2NDhlMmEyOTMiLCJ1c2VybmFtZSI6IkphbmV0RnJhbmtzIiwicGFzc3dvcmQiOiIkMmEkMTAkc1I1VXBZUlN4RTBNRHpDVHc1WUNmZWJDWTV2Sk9qM2JUWWlNczcuMHoyTFE4NENEdS8vRm0iLCJyb2xlIjoidGVhY2hlciIsImZpcnN0X25hbWUiOiJKYW5ldCIsImxhc3RfbmFtZSI6IkZyYW5rcyIsIl9fdiI6MH0sImlhdCI6MTQ5NDA0NzY5Mn0.jxXc6HkCQoC-eFPbG9DJG1x-l6JQdr4DT2tBBCkwPc0
+
+
+### GET as student
+GET http://localhost:8080/cu-manager
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiOiI1OTEwMGFlYjZlN2IwMzM4MTA0ZmNhNWIiLCJ1c2VybmFtZSI6IkFuZ2llTHUiLCJwYXNzd29yZCI6IiQyYSQxMCQuNWZZaUxWcUQ2Mm9reWhySGdCa2lPOVBKMWtUL0dKdU4zeFNzaTFaZzJBMjVqbVFxRno0eSIsInJvbGUiOiJzdHVkZW50IiwiZmlyc3RfbmFtZSI6IkFuZ2llIiwibGFzdF9uYW1lIjoiTHUiLCJfX3YiOjB9LCJpYXQiOjE0OTQyMjM3NTF9.Y0hE0jKZhwdGfbE96jJZSQG7vKcQFj866oMcv6Ktpb4 
+
+
+
+
 
 ### Query email GET test
 
@@ -167,6 +179,15 @@ Content-Type: application/json
       "username": "John"   
 }
 
+### Login with user data
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{        
+    "password": "SomeREally#%1nicE!",
+    "username": "JanetFranks"
+}
 
 ### Register a new user with correct fields
 POST http://localhost:8080/auth/register
@@ -180,16 +201,30 @@ Content-Type: application/json
       "role": "teacher"   
 }
 
+### Register a new user student with correct fields
+POST http://localhost:8080/auth/register
+Content-Type: application/json
 
-### Login with user data
+{        
+      "password": "!7423Adfras!",
+      "username": "AngieLu",
+      "first_name": "Angie",
+      "last_name": "Lu",
+      "role": "student"   
+}
 
+
+### Login as student
 POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {        
-    "password": "SomeREally#%1nicE!",
-    "username": "JanetFranks"
+    "password": "!7423Adfras!",
+    "username": "AngieLu"
 }
+
+
+
 
 
 ### Another jwt token test
@@ -199,4 +234,4 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiO
 
 ### Random words
 
-GET http://localhost:8080/api/stuff
+GET http://localhost:8080/auth/stuff
