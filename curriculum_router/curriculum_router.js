@@ -49,94 +49,97 @@ curriculum_router.get('/', (req, res) => {
 
 
 curriculum_router.get('/:id', (req, res) => {
-  Curriculum
-    .findById(req.params.id)
-    .then(blog => res.json(blog.apiView()))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({
-        message: "Internal server error: No ID match found"
+  if (req.user._user.role === 'student' || 'teacher') {
+    Curriculum
+      .findById(req.params.id)
+      .then(blog => res.json(blog.apiView()))
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({
+          message: "Internal server error: No ID match found"
+        });
       });
-    });
+  }
 });
-
 
 
 curriculum_router.post('/', (req, res) => {
   // console.log('This is the req.body', req.body);
+  if (req.user._user.role === 'teacher') {
 
-  const requiredFields = ['first_name', 'last_name', 'email', 'address', 'student_lesson_time', 'student_curriculum'];
-  const addressFields = ['street_address', 'state', 'city','zipcode'];
-  const studentCurriculumFields = ['project_name', 'project_description'];
-  const studentLessonTime = ['weekday', 'startTime', 'endTime'];
-  let missing = {};
-  let address = {};
-  let student_lesson_time = {};
-  let student_curriculum = {};
+    const requiredFields = ['first_name', 'last_name', 'email', 'address', 'student_lesson_time', 'student_curriculum'];
+    const addressFields = ['street_address', 'state', 'city','zipcode'];
+    const studentCurriculumFields = ['project_name', 'project_description'];
+    const studentLessonTime = ['weekday', 'startTime', 'endTime'];
+    let missing = {};
+    let address = {};
+    let student_lesson_time = {};
+    let student_curriculum = {};
 
-  // check if first tier of required fields is missing
-  requiredFields.forEach(function (field) {
-    if (!(field in req.body)) {
-      missing[field] = field;
-    }
-  });
-
-  // check if required address fields are missing
-  addressFields.forEach(function (addressCategory) {
-    if (!(addressCategory in req.body.address)) {
-      address.addressCategory = addressCategory;
-    }
-  });
-
-  if (Object.keys(address).length !== 0) {
-    missing.address = address;
-  }
-
-  // check if student curriculum fields are missing
-  studentCurriculumFields.forEach(function (curricField) {
-    // console.log(req.body);
-    // console.log(curricField)
-    if (!(curricField in req.body['student_curriculum'][0])) {
-      student_curriculum[curricField] = curricField;
-    }
-  });
-
-  if (Object.keys(student_curriculum).length !== 0) {
-    missing.student_curriculum = student_curriculum;
-  }
-
-  //  check if student lesson times are missing
-  studentLessonTime.forEach(function (lessonField) {
-    if (!(lessonField in req.body['student_lesson_time'])) {
-      student_lesson_time[lessonField] = lessonField;
-    }
-  });
-
-  if (Object.keys(student_lesson_time).length !== 0) {
-    missing.student_lesson_time = student_lesson_time;
-  }
-
-
-  if (Object.keys(missing).length !== 0) {
-    const missingObj = {
-      missing_fields: missing
-    };
-    return res.status(400).json(missingObj);
-  }
-
-  Curriculum
-    .create(req.body)
-    .then(
-      (student_record) => {
-        return res.status(201).json(student_record.apiView());
+    // check if first tier of required fields is missing
+    requiredFields.forEach(function (field) {
+      if (!(field in req.body)) {
+        missing[field] = field;
       }
-    )
-    .catch((err) => {
-      console.error(err);
-      return res.status(500).json({
-        message: "Internal Server Error"
-      });
     });
+
+    // check if required address fields are missing
+    addressFields.forEach(function (addressCategory) {
+      if (!(addressCategory in req.body.address)) {
+        address.addressCategory = addressCategory;
+      }
+    });
+
+    if (Object.keys(address).length !== 0) {
+      missing.address = address;
+    }
+
+    // check if student curriculum fields are missing
+    studentCurriculumFields.forEach(function (curricField) {
+      // console.log(req.body);
+      // console.log(curricField)
+      if (!(curricField in req.body['student_curriculum'][0])) {
+        student_curriculum[curricField] = curricField;
+      }
+    });
+
+    if (Object.keys(student_curriculum).length !== 0) {
+      missing.student_curriculum = student_curriculum;
+    }
+
+    //  check if student lesson times are missing
+    studentLessonTime.forEach(function (lessonField) {
+      if (!(lessonField in req.body['student_lesson_time'])) {
+        student_lesson_time[lessonField] = lessonField;
+      }
+    });
+
+    if (Object.keys(student_lesson_time).length !== 0) {
+      missing.student_lesson_time = student_lesson_time;
+    }
+
+
+    if (Object.keys(missing).length !== 0) {
+      const missingObj = {
+        missing_fields: missing
+      };
+      return res.status(400).json(missingObj);
+    }
+
+    Curriculum
+      .create(req.body)
+      .then(
+        (student_record) => {
+          return res.status(201).json(student_record.apiView());
+        }
+      )
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({
+          message: "Internal Server Error"
+        });
+      });
+  }
 });
 
 
