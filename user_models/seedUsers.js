@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const faker = require('faker')
 const {User} = require('./users');
 
-function generateUser() {
+function generateUser(role=false) {
   console.log('Seeding one user to the db');
   const username = `${faker.random.word().replace(/-/g, "").trim().substring(0, 13)}` + `${faker.random.number(99999)}`;
   const user = {
     first_name: faker.name.firstName(),
     last_name: faker.name.lastName(),
-    role: randomRole(),
+    role: role || randomRole(),
     password: faker.internet.password(),
     username: username.replace(/ /g, '')
   };
