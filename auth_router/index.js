@@ -4,9 +4,7 @@ const jwt = require('jsonwebtoken');
 const express_jwt = require('express-jwt');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const {
-  SECRET
-} = require('../config_variables');
+const {SECRET} = require('../config_variables');
 const morgan = require('morgan');
 const faker = require('faker');
 

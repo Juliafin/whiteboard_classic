@@ -121,6 +121,10 @@ const studentSchema = mongoose.Schema({
   teacher_comments: {
     type: String
   }, // private to students (only teachers can see)
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 });
 
 studentSchema.methods.apiView = function () {
@@ -135,8 +139,18 @@ studentSchema.methods.apiView = function () {
     last_name: this.last_name,
     email: this.email,
     student_lesson_time: this.student_lesson_time,
-    student_curriculum: this.student_curriculum
+    student_curriculum: this.student_curriculum,
+    teacher_comments: this.teacher_comments
 
+  };
+};
+
+studentSchema.methods.studentView = function () {
+
+  return {
+    id: this._id,
+    student_lesson_time: this.student_lesson_time,
+    student_curriculum: this.student_curriculum
   };
 };
 

@@ -1,13 +1,17 @@
 const express = require('express');
+const express_jwt = require('express-jwt');
+const jwt = require('jsonwebtoken');
 const curriculum_router = express.Router();
-
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const {User} = require('../user_models/users');
+const {Curriculum} = require('../student_models/models');
+const bodyParser = require('body-parser');
+const {SECRET} = require('../config_variables');
+
+
 mongoose.Promise = global.Promise;
-const {
-  Curriculum
-} = require('../student_models/models');
 curriculum_router.use(bodyParser.json());
+curriculum_router.use(express_jwt({secret: SECRET}));
 
 curriculum_router.get('/', (req, res) => {
   const filtersToSearch = {};
@@ -21,11 +25,19 @@ curriculum_router.get('/', (req, res) => {
   Curriculum
     .find(filtersToSearch)
     .then(student_records => {
-      return res.json({
-        student_records: student_records.map((record) => {
-          return record.apiView();
-        })
-      });
+      if (req.user._user.role === 'teacher') {
+        return res.status(200).json({
+          student_records: student_records.map((record) => {
+            return record.apiView();
+          })
+        });
+      } else if (req.user._user.role == 'student') {
+        return res.status(200).json({
+          student_records: student_records.map((record) => {
+            return record.studentView();
+          })
+        });
+      }
     })
     .catch((err) => {
       console.error(err);

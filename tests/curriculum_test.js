@@ -330,7 +330,6 @@ describe('Authentication endpoints', function () {
           err.response.body.error.should.be.a('string');
           err.response.body.error.should.equal('unauthorized');
         });
-
     });
   });
 });
