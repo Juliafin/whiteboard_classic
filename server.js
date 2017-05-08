@@ -13,19 +13,23 @@ const {Curriculum} = require('./student_models/models');
 const {User} = require('./user_models/users'); 
 
 const curriculum_router = require('./curriculum_router/curriculum_router');
-const login_router = require('./login_router/login');
+const auth_router = require('./auth_router');
 const {generateFakeCurriculumData} = require('./student_models/seedDB');
-const generateUser = require('./user_models/seedUsers');
+const {generateUser, saveUser} = require('./user_models/seedUsers');
 
 app.use(morgan('combined'));
 
 app.use('/cu-manager', curriculum_router);
-app.use('/api', login_router)
+app.use('/auth', auth_router);
+express.static('public')
+app.get('/', (req, res) => {
 
 
+})
 app.use('*', (req, res) => {
   res.status(404).send('Nothing found at this endpoint. Please do not try again.');
 });
+
 
 
 // add server functions to export for tests
@@ -52,7 +56,7 @@ function runServer(databaseUrl= DATABASE_URL, port=PORT) {
       User.count()
         .then(function(count) {
           if (count === 0){
-            generateUser();
+            saveUser(generateUser());
           }
         })
       Curriculum.count()
@@ -69,7 +73,7 @@ function runServer(databaseUrl= DATABASE_URL, port=PORT) {
 function closeServer() {
 
   return mongoose.disconnect().then( () => { 
-  console.log('mongoose disconnecting');
+    console.log('mongoose disconnecting');
     return new Promise( (resolve, reject) => {
       console.log('Closing server');
       server.close(err => {

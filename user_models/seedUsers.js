@@ -4,22 +4,28 @@ const {User} = require('./users');
 
 function generateUser() {
   console.log('Seeding one user to the db');
-  User
-  .create({
+  const username = `${faker.random.word().replace(/-/g, "").trim().substring(0, 13)}` + `${faker.random.number(99999)}`;
+  const user = {
     first_name: faker.name.firstName(),
     last_name: faker.name.lastName(),
     role: randomRole(),
     password: faker.internet.password(),
-    username: faker.internet.userName()
-  })
-}
+    username: username.replace(/ /g, '')
+  };
 
+  return user;
+
+}
+function saveUser (user) {
+  User
+  .create(user);
+}
 
 function randomRole() {
 
-  roles = ['student', 'teacher'];
+  const roles = ['student', 'teacher'];
 
   return roles[Math.floor(Math.random() * roles.length )]
 }
 
-module.exports = generateUser
+module.exports = {generateUser, saveUser};
