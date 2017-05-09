@@ -13,7 +13,9 @@ mongoose.Promise = global.Promise;
 curriculum_router.use(bodyParser.json());
 curriculum_router.use(express_jwt({secret: SECRET}));
 
+// To be adjusted to return a list based on the teacher id
 curriculum_router.get('/', (req, res) => {
+  console.log(req.user)
   const filtersToSearch = {};
   const queryableFields = ['first_name', 'last_name', 'email', 'parent_first_name', 'parent_last_name', 'student_lesson_time'];
   queryableFields.forEach(field => {
@@ -47,12 +49,19 @@ curriculum_router.get('/', (req, res) => {
     });
 });
 
-
+// open to teachers only
 curriculum_router.get('/:id', (req, res) => {
-  if (req.user._user.role === 'student' || 'teacher') {
+  if (req.user._user.role === 'teacher') {
     Curriculum
       .findById(req.params.id)
-      .then(blog => res.json(blog.apiView()))
+      .then( (record) =>  {
+
+        if (record.author.id === req.user_user._id) {
+          return res.json(record.apiView());
+        } else {
+          res.status(401).json({error: 'Unauthorized to view this student'});
+        }
+      })
       .catch((err) => {
         console.error(err);
         res.status(500).json({
@@ -62,7 +71,7 @@ curriculum_router.get('/:id', (req, res) => {
   }
 });
 
-
+// Only teachers can post a new student record
 curriculum_router.post('/', (req, res) => {
   // console.log('This is the req.body', req.body);
   if (req.user._user.role === 'teacher') {
@@ -125,7 +134,10 @@ curriculum_router.post('/', (req, res) => {
       };
       return res.status(400).json(missingObj);
     }
-
+    req.body.author = {};
+    req.body.author.id = req.user._user._id;
+    req.body.author.first_name = req.user._user.first_name;
+    req.body.author.last_name = req.user._user.last_name;
     Curriculum
       .create(req.body)
       .then(
@@ -193,33 +205,40 @@ curriculum_router.put('/:id', (req, res) => {
 });
 
 curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
+  if (req.user._user.role === 'student') {
+    return res.status(401).json({error: 'unauthorized'});
 
-  if ('student_curriculum' in req.body) {
-    const index = req.body.index;
-    const student_curriculum_index = "student_curriculum." + index;
+  } else if (req.user._user.role === 'teacher') {
 
-    Curriculum
-      .findByIdAndUpdate(req.params.id, {
-        $push: {
-          [student_curriculum_index]: req.body.student_curriculum
-        }
-      }, {
-        new: true,
-        runValidators: true
-      })
-      .then((student_record) => {
-        return res.status(201).json({
-          updated: student_record
+
+    if ('student_curriculum' in req.body) {
+      const index = req.body.index;
+      const student_curriculum_index = "student_curriculum." + index;
+
+      Curriculum
+        .findByIdAndUpdate(req.params.id, {
+          $push: {
+            [student_curriculum_index]: req.body.student_curriculum
+          }
+        }, {
+          new: true,
+          runValidators: true
+        })
+        .then((student_record) => {
+          return res.status(201).json({
+            updated: student_record.apiView()
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          return res.status(500).json({
+            error: 'Internal server error, could not update the record.'
+          });
+
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        return res.status(500).json({
-          error: 'Internal server error, could not update the record.'
-        });
-
-      });
+    }
   }
+
 });
 
 // delete a student

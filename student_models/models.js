@@ -122,8 +122,15 @@ const studentSchema = mongoose.Schema({
     type: String
   }, // private to students (only teachers can see)
   author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    id: {
+      type: mongoose.Schema.Types.ObjectId
+    },
+    first_name: {
+      type: String
+    },
+    last_name: {
+      type: String
+    }
   }
 });
 
@@ -140,7 +147,8 @@ studentSchema.methods.apiView = function () {
     email: this.email,
     student_lesson_time: this.student_lesson_time,
     student_curriculum: this.student_curriculum,
-    teacher_comments: this.teacher_comments
+    teacher_comments: this.teacher_comments,
+    author: this.author
 
   };
 };

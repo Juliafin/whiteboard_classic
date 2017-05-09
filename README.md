@@ -17,14 +17,14 @@
 
 # Backend
 
--Node.js
--Express.js
--Faker.js
--MongoDB
--Mongoose.js
--JSON web tokens
--Bcrypt.js
--JavaSript (ES6)
--Mocha.js
--Chai.js
+- Node.js
+- Express.js
+- Faker.js
+- MongoDB
+- Mongoose.js
+- JSON web tokens
+- Bcrypt.js
+- JavaSript (ES6)
+- Mocha.js
+- Chai.js
 
