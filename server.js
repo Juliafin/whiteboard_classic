@@ -21,14 +21,16 @@ app.use(morgan('combined'));
 
 app.use('/cu-manager', curriculum_router);
 app.use('/auth', auth_router);
-express.static('public')
-app.get('/', (req, res) => {
+express.static('public');
 
-
-})
-app.use('*', (req, res) => {
-  res.status(404).send('Nothing found at this endpoint. Please do not try again.');
+app.get('/welcome', (req, res) => {
+  res.status(200).sendFile(__dirname + '/public/index.html');
 });
+app.use('*', (req, res) => {
+  res.redirect('/welcome');
+});
+
+
 
 
 

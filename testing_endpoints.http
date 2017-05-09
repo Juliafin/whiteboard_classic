@@ -24,18 +24,18 @@ GET http://localhost:8080/cu-manager?email=Cesar.Waelchi13@gmail.com
 ### Post Test
 POST http://localhost:8080/cu-manager
 Content-Type: application/json
-
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiOiI1OTBkMzhmNjI0NmYwNjQ2NDhlMmEyOTMiLCJ1c2VybmFtZSI6IkphbmV0RnJhbmtzIiwicGFzc3dvcmQiOiIkMmEkMTAkc1I1VXBZUlN4RTBNRHpDVHc1WUNmZWJDWTV2Sk9qM2JUWWlNczcuMHoyTFE4NENEdS8vRm0iLCJyb2xlIjoidGVhY2hlciIsImZpcnN0X25hbWUiOiJKYW5ldCIsImxhc3RfbmFtZSI6IkZyYW5rcyIsIl9fdiI6MH0sImlhdCI6MTQ5NDA0NzY5Mn0.jxXc6HkCQoC-eFPbG9DJG1x-l6JQdr4DT2tBBCkwPc0
   { 
-    "first_name": "Julie",
-    "last_name": "Vu",
-    "email": "JulieV@gmail.com",
-    "parent_first_name": "Jonathan",
-    "parent_last_name": "Vu",
+    "first_name": "Jackson",
+    "last_name": "Charles",
+    "email": "JacksonCH@gmail.com",
+    "parent_first_name": "Mary",
+    "parent_last_name": "Heather",
     "address": {
-        "street_address": "1523 Main Drive",
-        "state": "NC",
-        "zipcode": "31154",
-        "city": "Greensboro",
+        "street_address": "23523 Main St",
+        "state": "AL",
+        "zipcode": "21154",
+        "city": "Birmingham",
         "country": "United States"
         },
     "student_lesson_time": {
@@ -46,9 +46,9 @@ Content-Type: application/json
     "teacher_comments": "Student has made excellent progress.",
     "student_curriculum": [
         {
-            "project_name": "A new musical creation",
+            "project_name": "Some other interesting project",
             "project_description": "This piece is going to be amazing.",
-            "teacher_project_comments": "Work on your phrasing.",
+            "teacher_project_comments": "More testing",
             "project_date": "Thu Apr 17 2016 13:45:55 GMT-0400 (Eastern Daylight Time)"
         },
         {

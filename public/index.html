@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./assets/css/main.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="background">
+        <div class="logo"></div>
+        <div class="signupbox">
+
+            <form class="signup" action="/signup/" method="post">
+                <fieldset>
+                    <legend for="Username and password"></legend>
+                    <h1>Sign up</h1>
+
+                    <label for="Username">Username</label>
+                      <input placeholder="foo@bar.com"type="email" name="username" id="username" required>
+
+                    <label for="Password">Password</label>
+                      <input placeholder="1234passw0rd"type="password" name="password" id="password" required>
+
+                      <button type="submit" name="signup">Sign Up</button>
+
+                      <p><a href="forgot-password/new">Forgot Password?</a></p>
+                    </fieldset>
+                    <p class="accountq"> Already have an Account? <a class=login href="/login">Log in</a></p>
+            </form>
+        </div>
+    </div>
+  <script
+  src="http://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  </body>
+</html>
