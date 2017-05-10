@@ -5,14 +5,18 @@ const {
   Curriculum
 } = require('./../student_models/models');
 const faker = require('faker');
+const {generateUser} = require('./../user_models/seedUsers');
+const student = generateUser('student');
 
-function generateFakeCurriculumData(numberOfStudentRecords, res) {
+mongoose.Promise = global.Promise;
+
+function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
   console.log(`Generating ${numberOfStudentRecords} fake student record(s)`);
 
-  if (numberOfStudentRecords === 1) {
+  if (condition) {
     return {
-      first_name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
+      first_name: student.first_name,
+      last_name: student.last_name,
       email: faker.internet.email(),
       parent_first_name: faker.name.firstName(),
       parent_last_name: faker.name.lastName(),
@@ -42,8 +46,8 @@ function generateFakeCurriculumData(numberOfStudentRecords, res) {
       // console.log('creating curriculum object');
       Curriculum
         .create({
-          first_name: faker.name.firstName(),
-          last_name: faker.name.lastName(),
+          first_name: student.first_name,
+          last_name: student.last_name,
           email: faker.internet.email(),
           parent_first_name: faker.name.firstName(),
           parent_last_name: faker.name.lastName(),
@@ -71,14 +75,17 @@ function generateFakeCurriculumData(numberOfStudentRecords, res) {
           }
         })
         .then((student) => {
-          // console.log(student);
+          // if (i === (numberOfStudentRecords.length-1)) {
+            // console.log(student);
+
+          // }
         })
         .catch(err => console.log(err));
     } // ends for loop
 
   }
 
-  console.log('Student records generated.')
+  console.log('Student records generated.');
 } // ends function
 
 
@@ -97,5 +104,5 @@ function dismantleDB() {
 
 module.exports = {
   generateFakeCurriculumData,
-  dismantleDB
+  dismantleDB, student
 };
