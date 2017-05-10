@@ -15,6 +15,26 @@ curriculum_router.use(express_jwt({secret: SECRET}));
 
 // To be adjusted to return a list based on the teacher id
 curriculum_router.get('/', (req, res) => {
+  console.log(req.query);
+
+  console.log(Object.keys(req.query).length);
+  if (Object.keys(req.query).length === 0) {
+    Curriculum
+      .find({
+        'author.id': req.user._user._id
+      })
+      .then( (student_records) => {
+        return res.status(200).json({
+          student_records: student_records.map( (record) => {
+            return record.apiView();
+          })
+        });
+      })
+      .catch( (err) => {
+        console.error(err);
+        return res.status(500).json({error: err});
+      });
+  }
   console.log(req.user)
   const filtersToSearch = {};
   const queryableFields = ['first_name', 'last_name', 'email', 'parent_first_name', 'parent_last_name', 'student_lesson_time'];
@@ -134,6 +154,7 @@ curriculum_router.post('/', (req, res) => {
       };
       return res.status(400).json(missingObj);
     }
+    // attach user data to created document
     req.body.author = {};
     req.body.author.id = req.user._user._id;
     req.body.author.first_name = req.user._user.first_name;
@@ -156,6 +177,9 @@ curriculum_router.post('/', (req, res) => {
 
 
 curriculum_router.put('/:id', (req, res) => {
+  if (req.user._user.role !== 'teacher') {
+    return res.status(401).json({error:'Unauthorized'});
+  }
 
   let student_record;
 
@@ -193,7 +217,7 @@ curriculum_router.put('/:id', (req, res) => {
       student_record
         .save()
         .then((_student_record) => {
-          _student_record = student_record;
+          student_record = _student_record;
           return res.status(201).json({updated: student_record});
 
         })
