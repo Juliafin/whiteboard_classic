@@ -10,25 +10,26 @@ const {PORT, DATABASE_URL} = require('./config_variables');
 
 const app = express();
 const {Curriculum} = require('./student_models/models');
-const {User} = require('./user_models/users'); 
-
+const {User} = require('./user_models/users');
 const curriculum_router = require('./curriculum_router/curriculum_router');
 const auth_router = require('./auth_router');
+const welcome_router = require('./welcome_router/welcome');
 const {generateFakeCurriculumData} = require('./student_models/seedDB');
 const {generateUser, saveUser} = require('./user_models/seedUsers');
 
 app.use(morgan('combined'));
-
+app.use('/welcome', welcome_router);
 app.use('/cu-manager', curriculum_router);
 app.use('/auth', auth_router);
-express.static('public');
+app.use(express.static('./public'));
 
-app.get('/welcome', (req, res) => {
-  res.status(200).sendFile(__dirname + '/public/index.html');
-});
-app.use('*', (req, res) => {
+app.get('*', (req, res) => {
   res.redirect('/welcome');
 });
+
+// app.use('*', (req, res) => {
+//   res.redirect('/welcome');
+// });
 
 
 

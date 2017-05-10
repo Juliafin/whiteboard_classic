@@ -6,7 +6,7 @@ const {
 } = require('./../student_models/models');
 const faker = require('faker');
 
-function generateFakeCurriculumData(numberOfStudentRecords) {
+function generateFakeCurriculumData(numberOfStudentRecords, res) {
   console.log(`Generating ${numberOfStudentRecords} fake student record(s)`);
 
   if (numberOfStudentRecords === 1) {
@@ -63,7 +63,15 @@ function generateFakeCurriculumData(numberOfStudentRecords) {
             startTime: faker.date.recent().toISOString(),
             endTime: faker.date.recent().toISOString()
           },
-          teacher_comments: faker.lorem.paragraphs()
+          teacher_comments: faker.lorem.paragraphs(),
+          author: {
+            id: res.id,
+            first_name: res.first_name,
+            last_name: res.last_name            
+          }
+        })
+        .then((student) => {
+          // console.log(student);
         })
         .catch(err => console.log(err));
     } // ends for loop

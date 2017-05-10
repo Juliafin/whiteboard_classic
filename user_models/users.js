@@ -49,7 +49,8 @@ userSchema.methods.showUser = function () {
     username: this.username,
     first_name: this.first_name,
     last_name: this.last_name,
-    role: this.role
+    role: this.role,
+    id: this._id
   };  
 };
 

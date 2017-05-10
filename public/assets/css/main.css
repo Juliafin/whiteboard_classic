@@ -11,43 +11,24 @@ nav {
   top: 0px;
   left: 0px;
   right: 0px;
-  background-color: orange;
+  background-color: rgb(14, 97, 20);
   background-size: cover;
   background-position: center;
-
 }
 
 
 body {
-    background-color: rgb(38, 183, 237);
+    background-color: rgb(6, 154, 191);
     font-family: Roboto, sans-serif;
-}
-
-.logo {
-    position: relative;
-    background-image: url("logo.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    margin: 0px auto;
-    /*If position is absolute center with:
-    margin-left: -77px;
-    left: 50%;
-    */
-    top: 40px;
-    height: 35px;
-    width: 155px;
 }
 
 .signupbox {
     display: block;
     position: relative;
-    width: 400px;
-    height: 440px;
-    padding-left: 40px;
-    padding-right: 40px;
-    margin-left: auto;
-    margin-right: auto;
-    top: 100px;
+    width: 66vw;
+    min-height: 100%;
+    padding: 0px 4% 5% 4%;
+    margin: 9% auto;
     background-color: white;
 }
 
@@ -59,6 +40,8 @@ fieldset {
     padding: 0;
     margin: 0;
     min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 h1 {
@@ -72,17 +55,17 @@ h1 {
 label {
     display: block;
     text-align: left;
-    margin-top: 20px;
-    margin-bottom: 20px;
     color: black;
+    margin: 1.2vw 0 1vw 10vw;
     font-weight: bold;
+    margin-left: 10vw;
 }
 
 input {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 320px;
+    width: 38vw;
     height: 40px;
     padding: 15px;
     border: 2px solid;
@@ -94,15 +77,36 @@ button {
   margin-top: 40px;
   width: 320px;
   height: 50px;
-  background-color: rgb(89, 219, 98);
+  background-color: rgb(14, 97, 20);
   color: white;
   font-size: 16px;
-  font-weight: bold;
+  border: none;
+  font-family:Roboto;
+}
+
+label#teacher_label, label#student_label {
+    display: inline;
+}
+
+input#teacher, input#student {
+    display: inline;
+    width: 17%;
+}
+
+input[type="radio"] {
+    height: 19px;
+    margin-top: 11%;
+    margin-left: 0%;
+    margin-right: 2%;
+    padding: 0;
+    cursor: pointer;
 }
 
 button:hover{
 
-  filter: brightness(75%);
+/* filter: brightness(115%); */
+color: #774242;
+transition: all ease-in-out 200ms;
 }
 p{
   text-align: center;
@@ -112,7 +116,7 @@ p > a{
   margin-left: auto;
   margin-right: auto
   text-decoration: none;
-  color: rgb(113, 112, 112);
+  color: rgb(69, 173, 76);
 }
 
 .accountq, a.login {
@@ -122,3 +126,39 @@ p > a{
     font-weight: bold;
 
   }
+
+
+.teacher_student_select {
+    text-align: center;
+}
+
+.button_container {
+    text-align: center;
+}
+
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.nav > li {
+    text-decoration: none;
+    outline: none;
+    list-style-type: none;
+    color: aliceblue;
+    font-family: Ruboto;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 2.3vw;
+    width: calc(100%/3);
+    text-align: center;
+}
+
+li:hover {
+    color: #774242;
+    transition: color linear 200ms;
+}
