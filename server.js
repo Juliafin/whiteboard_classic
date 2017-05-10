@@ -53,7 +53,7 @@ function runServer(databaseUrl= DATABASE_URL, port=PORT) {
         mongoose.disconnect();
         reject(err);
       });
-    })
+    });
     mongoose.connection.once('open', () => {
 
       User.count()
@@ -61,15 +61,15 @@ function runServer(databaseUrl= DATABASE_URL, port=PORT) {
           if (count === 0){
             saveUser(generateUser());
           }
-        })
+        });
       Curriculum.count()
         .then(function(count) {
           if (count === 0) {
             generateFakeCurriculumData(19);      
           }
         });
-      console.log('mongoose connected');} )
-  })
+      console.log('mongoose connected');} );
+  });
   
 }
 
