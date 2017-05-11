@@ -29,7 +29,7 @@ curriculum_router.get('/', (req, res) => {
     Curriculum
       .findOne({
         'first_name': req.user._user.first_name,
-        'last_name': req.user.last_name
+        'last_name': req.user._user.last_name
       })
       .then((student_record) => {
         return res.status(200).json({

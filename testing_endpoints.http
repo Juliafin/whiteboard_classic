@@ -23,13 +23,14 @@ GET http://localhost:8080/cu-manager?email=Cesar.Waelchi13@gmail.com
 
 ### Post Test
 POST http://localhost:8080/cu-manager
-Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiOiI1OTBkMzhmNjI0NmYwNjQ2NDhlMmEyOTMiLCJ1c2VybmFtZSI6IkphbmV0RnJhbmtzIiwicGFzc3dvcmQiOiIkMmEkMTAkc1I1VXBZUlN4RTBNRHpDVHc1WUNmZWJDWTV2Sk9qM2JUWWlNczcuMHoyTFE4NENEdS8vRm0iLCJyb2xlIjoidGVhY2hlciIsImZpcnN0X25hbWUiOiJKYW5ldCIsImxhc3RfbmFtZSI6IkZyYW5rcyIsIl9fdiI6MH0sImlhdCI6MTQ5NDA0NzY5Mn0.jxXc6HkCQoC-eFPbG9DJG1x-l6JQdr4DT2tBBCkwPc0
+Content-Type: application/json
+
   { 
-    "first_name": "Jackson",
-    "last_name": "Charles",
-    "email": "JacksonCH@gmail.com",
-    "parent_first_name": "Mary",
+    "first_name": "Janie",
+    "last_name": "Miles",
+    "email": "Janie@gmail.com",
+    "parent_first_name": "Miles",
     "parent_last_name": "Heather",
     "address": {
         "street_address": "23523 Main St",
@@ -235,3 +236,78 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiO
 ### Random words
 
 GET http://localhost:8080/auth/stuff
+
+
+
+
+### Register a new user with correct fields
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{        
+      "password": "asag#dfj24!",
+      "username": "AngieWu",
+      "first_name": "Angie",
+      "last_name": "Wu",
+      "role": "teacher"   
+}
+
+### Login with Angie Wu
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "username": "AngieWu",
+  "password": "asag#dfj24!"
+}
+
+
+### GET with Angie Wu
+
+GET http://localhost:8080/cu-manager
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiOiI1OTEzYmNmOTMzOTZiYjQwNWNjYmFiOTkiLCJ1c2VybmFtZSI6IkFuZ2llV3UiLCJwYXNzd29yZCI6IiQyYSQxMCRTNjRpeUt4MHBSVkVjTVBEOS9scmp1ZWpZazYzUnhhLzZYRzZocmszdi41d0d2ajRlV3IySyIsInJvbGUiOiJ0ZWFjaGVyIiwiZmlyc3RfbmFtZSI6IkFuZ2llIiwibGFzdF9uYW1lIjoiV3UiLCJfX3YiOjB9LCJpYXQiOjE0OTQ0NjU4Njl9.Dyk5t1GW5pW6dwYd4nGeJW36SU4x2EoNhehzxd5277w
+
+
+### POST Angie Wu's Student
+POST http://localhost:8080/cu-manager
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiOiI1OTEzYmNmOTMzOTZiYjQwNWNjYmFiOTkiLCJ1c2VybmFtZSI6IkFuZ2llV3UiLCJwYXNzd29yZCI6IiQyYSQxMCRTNjRpeUt4MHBSVkVjTVBEOS9scmp1ZWpZazYzUnhhLzZYRzZocmszdi41d0d2ajRlV3IySyIsInJvbGUiOiJ0ZWFjaGVyIiwiZmlyc3RfbmFtZSI6IkFuZ2llIiwibGFzdF9uYW1lIjoiV3UiLCJfX3YiOjB9LCJpYXQiOjE0OTQ0NjU4Njl9.Dyk5t1GW5pW6dwYd4nGeJW36SU4x2EoNhehzxd5277w
+
+
+
+
+{ 
+    "first_name": "Ken",
+    "last_name": "Johnson",
+    "email": "Kj@gmail.com",
+    "parent_first_name": "Manny",
+    "parent_last_name": "Allen",
+    "address": {
+        "street_address": "2523 World St",
+        "state": "OR",
+        "zipcode": "90152",
+        "city": "Birmingham",
+        "country": "United States"
+        },
+    "student_lesson_time": {
+      "weekday": "Friday",
+      "startTime": "Fri Apr 28 2017 22:50:25 GMT-0400 (Eastern Daylight Time)",
+      "endTime": "Fri Apr 28 2017 23:50:25 GMT-0400 (Eastern Daylight Time)"
+    },
+    "teacher_comments": "Just added a new student",
+    "student_curriculum": [
+        {
+            "project_name": "Student is working on a new microchip",
+            "project_description": "This project is going to be amazing.",
+            "teacher_project_comments": "More testing",
+            "project_date": "Thu Apr 17 2016 13:45:55 GMT-0400 (Eastern Daylight Time)"
+        },
+        {
+            "project_name": "asdflkn",
+            "project_description": "This piece is going to be amazing.",
+            "teacher_project_comments": "Work on your phrasing.",
+            "project_date": "Thu Apr 17 2016 13:45:55 GMT-0400 (Eastern Daylight Time)"
+        }
+    ]
+  }
