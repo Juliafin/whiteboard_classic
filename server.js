@@ -56,18 +56,7 @@ function runServer(databaseUrl= DATABASE_URL, port=PORT) {
     });
     mongoose.connection.once('open', () => {
 
-      User.count()
-        .then(function(count) {
-          if (count === 0){
-            saveUser(generateUser());
-          }
-        });
-      Curriculum.count()
-        .then(function(count) {
-          if (count === 0) {
-            generateFakeCurriculumData(19);      
-          }
-        });
+      
       console.log('mongoose connected');} );
   });
   
@@ -92,6 +81,21 @@ function closeServer() {
 
 if(require.main === module) {
   runServer()
+  .then(function () {
+User.count()
+        .then(function(count) {
+          if (count === 0){
+            saveUser(generateUser());
+          }
+        });
+      Curriculum.count()
+        .then(function(count) {
+          if (count === 0) {
+            generateFakeCurriculumData(19);      
+          }
+        });
+
+  })
   .catch( err => {console.error(`There was an error: ${err}`);
   });
 }
