@@ -13,7 +13,7 @@ mongoose.Promise = global.Promise;
 function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
   console.log(`Generating ${numberOfStudentRecords} fake student record(s)`);
   // console.log(numberOfStudentRecords);
-  console.log ('RES IN SEEDUSER', res);
+  // console.log ('RES IN SEEDUSER', res);
   if (condition) {
     return {
       first_name: student.first_name,
@@ -70,16 +70,17 @@ function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
           },
           teacher_comments: faker.lorem.paragraphs(),
           author: {
-            id: res._id,
+            id: res.id,
             first_name: res.first_name,
             last_name: res.last_name            
           }
         })
         .then((student) => {
-          // if (i === (numberOfStudentRecords.length-1)) {
+          if (i === 10) {
+            //test to return a random record
             // console.log(student);
 
-          // }
+          }
         });
       // console.log(i);
       // console.log(numberOfStudentRecords);    
