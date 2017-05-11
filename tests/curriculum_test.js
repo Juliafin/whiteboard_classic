@@ -114,44 +114,44 @@ describe('Student Curriculum Endpoints', function () {
     }); // end testing for all student records returned
 
 
-    it('should return all existing records for students', function () {
-      console.log('THIS IS THE CURRENT TEACHER LOGGED IN:  ', currentTeacher);
-      let curric;
-      return chai.request(app)
-        .post('/auth/register')
-        .send(student)
-        .then(function () {
-          console.log('THIS IS THE STUDENT FOR THE STUDENT RECORD TEST', student);
-          return chai.request(app)
-            .post('/auth/login')
-            .send({
-              username: student.username,
-              password: student.password
-            })
-            .then(function (res) {
-              // console.log(res.body.token);
-              studentToken = res.body.token;
+    // it('should return all existing records for students', function () {
+    //   console.log('THIS IS THE CURRENT TEACHER LOGGED IN:  ', currentTeacher);
+    //   let curric;
+    //   return chai.request(app)
+    //     .post('/auth/register')
+    //     .send(student)
+    //     .then(function () {
+    //       console.log('THIS IS THE STUDENT FOR THE STUDENT RECORD TEST', student);
+    //       return chai.request(app)
+    //         .post('/auth/login')
+    //         .send({
+    //           username: student.username,
+    //           password: student.password
+    //         })
+    //         .then(function (res) {
+    //           // console.log(res.body.token);
+    //           studentToken = res.body.token;
 
-              return chai.request(app)
-                .get('/cu-manager')
-                .set('Authorization', `bearer ${studentToken}`)
-                .then(function (_curric) {
-                  // console.log(_curric.body);
-                  curric = _curric;
-                  curric.should.have.status(200);
-                  curric.body.student_records.should.have.length.of.at.least(1);
+    //           return chai.request(app)
+    //             .get('/cu-manager')
+    //             .set('Authorization', `bearer ${studentToken}`)
+    //             .then(function (_curric) {
+    //               // console.log(_curric.body);
+    //               curric = _curric;
+    //               curric.should.have.status(200);
+    //               curric.body.student_records.should.have.length.of.at.least(1);
 
-                  return Curriculum.count();
-                })
-                .then(function (count) {
-                  curric.body.student_records.should.have.length.of(count);
-                  return Promise.resolve();
+    //               return Curriculum.count();
+    //             })
+    //             .then(function (count) {
+    //               curric.body.student_records.should.have.length.of(count);
+    //               return Promise.resolve();
 
-                });
+    //             });
 
-            });
-        });
-    }); // end testing 'should return all existing records for students'
+    //         });
+    //     });
+    // }); // end testing 'should return all existing records for students'
 
     // it('Should return student records with the correct fields', function () {
 
