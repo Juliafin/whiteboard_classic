@@ -12,7 +12,8 @@ mongoose.Promise = global.Promise;
 
 function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
   console.log(`Generating ${numberOfStudentRecords} fake student record(s)`);
-
+  // console.log(numberOfStudentRecords);
+  console.log ('RES IN SEEDUSER', res);
   if (condition) {
     return {
       first_name: student.first_name,
@@ -42,7 +43,7 @@ function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
 
   } else {
 
-    for (let i = 0; i < numberOfStudentRecords; i++) {
+    for (let i = 1; i < numberOfStudentRecords; i++) {
       // console.log('creating curriculum object');
       Curriculum
         .create({
@@ -69,7 +70,7 @@ function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
           },
           teacher_comments: faker.lorem.paragraphs(),
           author: {
-            id: res.id,
+            id: res._id,
             first_name: res.first_name,
             last_name: res.last_name            
           }
@@ -79,8 +80,9 @@ function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
             // console.log(student);
 
           // }
-        })
-        .catch(err => console.log(err));
+        });
+      // console.log(i);
+      // console.log(numberOfStudentRecords);    
     } // ends for loop
 
   }
