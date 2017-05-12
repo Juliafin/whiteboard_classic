@@ -5,14 +5,14 @@ const curriculum_router = express.Router();
 const mongoose = require('mongoose');
 const {
   User
-} = require('../user_models/users');
+} = require('../../user_models/users');
 const {
   Curriculum
-} = require('../student_models/models');
+} = require('../../student_models/models');
 const bodyParser = require('body-parser');
 const {
   SECRET
-} = require('../config_variables');
+} = require('../../config_variables');
 
 
 mongoose.Promise = global.Promise;
