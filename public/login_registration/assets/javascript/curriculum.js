@@ -47,18 +47,13 @@ var state = {
 
           <label for="Password">Password</label>
           <input placeholder="1234passw0rd" type="password" name="password" id="password">
-
-          <button id="login_button" type="submit" name="signup">Login</button>
+          <div class="button_container">
+           <button name="signup">Login</button>
+          </div>
 
       </form>
     </div>`
-
-
-
   }
-
-
-
 };
 
 function authorizationFormListener() {
@@ -114,7 +109,7 @@ function login(username, password) {
 function register (password, username, first_name, last_name, role) {
   return $.ajax({
     type: 'POST',
-    url: 'http://localhost:8080/auth/login',
+    url: '/auth/register',
     data: {
       "password": password,
       "username": username,
@@ -128,12 +123,22 @@ function register (password, username, first_name, last_name, role) {
   });
 }
 
-// function sendToken () {
-//   if (window.localStorage.getItem('token')) {
+function authenticate () {
+  return $.ajax({
+    type: 'POST',
+    url: '/auth/authenticate',
+    headers: {
+      Authorization: `bearer ${window.localStorage.getItem('token')}`
+    }
+  });
+}
 
-//   }
-// }
+function sendToken () {
+  if (window.localStorage.getItem('token')) {
+    authenticate();
 
+  }
+}
 
 function setToken (data) {
   console.log(data);
@@ -145,7 +150,7 @@ function setToken (data) {
 
 
 ($(document).ready(function () {
-  
+  sendToken();
   authorizationFormListener();
   $(this).scrollTop(0);
 

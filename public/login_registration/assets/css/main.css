@@ -108,9 +108,11 @@ button:hover{
 color: #774242;
 transition: all ease-in-out 200ms;
 }
+
 p{
   text-align: center;
 }
+
 p > a{
   display: inline;
   margin-left: auto;

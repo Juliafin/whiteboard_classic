@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken');
 const express_jwt = require('express-jwt');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const {SECRET} = require('../config_variables');
+const path = require('path');
+const {
+  SECRET
+} = require('../../config_variables');
 const morgan = require('morgan');
 const faker = require('faker');
 
@@ -14,7 +17,7 @@ mongoose.Promise = global.Promise;
 
 const {
   User
-} = require('../user_models/users');
+} = require('../../user_models/users');
 
 auth_router.use(bodyParser.json());
 auth_router.use(bodyParser.urlencoded({
@@ -116,15 +119,23 @@ auth_router.post('/login', (req, res) => {
     })
     .then((passwordValid) => {
       if (passwordValid) {
-        const token = jwt.sign({_user}, SECRET);
-        return res.status(200).json({token});
+        const token = jwt.sign({
+          _user
+        }, SECRET);
+        return res.status(200).json({
+          token
+        });
       } else { // password doesn't match
-        return res.status(401).json({error: 'unauthorized'});
+        return res.status(401).json({
+          error: 'unauthorized'
+        });
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({error: err});
+      res.status(500).json({
+        error: err
+      });
     });
 });
 
@@ -142,6 +153,19 @@ auth_router.get('/users', express_jwt({
         users
       });
     });
+
+});
+
+
+auth_router.post('/authenticate', express_jwt({
+  secret: SECRET
+}), (req, res) => {
+
+  setTimeout(() => console.log('hello'), 1000);
+  // console.log(req.user);
+    // console.log(path.resolve(process.cwd() + '/config_variables')
+// console.log(SECRET);
+  res.redirect(`../welcome/dashboard/${req.user._user.username}`);
 
 });
 
