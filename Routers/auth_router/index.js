@@ -165,7 +165,12 @@ auth_router.post('/authenticate', express_jwt({
   // console.log(req.user);
     // console.log(path.resolve(process.cwd() + '/config_variables')
 // console.log(SECRET);
-  res.redirect(`../welcome/dashboard/${req.user._user.username}`);
+  res.status(200).json( {
+
+    url: `/welcome/dashboard/${req.user._user.username}`,
+    username: req.user._user.username
+
+  });
 
 });
 
