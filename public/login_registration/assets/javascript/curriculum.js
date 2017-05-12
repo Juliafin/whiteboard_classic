@@ -36,7 +36,7 @@ var state = {
       </form>
     </div>`,
 
-    login:`<div class="signupbox">
+    login: `<div class="signupbox">
 
       <form class="login">
         <fieldset>
@@ -52,34 +52,33 @@ var state = {
           </div>
 
       </form>
-    </div>`
-  }
+    </div>`,
+    loggedIn: `<li>Dashboard</li><li class="hidden" id="logged_in">Not <span>${state.currentUser}?</span class="log_out">Log out <span>log</span></li>`
+  },
+  currentUser: ""
 };
 
 function authorizationFormListener() {
 
-$('nav li').click(function(event) {
+  $('nav li').click(function (event) {
 
-  if ($(this).text() === 'Register') {
-    $('div.background').empty();
-    $('div.background').html(state.templates.register);
-  }
+    if ($(this).text() === 'Register') {
+      $('div.background').empty();
+      $('div.background').html(state.templates.register);
+    }
 
-  if ($(this).text() === 'Login') {
-    $('div.background').empty();
-    $('div.background').html(state.templates.login);
-    loginSubmitListener();
-  }
-});
-
+    if ($(this).text() === 'Login') {
+      $('div.background').empty();
+      $('div.background').html(state.templates.login);
+      loginSubmitListener();
+    }
+  });
 }
 
 
-
-
 function loginSubmitListener() {
-  
-  $('button[type="submit"]').click(function(event) {
+
+  $('button[type="submit"]').click(function (event) {
     event.preventDefault();
     console.log('button clicked');
     var username = $('input[type="password"]').val();
@@ -87,9 +86,9 @@ function loginSubmitListener() {
     console.log(username);
     console.log(password);
     login(username, password)
-      .then(function(token){
+      .then(function (token) {
         console.log('this happened');
-        
+
         setToken(token);
       })
   });
@@ -106,7 +105,7 @@ function login(username, password) {
   });
 }
 
-function register (password, username, first_name, last_name, role) {
+function register(password, username, first_name, last_name, role) {
   return $.ajax({
     type: 'POST',
     url: '/auth/register',
@@ -123,7 +122,7 @@ function register (password, username, first_name, last_name, role) {
   });
 }
 
-function authenticate () {
+function authenticate() {
   return $.ajax({
     type: 'POST',
     url: '/auth/authenticate',
@@ -133,16 +132,37 @@ function authenticate () {
   });
 }
 
-function sendToken () {
-  if (window.localStorage.getItem('token')) {
-    authenticate();
+function sendTokenAndRedirect() {
 
+  // breaks redirect if the counter is 1
+  if (window.localStorage.getItem('redirect_counter') === "1") {
+    window.localStorage.setItem('redirect_counter', "0");
+    return;
+  } else if (window.localStorage.getItem('redirect_counter') === "0" || window.localStorage.getItem('redirect_counter') === "undefined") {
+    if (window.localStorage.getItem('token')) {
+      window.localStorage.setItem('redirect_counter', "1");
+      authenticate().then(function (data) {
+        console.log(data.url);
+        state.currentUser = data.username;
+        window.location = data.url;
+      });
+    }
+    return;
   }
 }
 
-function setToken (data) {
+function appendLoggedinNav() {
+  if (window.localStorage.getItem('token')) {
+    $('div.container').append(state.currentUser);
+
+
+  }
+
+}
+
+function setToken(data) {
   console.log(data);
-  var token = data.token; 
+  var token = data.token;
   window.localStorage.setItem('token', token);
   var tokenInStorage = window.localStorage.getItem('token');
   console.log(tokenInStorage);
@@ -150,7 +170,7 @@ function setToken (data) {
 
 
 ($(document).ready(function () {
-  sendToken();
+  sendTokenAndRedirect();
   authorizationFormListener();
   $(this).scrollTop(0);
 

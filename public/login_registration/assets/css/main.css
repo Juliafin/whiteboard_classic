@@ -142,9 +142,9 @@ p > a{
 .nav {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: flex-start;
     height: 100%;
+    align-items: center;
 }
 
 .nav > li {
@@ -156,7 +156,7 @@ p > a{
     text-transform: uppercase;
     cursor: pointer;
     font-size: 2.3vw;
-    width: calc(100%/3);
+    width: 20%;
     text-align: center;
 }
 
