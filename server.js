@@ -23,9 +23,9 @@ app.use('/cu-manager', curriculum_router);
 app.use('/auth', auth_router);
 app.use(express.static('./public/login_registration/assets'));
 
-app.get('*', (req, res) => {
-  res.redirect('/welcome');
-});
+// app.get('/', (req, res) => {
+  // res.redirect('/welcome');
+// });
 
 // app.use('*', (req, res) => {
 //   res.redirect('/welcome');

@@ -1,4 +1,5 @@
 var state = {
+  currentUser: "",
   templates: {
     register: `<div class="signupbox">
 
@@ -8,16 +9,16 @@ var state = {
           <h1>Curriculum Manager Registration</h1>
           
   		  <label for="Username">Username</label>
-          <input placeholder="Username!1%" type="text" name="username" id="username">
+          <input placeholder="Username!1%" type="text" name="username" id="register_username">
   
   		   <label for="Password">Password</label>
-          <input placeholder="1234passw0rd" type="password" name="password" id="password">
+          <input placeholder="1234passw0rd" type="password" name="password" id="register_password">
 
           <label for="First_Name">First Name</label>
-          <input type="text" name="First_Name" id="first_name">
+          <input type="text" name="First_Name" id="register_first_name">
   
   			<label for="Last_Name">Last Name</label>
-          <input type="text" name="Last_Name" id="last_name">
+          <input type="text" name="Last_Name" id="register_last_name">
 
           
 		<div class="teacher_student_select">
@@ -25,10 +26,10 @@ var state = {
           <input type="radio" name="radSize" id="teacher" value="teacher" checked="checked">
           <label for="student" id="student_label">Student</label>
           <input type="radio" name="radSize" id="student" value="student">
-  </div>
+    </div>
 
           <div class="button_container">	
-          <button type="submit" name="signup">Sign Up</button>
+          <button id="register_button" name="signup">Sign Up</button>
   </div>
          
         </fieldset>
@@ -48,48 +49,109 @@ var state = {
           <label for="Password">Password</label>
           <input placeholder="1234passw0rd" type="password" name="password" id="password">
           <div class="button_container">
-           <button name="signup">Login</button>
+           <button id="login_button" name="signup">Login</button>
           </div>
 
       </form>
     </div>`,
-    loggedIn: `<li>Dashboard</li><li class="hidden" id="logged_in">Not <span>${state.currentUser}?</span class="log_out">Log out <span>log</span></li>`
-  },
-  currentUser: ""
+    loggedIn: `
+              <li>Home</li>
+              <li>Register</li>
+              <li>Login</li>
+              <li>Dashboard</li>
+              <li id="logged_in">
+              Not <span>${window.localStorage.getItem('current_user')}?</span class="logged_user">Log out <span>log</span></li>`,
+    loggedOut: `
+              <li>Home</li>
+              <li>Register</li>
+              <li>Login</li>
+              `
+  }
+
 };
 
 function authorizationFormListener() {
 
   $('nav li').click(function (event) {
 
+    if ($(this).text() === 'Home') {
+      $(this).toggleClass('selected');
+      $('div.nav li').not($(this)).removeClass('selected');
+    
+  }
+
     if ($(this).text() === 'Register') {
       $('div.background').empty();
       $('div.background').html(state.templates.register);
+      $(this).toggleClass('selected');
+      $('div.nav li').not($(this)).removeClass('selected');
+      registerSubmitListener();
     }
 
     if ($(this).text() === 'Login') {
       $('div.background').empty();
       $('div.background').html(state.templates.login);
       loginSubmitListener();
+      $(this).toggleClass('selected');
+      $('div.nav li').not($(this)).removeClass('selected');
     }
-  });
+
+    if ($(this).text() === 'Dashboard') {
+      console.log(window.localStorage);
+      window.location = window.localStorage.getItem('dashboard_url');
+      $(this).toggleClass('selected');
+      $('div.nav li').not($(this)).removeClass('selected');
+    }
+
+    if ($(this).attr('id') === 'logged_in') {
+      console.log('clearing token');
+      window.localStorage.setItem('token', '');
+      appendLoggedinNav();
+
+    }
+  })
 }
 
 
+function registerSubmitListener() {
+
+  $('button#register_button').click(function (event) {
+    event.preventDefault();
+  alert('this listener is running')
+
+    var role = $('input[name="radSize"]:checked').val();
+    console.log(role);
+    var username = $('input#register_username').val()
+    var password = $('input#register_password').val()
+    var first_name = $('input#register_first_name').val()
+    var last_name = $('input#register_last_name').val()
+    var username = $('input#register_username').val()
+    console.log(username);
+    console.log(password);
+    console.log(first_name);
+    console.log(last_name);
+
+  })
+
+}
+
 function loginSubmitListener() {
 
-  $('button[type="submit"]').click(function (event) {
+  $('button#login_button').click(function (event) {
     event.preventDefault();
     console.log('button clicked');
-    var username = $('input[type="password"]').val();
-    var password = $('input[type="email"]').val();
+    var username = $('input#username').val();
+    var password = $('input#password').val();
     console.log(username);
     console.log(password);
     login(username, password)
-      .then(function (token) {
-        console.log('this happened');
+      .then(function (userdata) {
+        console.log(userdata.token);
+        setToken(userdata.token);
+        window.localStorage.setItem('dashboard_url', userdata.url);
+        window.localStorage.setItem('currentUser', userdata.username);
 
-        setToken(token);
+        appendLoggedinNav();
       })
   });
 }
@@ -97,7 +159,7 @@ function loginSubmitListener() {
 function login(username, password) {
   return $.ajax({
     type: 'POST',
-    url: 'http://localhost:8080/auth/login',
+    url: '/auth/login',
     data: {
       "password": password,
       "username": username
@@ -132,30 +194,51 @@ function authenticate() {
   });
 }
 
-function sendTokenAndRedirect() {
+// function sendTokenAndRedirect() {
 
-  // breaks redirect if the counter is 1
-  if (window.localStorage.getItem('redirect_counter') === "1") {
-    window.localStorage.setItem('redirect_counter', "0");
-    return;
-  } else if (window.localStorage.getItem('redirect_counter') === "0" || window.localStorage.getItem('redirect_counter') === "undefined") {
-    if (window.localStorage.getItem('token')) {
-      window.localStorage.setItem('redirect_counter', "1");
-      authenticate().then(function (data) {
-        console.log(data.url);
-        state.currentUser = data.username;
-        window.location = data.url;
-      });
-    }
-    return;
+//   // breaks redirect if the counter is 1
+//   if (window.localStorage.getItem('redirect_counter') === "1") {
+//     window.localStorage.setItem('redirect_counter', "0");
+//     return;
+//   } else if (window.localStorage.getItem('redirect_counter') === "0" || window.localStorage.getItem('redirect_counter') === "undefined") {
+//     if (window.localStorage.getItem('token')) {
+//       window.localStorage.setItem('redirect_counter', "1");
+//       authenticate().then(function (data) {
+//         console.log(data.url);
+//         appendLoggedinNav();
+//         // window.location = data.url;
+//       });
+//     }
+//     return;
+//   }
+
+
+function checkTokenAndAppendNav() {;
+  if (window.localStorage.getItem('token')) {
+    authenticate().
+    then(function (userdata) {
+      console.log(userdata.url);
+      window.localStorage.setItem('current_user', userdata.username);
+      window.localStorage.setItem('dashboard_url', userdata.url);
+
+      appendLoggedinNav();
+    })
+    .catch(function(err) {
+      console.log(err);
+    })
+
   }
 }
 
+
 function appendLoggedinNav() {
   if (window.localStorage.getItem('token')) {
-    $('div.container').append(state.currentUser);
+    $('div.nav').html(state.templates.loggedIn);
+    authorizationFormListener();
 
-
+  } else {
+    $('div.nav').html(state.templates.loggedOut);
+    authorizationFormListener();
   }
 
 }
@@ -168,10 +251,21 @@ function setToken(data) {
   console.log(tokenInStorage);
 }
 
+function navbarActiveListener() {
+
+  // $('div.nav li').click(function (event) {
+
+    $(this).toggleClass('selected');
+    $('div.nav li').not($(this)).removeClass('selected');
+  // });
+}
+
+
+
 
 ($(document).ready(function () {
-  sendTokenAndRedirect();
   authorizationFormListener();
+  checkTokenAndAppendNav();
   $(this).scrollTop(0);
 
 

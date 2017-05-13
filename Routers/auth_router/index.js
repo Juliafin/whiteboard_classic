@@ -123,7 +123,9 @@ auth_router.post('/login', (req, res) => {
           _user
         }, SECRET);
         return res.status(200).json({
-          token
+          token:token,
+          username:req.body.username,
+          url: `/welcome/dashboard/${req.body.username}` 
         });
       } else { // password doesn't match
         return res.status(401).json({
@@ -161,7 +163,7 @@ auth_router.post('/authenticate', express_jwt({
   secret: SECRET
 }), (req, res) => {
 
-  setTimeout(() => console.log('hello'), 1000);
+  setTimeout(() => console.log('hello from /authenticate'), 1000);
   // console.log(req.user);
     // console.log(path.resolve(process.cwd() + '/config_variables')
 // console.log(SECRET);
