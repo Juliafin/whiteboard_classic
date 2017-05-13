@@ -118,6 +118,11 @@ p{
   text-align: center;
 }
 
+p.error {
+    color: #cc6969;
+    font-family: monospace;
+}
+
 p > a{
   display: inline;
   margin-left: auto;
