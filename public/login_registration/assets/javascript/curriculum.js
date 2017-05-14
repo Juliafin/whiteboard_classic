@@ -1,5 +1,4 @@
 var state = {
-  currentUser: "",
   templates: {
     register: `<div class="signupbox">
 
@@ -60,7 +59,7 @@ var state = {
               <li>Login</li>
               <li>Dashboard</li>
               <li id="logged_in">
-              Not <span>${window.localStorage.getItem('current_user')}?</span class="logged_user">Log out <span>log</span></li>`,
+              Not <span>${window.localStorage.getItem('current_user')}?</span class="logged_user"><br><span>Log out</span></li>`,
     loggedOut: `
               <li>Home</li>
               <li>Register</li>
@@ -69,6 +68,7 @@ var state = {
   }
 
 };
+
 
 function authorizationFormListener() {
 
@@ -106,10 +106,12 @@ function authorizationFormListener() {
     if ($(this).attr('id') === 'logged_in') {
       console.log('clearing token');
       window.localStorage.setItem('token', '');
+      window.localStorage.setItem('current_user', '');
+      window.localStorage.setItem('dashboard_url', '');
       appendLoggedinNav();
 
     }
-  })
+  });
 }
 
 
@@ -117,25 +119,37 @@ function registerSubmitListener() {
 
   $('button#register_button').click(function (event) {
     event.preventDefault();
-    alert('this listener is running')
 
     var role = $('input[name="radSize"]:checked').val();
     console.log(role);
-    var username = $('input#register_username').val()
-    var password = $('input#register_password').val()
-    var first_name = $('input#register_first_name').val()
-    var last_name = $('input#register_last_name').val()
-    var username = $('input#register_username').val()
+    var username = $('input#register_username').val();
+    var password = $('input#register_password').val();
+    var first_name = $('input#register_first_name').val();
+    var last_name = $('input#register_last_name').val();
     console.log(username);
     console.log(password);
     console.log(first_name);
     console.log(last_name);
-    var result = validateFormData(password, username, first_name, last_name);
-    console.log(result);
+    var validatedData = validateRegistrationData(password, username, first_name, last_name);
+    validatedData.role = role;
+    console.log(validatedData);
 
-  })
+    if (validatedData.message && validatedData.message === "No errors found.") {
+      delete validatedData.message;
+      register(validatedData)
+        .then(function (data) {
+          console.log(data);
+          $('div.button_container').before('<p>Registration Successful!</p>');
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+
+  });
 
 }
+
 
 function loginSubmitListener() {
 
@@ -146,120 +160,157 @@ function loginSubmitListener() {
     var password = $('input#password').val();
     console.log(username);
     console.log(password);
-    login(username, password)
-      .then(function (userdata) {
-        console.log(userdata.token);
-        setToken(userdata.token);
-        window.localStorage.setItem('dashboard_url', userdata.url);
-        window.localStorage.setItem('currentUser', userdata.username);
+    var validatedFormData = validateLoginData(password, username);
+    console.log(validatedFormData);
+    if (validatedFormData.message && validatedFormData.message === "No errors found.") {
+      delete validatedFormData.message;
+      login(validatedFormData)
+        .then(function (userdata) {
+          console.log(userdata.token);
+          setToken(userdata.token);
+          window.localStorage.setItem('dashboard_url', userdata.url);
+          window.localStorage.setItem('current_user', userdata.username);
 
-        appendLoggedinNav();
-      })
+          appendLoggedinNav();
+        })
+        .catch(function (err) {
+          console.log(err.responseJSON);
+          var errormsg = `<p class="error">${err.responseJSON.error}</p>`;
+          console.log(errormsg);
+          $('.button_container').before(errormsg);
+        });
+    }
   });
 }
 
-function login(username, password) {
+
+function login(loginObj) {
   return $.ajax({
     type: 'POST',
     url: '/auth/login',
-    data: {
-      "password": password,
-      "username": username
-    },
+    data: loginObj,
   });
 }
 
-function register(password, username, first_name, last_name, role) {
+
+function register(loginObj) {
   return $.ajax({
     type: 'POST',
     url: '/auth/register',
-    data: {
-      "password": password,
-      "username": username,
-      "first_name": first_name,
-      "last_name": last_name,
-      "role": role
-    },
+    data: loginObj,
     headers: {
       Authorization: `bearer ${window.localStorage.getItem('token')}`
     }
   });
 }
 
-function validateFormData(password, username, first_name, last_name) {
-  var errors = {}
-  var formData = {}
+
+function validateLoginData(password, username) {
+  var errors = {};
+  var formdata = {};
+  console.log("inside validate login data");
+  console.log('username:', username);
+  console.log('password:', password);
+  $('.error').remove();
+  if (password === "") {
+    errors.password =  "The Password field is empty.";
+  } else if (password !== "") {
+    formdata.password = password;
+  }
+
+  if (username === "") {
+    errors.username = "The Username field is empty.";
+  } else if (username !== "") {
+    formdata.username = username;
+  }
+  // console.log(errors);
+  if (Object.keys(errors).length > 0) {
+    Object.keys(errors).forEach(function (elem) {
+      var currentError = errors[elem];
+      var errorMsg = `<p class="error" id="${elem}_error"> ${currentError}</p>`;
+      console.log(errorMsg)
+      console.log(errors.elem);
+      console.log(currentError);
+      $(`input[name="${elem}"]`).after(errorMsg);
+      return errors;
+    });
+  } else {
+    formdata.message = "No errors found.";
+    return formdata;
+  }
+}
+
+function validateRegistrationData(password, username, first_name, last_name) {
+  var errors = {};
+  var formData = {};
+  $('.error').remove();
 
   // Testing if password is valid
   if (password) {
-    var passValid = new RegExp(/^(?=.*\d)(?=.*[A-Za-z])[a-zA-Z\d@!\?\^\\\{\}()#$%_-]{8,20}$/);
+    var passValid = new RegExp(/(?=.*\d+)(?=.*[A-Z]+)(?=.*[a-z]+)(?=.{8,20})(?=.*[^\w\d]+)/);
     if (passValid.test(password) === false) {
-      errors.password = "Password must be 8 to 20 characters, and contain one letter, one number, and one special character";
+      errors.password = "Password must be 8 to 20 characters, and contain one letter, one number, and one special character.";
     } else {
       formData.password = password;
     }
   } else if (password === "") {
-    errors.password = "Password is empty";
+    errors.password = "The Password field is empty.";
   }
 
   // Testing if username is valid
   if (username) {
     var usernameValid = new RegExp(/^\w{4,}$/);
     if (usernameValid.test(username) === false) {
-      errors.username = "Username must contain only alphanumberic characters'";
+      errors.username = "Username must be alphanumeric and contain at least 4 characters.";
     } else {
       formData.username = username;
     }
   } else if (username === "") {
-    errors.username = "Username is empty";
+    errors.username = "The Username field is empty.";
   }
 
   // Testing if first name is valid  
   var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-])+$/);
 
   if (first_name) {
-    if (nameValid.test(first_name) === false) {
-      errors.first_name = "First name must contain only UTF-8 letters and a hyphen";
+    if (nameValid.test(first_name) === false || first_name.length < 2 || first_name.length > 20) {
+      errors.first_name = "First name must be 2 to 20 characters in length and contain only UTF-8 letters and a hyphen.";
     } else {
       formData.first_name = first_name;
     }
   } else if (first_name === "") {
-    errors.first_name = "First name is empty";
+    errors.first_name = "The First name field is empty.";
   }
 
   // Testing if last_name is valid
 
   if (last_name) {
-    if (nameValid.test(last_name) === false) {
-      errors.last_name = "Last name must contain only UTF-8 letters and a hyphen";
+    if (nameValid.test(last_name) === false || last_name.length < 2 || last_name.length > 20) {
+      errors.last_name = "Last name must be between 2 and 20 characters in length and contain only UTF-8 letters and a hyphen.";
     } else {
       formData.last_name = last_name;
     }
   } else if (last_name === "") {
-    errors.last_name = "Last name is empty";
+    errors.last_name = "The Last name field is empty.";
   }
 
   // render to the DOM
   if (Object.keys(errors).length > 0) {
-     $('.error').remove();
-    Object.keys(errors).forEach(function(elem) {
+    Object.keys(errors).forEach(function (elem) {
       console.log(elem);
       console.log(errors);
       var currentError = errors[elem];
-      console.log( currentError);
+      console.log(currentError);
       var errorMsg = `<p class="error" id="${elem}_error"> ${currentError}</p>`;
       console.log(errorMsg);
       $(`input[name="${elem}"]`).after(errorMsg);
     });
     return errors;
   } else {
-    formData.message = "No errors found";
+    formData.message = "No errors found.";
     return formData;
   }
 }
-
-
-
 
 
 function authenticateToken() {
@@ -271,8 +322,6 @@ function authenticateToken() {
     }
   });
 }
-
-
 
 
 // function sendTokenAndRedirect() {
@@ -294,7 +343,7 @@ function authenticateToken() {
 //   }
 
 
-function checkTokenAndAppendNav() {;
+function checkTokenAndAppendNav() {
   if (window.localStorage.getItem('token')) {
     authenticateToken().
     then(function (userdata) {
@@ -306,7 +355,7 @@ function checkTokenAndAppendNav() {;
       })
       .catch(function (err) {
         console.log(err);
-      })
+      });
 
   }
 }
@@ -324,13 +373,14 @@ function appendLoggedinNav() {
 
 }
 
-function setToken(data) {
-  console.log(data);
-  var token = data.token;
+
+function setToken(token) {
+  console.log(token);
   window.localStorage.setItem('token', token);
   var tokenInStorage = window.localStorage.getItem('token');
-  console.log(tokenInStorage);
+  console.log("The token has been written to storage", tokenInStorage);
 }
+
 
 function navbarActiveListener() {
 
@@ -340,8 +390,6 @@ function navbarActiveListener() {
   $('div.nav li').not($(this)).removeClass('selected');
   // });
 }
-
-
 
 
 ($(document).ready(function () {

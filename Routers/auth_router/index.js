@@ -113,7 +113,7 @@ auth_router.post('/login', (req, res) => {
         return user.validatePassword(password);
       } else { // user not found
         return res.status(400).json({
-          error: 'user not found'
+          error: 'Username or Password not found.'
         });
       }
     })
@@ -129,7 +129,7 @@ auth_router.post('/login', (req, res) => {
         });
       } else { // password doesn't match
         return res.status(401).json({
-          error: 'unauthorized'
+          error: 'Username or Password not Found.'
         });
       }
     })

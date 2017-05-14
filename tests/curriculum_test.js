@@ -88,7 +88,7 @@ describe('Student Curriculum Endpoints', function () {
   describe('GET endpoint', function () {
 
 
-    it('should return all existing blogs for teachers', function () {
+    it('should return all existing student records for a given teacher', function () {
       // console.log('THIS IS THE TOKEN IN TEST', teacherToken);
 
       let curric;
@@ -110,7 +110,7 @@ describe('Student Curriculum Endpoints', function () {
           console.error(err);
         });
 
-    });
+    }); // end testing for returning existing student records
 
 
 
@@ -182,12 +182,9 @@ describe('Student Curriculum Endpoints', function () {
           _student_record.email.should.equal(student_record.email);
           student_record.student_lesson_time.should.be.a('object');
           _student_record.student_lesson_time.weekday.should.equal(student_record.student_lesson_time.weekday);
-          // console.log(_student_record.student_lesson_time.startTime);
-          // console.log(student_record.student_lesson_time.startTime);
           JSON.stringify(_student_record.student_lesson_time.startTime).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.startTime)));
           JSON.stringify(_student_record.student_lesson_time.endTime).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.endTime)));
           JSON.stringify(_student_record.student_lesson_time.startDate).should.equal(JSON.stringify(new Date(student_record.student_lesson_time.startDate)));
-          // console.log("DOG", (_student_record.student_lesson_time));
           _student_record.student_curriculum.should.be.a('array');
           _student_record.student_curriculum[0].project_name.should.equal(student_record.student_curriculum[0].project_name);
           _student_record.student_curriculum[0].project_description.should.equal(student_record.student_curriculum[0].project_description);
@@ -195,7 +192,7 @@ describe('Student Curriculum Endpoints', function () {
           JSON.stringify(_student_record.student_curriculum[0].project_date).should.equal(JSON.stringify(new Date(student_record.student_curriculum[0].project_date)));
         });
 
-    });
+    }); //end testing for student fields to match
 
   }); // end GET endpoint tests
 
@@ -269,10 +266,9 @@ describe('Student Curriculum Endpoints', function () {
           JSON.stringify(updated_record.student_lesson_time.startTime).should.equal(JSON.stringify(new Date(updatedStudentRecord.student_lesson_time.startTime)));
           JSON.stringify(updated_record.student_lesson_time.endTime).should.equal(JSON.stringify(new Date(updatedStudentRecord.student_lesson_time.endTime)));
           JSON.stringify(updated_record.student_lesson_time.startDate).should.equal(JSON.stringify(new Date(updatedStudentRecord.student_lesson_time.startDate)));
-          // updated_record.student_curriculum[0].project_name.should.equal(updatedStudentRecord.student_curriculum[0].project_name);
         });
     });
-  });
+  }); // end POST endpoint test
 
   describe('DELETE endpoint', function () {
 
@@ -300,7 +296,7 @@ describe('Student Curriculum Endpoints', function () {
           console.error(err);
         });
     });
-  });
+  }); // end delete a student test
 
   it('Should delete student curriculum project ', function () {
 
@@ -329,7 +325,7 @@ describe('Student Curriculum Endpoints', function () {
         console.error(err);
       });
 
-  });
+  }); // end deleteing student project test
 
 })
 describe('Authentication endpoints', function () {
@@ -377,7 +373,7 @@ describe('Authentication endpoints', function () {
               console.error(err);
             });
         });
-    });
+    }); // end registering a new user test
 
     it('should show that a user is taken when sent a user that exists', function () {
       return chai.request(app)
@@ -394,12 +390,12 @@ describe('Authentication endpoints', function () {
           err.response.body.message.should.be.a('string');
           err.response.body.message.should.equal('username already taken');
         });
-    });
-  });
+    }); // end showing user taken on registration test
+  }); // end registration endpoint tests
 
   describe('login endpoint', function () {
 
-    it('Should allow an existing user to log in', function () {
+    it('Should allow an existing user to login', function () {
 
       return chai.request(app)
         .post('/auth/login')
@@ -409,11 +405,12 @@ describe('Authentication endpoints', function () {
         })
         .then(function (res) {
           res.should.have.status(200);
-          res.body.should.have.key('token');
+          res.body.should.have.key('token', 'url', 'username');
+          res.body.username.should.equal(fakeUser.username);
         });
-    });
+    }); // end login user test
 
-    it('should throw an unauthorized error if provided with the wrong password', function () {
+    it('should throw an unauthorized error if provided with the wrong password on login', function () {
       return chai.request(app)
         .post('/auth/login')
         .send({
@@ -428,6 +425,6 @@ describe('Authentication endpoints', function () {
           err.response.body.error.should.be.a('string');
           err.response.body.error.should.equal('unauthorized');
         });
-    });
-  });
-});
+    }); // end test for unauthorized error on login
+  }); // end login endpoint tests
+}); //end authentication endpoint tests 

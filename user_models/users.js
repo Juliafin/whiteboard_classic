@@ -7,7 +7,7 @@ const userValidation = [/^\w{4,}$/, 'Username must contain only alphanumberic ch
 // TODO use passvalidation on front end!
 const passValidation = [/^(?=.*\d)(?=.*[A-Za-z])[a-zA-Z\d@!\?\^\\\{\}()#$%_-]{8,20}$/, 'Password must be 8 to 20 characters, and contain one letter, one number, and one special character'];
 const maxlength = [20, 'The length is longer than 20 characters.'];
-const roleValidation = [/(?=^student$)|(?=^teacher$)|(?=^admin$)/, 'Role must be a teacher or a student']
+const roleValidation = [/(?=^student$)|(?=^teacher$)|(?=^admin$)/, 'Role must be a teacher or a student'];
 const userSchema = mongoose.Schema({
   username: {
     type: String,
