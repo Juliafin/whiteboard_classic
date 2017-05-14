@@ -19,7 +19,7 @@ nav {
 }
 
 .nav li.selected {
-  background: rgba(133, 209, 234, 0.83);
+  background: rgba(160, 185, 69, 0.94);
   transition: background-color linear 300ms;
 }
 
@@ -175,10 +175,11 @@ p > a{
 }
 
 li:hover {
-    color: #774242;
+    color: #6ffd88;
     transition: color linear 200ms;
 }
 
 li#logged_in {
     font-size: 1.2vw;
+    text-transform: initial;
 }
