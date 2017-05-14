@@ -423,7 +423,7 @@ describe('Authentication endpoints', function () {
           err.should.have.status(401);
           err.response.body.should.contain.key('error');
           err.response.body.error.should.be.a('string');
-          err.response.body.error.should.equal('unauthorized');
+          err.response.body.error.should.equal('Username or Password not Found.');
         });
     }); // end test for unauthorized error on login
   }); // end login endpoint tests
