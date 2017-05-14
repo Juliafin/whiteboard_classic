@@ -1,5 +1,7 @@
 * {
     box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 nav {
@@ -108,8 +110,6 @@ input[type="radio"] {
 }
 
 button:hover{
-
-/* filter: brightness(115%); */
 color: #774242;
 transition: all ease-in-out 200ms;
 }
@@ -121,6 +121,9 @@ p{
 p.error {
     color: #cc6969;
     font-family: monospace;
+    margin-top: 2%;
+    font-size: 1.5vw;
+    font-weight: bold;
 }
 
 p > a{
@@ -136,7 +139,6 @@ p > a{
     color: white;
     font-size: 16px;
     font-weight: bold;
-
   }
 
 
@@ -175,4 +177,8 @@ p > a{
 li:hover {
     color: #774242;
     transition: color linear 200ms;
+}
+
+li#logged_in {
+    font-size: 1.2vw;
 }
