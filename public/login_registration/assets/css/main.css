@@ -13,19 +13,19 @@ nav {
   top: 0px;
   left: 0px;
   right: 0px;
-  background-color: rgb(14, 97, 20);
+  background-color: rgb(178,18,18);
   background-size: cover;
   background-position: center;
 }
 
 .nav li.selected {
-  background: rgba(160, 185, 69, 0.94);
+  background-color: rgb(1, 73, 99);
   transition: background-color linear 300ms;
 }
 
 
 body {
-    background-color: rgb(104, 127, 32);
+    background-color:  rgb(33, 80, 97);
     font-family: Roboto, sans-serif;
 }
 
@@ -84,7 +84,7 @@ button {
   margin-top: 40px;
   width: 320px;
   height: 50px;
-  background-color: rgb(14, 97, 20);
+  background-color: rgb(33, 80, 97);
   color: white;
   font-size: 16px;
   border: none;
@@ -110,7 +110,7 @@ input[type="radio"] {
 }
 
 button:hover{
-color: #774242;
+color: rgb(255,133,3);
 transition: all ease-in-out 200ms;
 }
 
@@ -126,7 +126,7 @@ p.error {
     font-weight: bold;
 }
 
-p > a{
+p > a {
   display: inline;
   margin-left: auto;
   margin-right: auto
@@ -175,7 +175,7 @@ p > a{
 }
 
 li:hover {
-    color: #6ffd88;
+    color: rgb(255,133,3);
     transition: color linear 200ms;
 }
 
