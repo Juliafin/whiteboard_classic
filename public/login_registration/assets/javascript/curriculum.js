@@ -53,6 +53,14 @@ var state = {
 
       </form>
     </div>`,
+    home:`<h1 class="landing_heading">Curriculum Manager</h1>
+    <div>
+
+    </div>
+    <h2 class="features">~Manage and view your students' personal data</h2>
+    <h2 class="features">~Add student projects</h2>
+    <h2 class="features">~Keep track of lesson times</h2>
+    <h2 class="features">~Students can view their latest project and lesson data</h2>`,
     loggedIn: `
               <li>Home</li>
               <li>Register</li>
@@ -75,6 +83,8 @@ function authorizationFormListener() {
   $('nav li').click(function (event) {
 
     if ($(this).text() === 'Home') {
+      $('div.background').empty();
+      $('div.background').html(state.templates.home);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
 
