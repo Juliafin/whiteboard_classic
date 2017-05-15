@@ -59,6 +59,20 @@ h1 {
     margin-bottom: 30px;
 }
 
+h2.features {
+    color: antiquewhite;
+    text-align: center;
+    margin-bottom: 3.5%;
+    margin-top: 4%;
+}
+
+h1.landing_heading {
+    color: aliceblue;
+    font-size: 3vw;
+    font-family: Roboto;
+    margin-top: 5%;
+}
+
 label {
     display: block;
     text-align: left;
