@@ -53,7 +53,7 @@ var state = {
 
       </form>
     </div>`,
-    home:`<h1 class="landing_heading">Curriculum Manager</h1>
+    home: `<h1 class="landing_heading">Curriculum Manager</h1>
     <div>
 
     </div>
@@ -61,18 +61,7 @@ var state = {
     <h2 class="features">~Add student projects</h2>
     <h2 class="features">~Keep track of lesson times</h2>
     <h2 class="features">~Students can view their latest project and lesson data</h2>`,
-    loggedIn: `
-              <li>Home</li>
-              <li>Register</li>
-              <li>Login</li>
-              <li>Dashboard</li>
-              <li id="logged_in">
-              Not <span>${window.localStorage.getItem('current_user')}?</span class="logged_user"><br><span>Log out</span></li>`,
-    loggedOut: `
-              <li>Home</li>
-              <li>Register</li>
-              <li>Login</li>
-              `
+
   }
 
 };
@@ -108,9 +97,16 @@ function authorizationFormListener() {
 
     if ($(this).text() === 'Dashboard') {
       console.log(window.localStorage);
-      window.location = window.localStorage.getItem('dashboard_url');
+      authenticateDashboard()
+      .then(function(response){
+        console.log(response);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
+        window.location = window.localStorage.getItem('dashboard_url');
+        // setTimeout(function() {
+
+        // }, 10000)
+      });
     }
 
     if ($(this).attr('id') === 'logged_in') {
@@ -223,7 +219,7 @@ function validateLoginData(password, username) {
   console.log('password:', password);
   $('.error').remove();
   if (password === "") {
-    errors.password =  "The Password field is empty.";
+    errors.password = "The Password field is empty.";
   } else if (password !== "") {
     formdata.password = password;
   }
@@ -238,7 +234,7 @@ function validateLoginData(password, username) {
     Object.keys(errors).forEach(function (elem) {
       var currentError = errors[elem];
       var errorMsg = `<p class="error" id="${elem}_error"> ${currentError}</p>`;
-      console.log(errorMsg)
+      console.log(errorMsg);
       console.log(errors.elem);
       console.log(currentError);
       $(`input[name="${elem}"]`).after(errorMsg);
@@ -333,6 +329,16 @@ function authenticateToken() {
   });
 }
 
+function authenticateDashboard() {
+  return $.ajax({
+    type: 'GET',
+    url: `/welcome/dashboard${window.localStorage.getItem('current_user')}`,
+    headers: {
+      Authorization: `bearer ${window.localStorage.getItem('token')}`
+    }
+  });
+}
+
 
 // function sendTokenAndRedirect() {
 
@@ -357,12 +363,12 @@ function checkTokenAndAppendNav() {
   if (window.localStorage.getItem('token')) {
     authenticateToken().
     then(function (userdata) {
-        console.log(userdata.url);
-        window.localStorage.setItem('current_user', userdata.username);
-        window.localStorage.setItem('dashboard_url', userdata.url);
+      console.log(userdata.url);
+      window.localStorage.setItem('current_user', userdata.username);
+      window.localStorage.setItem('dashboard_url', userdata.url);
 
-        appendLoggedinNav();
-      })
+      appendLoggedinNav();
+    })
       .catch(function (err) {
         console.log(err);
       });
@@ -371,13 +377,31 @@ function checkTokenAndAppendNav() {
 }
 
 
+
+
+
 function appendLoggedinNav() {
   if (window.localStorage.getItem('token')) {
-    $('div.nav').html(state.templates.loggedIn);
+
+    var loggedIn = `
+              <li>Home</li>
+              <li>Register</li>
+              <li>Login</li>
+              <li>Dashboard</li>
+              <li id="logged_in">
+              Not <span>${window.localStorage.getItem('current_user')}?</span class="logged_user"><br><span>Log out</span></li>`;
+
+    $('div.nav').html(loggedIn);
     authorizationFormListener();
 
   } else {
-    $('div.nav').html(state.templates.loggedOut);
+
+    var loggedOut = `
+              <li>Home</li>
+              <li>Register</li>
+              <li>Login</li>`;
+
+    $('div.nav').html(loggedOut);
     authorizationFormListener();
   }
 
