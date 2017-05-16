@@ -255,7 +255,7 @@ function validateRegistrationData(password, username, first_name, last_name) {
   if (password) {
     var passValid = new RegExp(/(?=.*\d+)(?=.*[A-Z]+)(?=.*[a-z]+)(?=.{8,20})(?=.*[^\w\d]+)/);
     if (passValid.test(password) === false) {
-      errors.password = "Password must be 8 to 20 characters, and contain one letter, one number, and one special character.";
+      errors.password = "Password must be 8 to 20 characters, and contain one uppercase letter, one lowercase letter, one number, and one special character.";
     } else {
       formData.password = password;
     }

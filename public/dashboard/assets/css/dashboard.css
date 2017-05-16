@@ -1,18 +1,20 @@
-body{
-  background-color: red;
-}
-
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
 }
 
+body {
+    background-color:  rgb(33, 80, 97);
+    font-family: Roboto, sans-serif;
+}}
+
+
 nav {
   position: fixed;
   display: block;
   z-index: 2;
-  height: 40px;
+  height: 8vh;
   width: 100%;
   top: 0px;
   left: 0px;
@@ -20,4 +22,32 @@ nav {
   background-color: rgb(178,18,18);
   background-size: cover;
   background-position: center;
+}
+
+.nav li.selected {
+  background-color: rgb(1, 73, 99);
+  transition: background-color linear 300ms;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 100%;
+    align-items: center;
+}
+
+.nav > li {
+    text-decoration: none;
+    outline: none;
+    list-style-type: none;
+    color: aliceblue;
+    font-family: Ruboto;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 2.3vw;
+    width: 20%;
+    text-align: center;
+    /* height: 82%; */
+    border-radius: 20px;
 }
