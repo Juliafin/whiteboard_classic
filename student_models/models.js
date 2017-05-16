@@ -158,7 +158,8 @@ studentSchema.methods.studentView = function () {
   return {
     id: this._id,
     student_lesson_time: this.student_lesson_time,
-    student_curriculum: this.student_curriculum
+    student_curriculum: this.student_curriculum,
+    author: this.author
   };
 };
 
@@ -172,3 +173,11 @@ module.exports = {
 
 
 // user schema user_type: [teacher,student] enum type
+
+// view student list (and flyouts for all the details)
+
+// view current schedule (upcoming students based on the schedule times entered)
+// add a student form
+ // (not require a student curriculum project)
+
+// add student project form
