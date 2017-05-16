@@ -31,6 +31,11 @@ function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
         project_name: `${faker.hacker.verb()} ${faker.hacker.noun()}`,
         project_description: faker.lorem.paragraph(),
         teacher_project_comments: faker.lorem.paragraph()
+      },
+      {
+        project_name: `${faker.hacker.verb()} ${faker.hacker.noun()}`,
+        project_description: faker.lorem.paragraph(),
+        teacher_project_comments: faker.lorem.paragraph()
       }],
       student_lesson_time: {
         weekday: faker.date.weekday(),
@@ -62,7 +67,13 @@ function generateFakeCurriculumData(numberOfStudentRecords,condition, res) {
             project_name: `${faker.hacker.verb()} ${faker.hacker.noun()}`,
             project_description: faker.lorem.paragraph(),
             teacher_project_comments: faker.lorem.paragraph()
-          }],
+          },
+          {
+            project_name: `${faker.hacker.verb()} ${faker.hacker.noun()}`,
+            project_description: faker.lorem.paragraph(),
+            teacher_project_comments: faker.lorem.paragraph()
+          }
+          ],
           student_lesson_time: {
             weekday: faker.date.weekday(),
             startTime: faker.date.recent().toISOString(),

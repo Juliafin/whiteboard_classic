@@ -2,12 +2,29 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    text-align: center;
 }
 
 body {
     background-color:  rgb(33, 80, 97);
-    font-family: Roboto, sans-serif;
-}}
+    font-family: sans-serif;
+}
+
+label {
+    display: inline-block;
+    margin: 2% auto;
+    font-family: Trocchi;
+    color: #ffaa5b;
+    font-size: 2vw;
+    height: 2vw;
+}
+
+h1 {
+    padding: 16px;
+    color: white;
+    margin-top: 5vw;
+    font-family: Trocchi;
+}
 
 
 nav {
@@ -35,6 +52,7 @@ nav {
     justify-content: flex-start;
     height: 100%;
     align-items: center;
+     box-shadow: 0px 2px 5px 0px #3e3c3c
 }
 
 .nav > li {
@@ -42,12 +60,53 @@ nav {
     outline: none;
     list-style-type: none;
     color: aliceblue;
-    font-family: Ruboto;
+    font-family: Trocchi;
     text-transform: uppercase;
     cursor: pointer;
-    font-size: 2.3vw;
-    width: 20%;
+    font-size: 1.7vw;
+    width: 100%;
     text-align: center;
-    /* height: 82%; */
     border-radius: 20px;
+}
+
+fieldset.general_info {
+    margin-top: 5vw;
+}
+
+fieldset {
+    color: antiquewhite;
+    margin-top: 3vw;
+    padding: 2vw 0;
+    font-size: 3vw;
+    width: 90vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input#apartment_number {
+    width: 5vw;
+}
+
+input#street_address {
+    width: 35vw;
+}
+
+input {
+    height: 3vw;
+    border-radius: 2px;
+    border: none;
+    box-shadow: 3px 3px 5px 0px #444343;
+}
+
+input#teacher_comments {
+    width: 80vw;
+    height: 24vw;
+    margin: 2vw;
+    text-align: left;
+}
+
+select {
+    box-shadow: 3px 5px 5px 0px #3e3c3c;
+    border: none;
+    border-radius: 2px;
 }

@@ -164,6 +164,7 @@ describe('Student Curriculum Endpoints', function () {
             record.should.include.keys('id', 'address', 'first_name', 'last_name', 'email', 'student_lesson_time', 'student_curriculum');
             record.address.should.be.a('object');
             record.address.should.include.keys('street_address', 'city', 'state', 'zipcode');
+            console.log('RECORD.STUDENT_CURRICULUM',record.student_curriculum);
             record.student_curriculum.should.be.a('array');
             record.student_curriculum[0].should.include.keys('project_name', 'project_description', 'teacher_project_comments', 'project_date');
           });
