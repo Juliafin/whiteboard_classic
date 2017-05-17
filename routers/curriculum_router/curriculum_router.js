@@ -31,6 +31,7 @@ curriculum_router.get('/', (req, res) => {
         'first_name': req.user._user.first_name,
         'last_name': req.user._user.last_name
       })
+      .populate('student_curriculum')
       .then((student_record) => {
         return res.status(200).json({
           student_record: student_record.studentView()
@@ -49,6 +50,7 @@ curriculum_router.get('/', (req, res) => {
         .find({
           'author.id': req.user._user._id
         })
+        .populate('student_curriculum')
         .then((student_records) => {
           return res.status(200).json({
             student_records: student_records.map((record) => {

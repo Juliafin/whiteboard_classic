@@ -31,6 +31,31 @@ const studentAddressSchema = new mongoose.Schema({
   _id: false
 });
 
+const studentCurriculumSchema = new mongoose.Schema({
+    project_date: {
+      type: Date,
+      default: Date.now(),
+      required: true
+    },
+    project_name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    project_description: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    // array of comments TODO
+    teacher_project_comments: {
+      type: String,
+      trim: true
+    },
+    _id: false
+  })
+
+
 const studentLessonTimeSchema = new mongoose.Schema({
   startDate: {
     type: Date,
@@ -91,29 +116,10 @@ const studentSchema = mongoose.Schema({
     type: studentAddressSchema,
     required: true
   },
-  student_curriculum: [{
-    project_date: {
-      type: Date,
-      default: Date.now(),
-      required: true
-    },
-    project_name: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    project_description: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    // array of comments TODO
-    teacher_project_comments: {
-      type: String,
-      trim: true
-    },
-    _id: false
-  }],
+  student_curriculum: [
+    {ref: 'Student_Curriculum',
+    type: mongoose.Schema.Types.ObjectId}
+  ],
   student_lesson_time: {
     type: studentLessonTimeSchema,
     required: true
@@ -164,6 +170,7 @@ studentSchema.methods.studentView = function () {
 };
 
 const Curriculum = mongoose.model('student_records', studentSchema);
+const Student_Curriculum = mongoose.model('student_curriculum_records',studentCurriculumSchema);
 
 module.exports = {
   Curriculum
