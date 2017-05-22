@@ -130,7 +130,7 @@ curriculum_router.post('/', (req, res) => {
 
   if (req.user._user.role === 'teacher') {
 
-    const requiredFields = ['first_name', 'last_name', 'email', 'address', 'student_lesson_time', 'student_curriculum'];
+    const requiredFields = ['first_name', 'last_name', 'email', 'address', 'student_lesson_time'];
     const addressFields = ['street_address', 'state', 'city', 'zipcode'];
     const studentCurriculumFields = ['project_name', 'project_description'];
     const studentLessonTime = ['weekday', 'startTime', 'endTime'];
@@ -158,17 +158,17 @@ curriculum_router.post('/', (req, res) => {
     }
 
         // check if student curriculum fields are missing
-    studentCurriculumFields.forEach(function (curricField) {
-          // console.log(req.body);
-          // console.log(curricField)
-      if (!(curricField in req.body['student_curriculum'][0])) {
-        student_curriculum[curricField] = curricField;
-      }
-    });
+    // studentCurriculumFields.forEach(function (curricField) {
+    //       // console.log(req.body);
+    //       // console.log(curricField)
+    //   if (!(curricField in req.body['student_curriculum'][0])) {
+    //     student_curriculum[curricField] = curricField;
+    //   }
+    // });
 
-    if (Object.keys(student_curriculum).length !== 0) {
-      missing.student_curriculum = student_curriculum;
-    }
+    // if (Object.keys(student_curriculum).length !== 0) {
+    //   missing.student_curriculum = student_curriculum;
+    // }
 
         //  check if student lesson times are missing
     studentLessonTime.forEach(function (lessonField) {

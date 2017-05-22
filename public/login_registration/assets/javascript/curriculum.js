@@ -67,7 +67,7 @@ var state = {
 };
 
 
-function authorizationFormListener() {
+function navbarListener() {
 
   $('nav li').click(function (event) {
 
@@ -176,8 +176,8 @@ function loginSubmitListener() {
           setToken(userdata.token);
           window.localStorage.setItem('dashboard_url', userdata.url);
           window.localStorage.setItem('current_user', userdata.username);
-
           appendLoggedinNav();
+          window.location = window.localStorage.getItem('dashboard_url');
         })
         .catch(function (err) {
           console.log(err.responseJSON);
@@ -392,7 +392,7 @@ function appendLoggedinNav() {
               Not <span>${window.localStorage.getItem('current_user')}?</span class="logged_user"><br><span>Log out</span></li>`;
 
     $('div.nav').html(loggedIn);
-    authorizationFormListener();
+    navbarListener();
 
   } else {
 
@@ -402,7 +402,7 @@ function appendLoggedinNav() {
               <li>Login</li>`;
 
     $('div.nav').html(loggedOut);
-    authorizationFormListener();
+    navbarListener();
   }
 
 }
@@ -426,10 +426,29 @@ function navbarActiveListener() {
 }
 
 
+function testDashboard() {
+  console.log('token to be sent', window.localStorage.getItem('token'));
+
+  return $.ajax({
+    type: 'GET',
+    url: `/welcome/dashboard${window.localStorage.getItem('current_user')}`,
+    data: {token: `{window.localStorage.getItem('token')}`
+    }
+  })
+  .then(function(token) {
+    console.log('request was sent)');
+    console.log(token);
+  })
+}
+
+
+
+
 ($(document).ready(function () {
-  authorizationFormListener();
+  navbarListener();
   checkTokenAndAppendNav();
   $(this).scrollTop(0);
+  testDashboard();
 
 
 }));
