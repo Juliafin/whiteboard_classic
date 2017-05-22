@@ -108,7 +108,7 @@ auth_router.post('/login', (req, res) => {
     })
     .then((user) => {
       _user = user;
-      console.log(user);
+      // console.log(user);
       if (user) {
         return user.validatePassword(password);
       } else { // user not found
@@ -147,7 +147,7 @@ auth_router.get('/users', express_jwt({
 }), (req, res) => {
   // console.log(SECRET);
   // console.log(req.headers.authorization);
-  console.log(req.user)
+  // console.log(req.user)
   User
     .find()
     .then(function (users) {
@@ -163,7 +163,7 @@ auth_router.post('/authenticate', express_jwt({
   secret: SECRET
 }), (req, res) => {
 
-  setTimeout(() => console.log('hello from /authenticate'), 1000);
+  // setTimeout(() => console.log('hello from /authenticate'), 1000);
   // console.log(req.user);
     // console.log(path.resolve(process.cwd() + '/config_variables')
 // console.log(SECRET);

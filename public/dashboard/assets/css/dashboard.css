@@ -5,6 +5,30 @@
     text-align: center;
 }
 
+.unauthorized {
+    background-image: url(./../images/403.jpg);
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    width: 100%;
+    background-size: contain;
+    margin: 0 auto;
+    position: relative;
+    left:  0;
+    right: 0;
+    background-position: center center;
+}
+
+p.unauthorized_redirect {
+    position: fixed;
+    display: inline-block;
+    top: 13.3vw;
+    font-size: 1.5vw;
+    color: red;
+    left: 28.5%;
+    font-weight: 600;
+}
+
+
 body {
     background-color:  rgb(33, 80, 97);
     font-family: sans-serif;
@@ -63,7 +87,7 @@ nav {
     font-family: Trocchi;
     text-transform: uppercase;
     cursor: pointer;
-    font-size: 1.7vw;
+    font-size: 1.5vw;
     width: 100%;
     text-align: center;
     border-radius: 20px;
@@ -83,6 +107,8 @@ fieldset {
     margin-right: auto;
     border: none;
     border-top: #ffaa5b 1px solid;
+    padding-bottom: 1vw;
+    padding-top: 3vw;
 }
 
 input#apartment_number {
@@ -167,3 +193,16 @@ button[name="add_student"]:hover {
     color:aliceblue;
     background-color: #b7c3ce;
  }
+
+p.required_text {
+    color: aliceblue;
+}
+
+span.required {
+    color: rgb(178,18,18);
+    margin-left: .5vw;
+}
+
+label > span {
+    font-size: 1.5vw;
+}
