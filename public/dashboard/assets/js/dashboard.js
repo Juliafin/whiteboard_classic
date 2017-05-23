@@ -1,153 +1,182 @@
 var state = {
   student_records: "",
   templates: {
-    addStudent: `<h1>Add a Student</h1>
-    <p class="required_text">Required<span class="required">*</span></p>
+    addStudent: `
+    <div class="addStudent popIn">
+    <h1>Add a Student</h1>
+      <p class="optional_text">Optional<span class="optional">*</span></p>
 
-    <form class="signup">
-      <fieldset class="general_info"> General info
-  		<br>
+      <form class="signup">
+        <fieldset class="general_info"> General info
+          <br>
+          <label for="first_name">First name</label>
+          <input type="text" name="first_name" id="first_name">
 
-        
+          <label for="last_name">Last name</label>
+          <input type="text" name="last_name" id="last_name">
 
-        <label for="first_name" style="
-">First name<span class="required">*</span></label>
-        <input type="text" name="first_name" id="first_name">
+          <br>
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email">
+          <br>
+          <label for="parent_first_name">Parent's First Name<span class="optional">*</span></label>
+          <input type="text" name="parent_first_name" id="parent_first_name">
 
-        <label for="last_name">Last name<span class="required">*</span></label>
-        <input type="text" name="last_name" id="last_name">
-  		
-  
-		<br>
-        <label for="email">Email<span class="required">*</span></label>
-        <input type="email" name="email" id="email">
-		<br>
-        <label for="parent_first_name">Parent's First Name</label>
-        <input type="text" name="parent_first_name" id="parent_first_name">
+          <label for="parent_last_name">Parent's Last Name<span class="optional">*</span></label>
+          <input type="text" name="parent_last_name" id="parent_last_name">
+        </fieldset>
 
-        <label for="parent_last_name">Parent's Last Name</label>
-        <input type="text" name="parent_last_name" id="parent_last_name">
-      </fieldset>
+        <fieldset> Address
+          <br>
 
+          <label for="street_address">Street Address</label>
+          <input type="text" name="street_address" id="street_address">
 
-      <fieldset> Address
-  		<br>
+          <label for="apartment_number">Apartment #<span class="optional">*</span></label>
+          <input type="text" name="apartment_number" id="apartment_number">
+          <br>
+          <label for="city">City</label>
+          <input type="text" name="city" id="city">
 
-        <label for="street_address">Street Address<span class="required">*</span></label>
-        <input type="text" name="street_address" id="street_address">
+          <label for="state">State</label>
+          <select id="state">
+              <option value="AL">Alabama</option>
+              <option value="AK">Alaska</option>
+              <option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option>
+              <option value="CA">California</option>
+              <option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option>
+              <option value="DE">Delaware</option>
+              <option value="DC">District Of Columbia</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option>
+              <option value="MI">Michigan</option>
+              <option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option>
+              <option value="MO">Missouri</option>
+              <option value="MT">Montana</option>
+              <option value="NE">Nebraska</option>
+              <option value="NV">Nevada</option>
+              <option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option>
+              <option value="NM">New Mexico</option>
+              <option value="NY">New York</option>
+              <option value="NC">North Carolina</option>
+              <option value="ND">North Dakota</option>
+              <option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option>
+              <option value="OR">Oregon</option>
+              <option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option>
+              <option value="SC">South Carolina</option>
+              <option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option>
+              <option value="TX">Texas</option>
+              <option value="UT">Utah</option>
+              <option value="VT">Vermont</option>
+              <option value="VA">Virginia</option>
+              <option value="WA">Washington</option>
+              <option value="WV">West Virginia</option>
+              <option value="WI">Wisconsin</option>
+              <option value="WY">Wyoming</option>
+            </select>
 
-        <label for="apartment_number">Apartment #</label>
-        <input type="text" name="apartment_number" id="apartment_number">
-		<br>
-        <label for="city">City<span class="required">*</span></label>
-        <input type="text" name="city" id="city">
+          <label for="zipcode">Zipcode</label>
+          <input type="text" name="zipcode" id="zipcode">
 
-        <label for="state">State<span class="required">*</span></label>
-        <select id="state">
-          <option value="AL">Alabama</option>
-          <option value="AK">Alaska</option>
-          <option value="AZ">Arizona</option>
-          <option value="AR">Arkansas</option>
-          <option value="CA">California</option>
-          <option value="CO">Colorado</option>
-          <option value="CT">Connecticut</option>
-          <option value="DE">Delaware</option>
-          <option value="DC">District Of Columbia</option>
-          <option value="FL">Florida</option>
-          <option value="GA">Georgia</option>
-          <option value="HI">Hawaii</option>
-          <option value="ID">Idaho</option>
-          <option value="IL">Illinois</option>
-          <option value="IN">Indiana</option>
-          <option value="IA">Iowa</option>
-          <option value="KS">Kansas</option>
-          <option value="KY">Kentucky</option>
-          <option value="LA">Louisiana</option>
-          <option value="ME">Maine</option>
-          <option value="MD">Maryland</option>
-          <option value="MA">Massachusetts</option>
-          <option value="MI">Michigan</option>
-          <option value="MN">Minnesota</option>
-          <option value="MS">Mississippi</option>
-          <option value="MO">Missouri</option>
-          <option value="MT">Montana</option>
-          <option value="NE">Nebraska</option>
-          <option value="NV">Nevada</option>
-          <option value="NH">New Hampshire</option>
-          <option value="NJ">New Jersey</option>
-          <option value="NM">New Mexico</option>
-          <option value="NY">New York</option>
-          <option value="NC">North Carolina</option>
-          <option value="ND">North Dakota</option>
-          <option value="OH">Ohio</option>
-          <option value="OK">Oklahoma</option>
-          <option value="OR">Oregon</option>
-          <option value="PA">Pennsylvania</option>
-          <option value="RI">Rhode Island</option>
-          <option value="SC">South Carolina</option>
-          <option value="SD">South Dakota</option>
-          <option value="TN">Tennessee</option>
-          <option value="TX">Texas</option>
-          <option value="UT">Utah</option>
-          <option value="VT">Vermont</option>
-          <option value="VA">Virginia</option>
-          <option value="WA">Washington</option>
-          <option value="WV">West Virginia</option>
-          <option value="WI">Wisconsin</option>
-          <option value="WY">Wyoming</option>
-        </select>
-
-        <label for="zipcode">Zipcode<span class="required">*</span></label>
-        <input type="text" name="zipcode" id="zipcode">
-
-      </fieldset>
+        </fieldset>
 
 
-      <fieldset>Student Lesson Time
-  		<br>
+        <fieldset>Student Lesson Time
+          <br>
 
-        <label for="startDate">Lesson Start Date<span class="required">*</span></label>
-        <input type="date" name="startDate" id="startDate">
+          <label for="startDate">Lesson Start Date</label>
+          <input type="date" name="startDate" id="startDate">
 
-        <label for="weekday">Weekday<span class="required">*</span></label>
-        
-  <select id="weekday">
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
-        </select>
+          <label for="weekday">Weekday</label>
 
-  
-  		<br>
+          <select id="weekday">
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
 
-        <label for="startTime">Start Time<span class="required">*</span></label>
-        <input type="time" name="startTime" id="startTime">
+          <br>
 
-        <label for="endTime">End Time<span class="required">*</span></label>
-        <input type="time" name="endTime" id="endTime">
+          <label for="startTime">Start Time<input type="time" name="startTime" id="startTime">
 
-      </fieldset>
-      <label for="teacher_comments">Teacher Comments</label>
-  		<br>
-      <input type="textarea" name="teacher_comments" id="teacher_comments">
+            <label for="endTime">End Time</label>
+          <input type="time" name="endTime" id="endTime">
 
-      <div class="button_container">
-        <button type="submit" name="add_student">Add Student</button>
+          </label>
+        </fieldset>
+        <label for="teacher_comments">Teacher Comments<span class="optional">*</span></label>
+        <br>
+        <input type="textarea" name="teacher_comments" id="teacher_comments">
+
+        <div class="button_container">
+          <button type="submit" name="add_student">Add Student</button>
+        </div>
+
+
+
+      </form>
       </div>
-
-
-      
-    </form>`,
+      `,
 
     unauthorized: `
       <div class="unauthorized">
         <p class="unauthorized_redirect">You are being redirected back to the login page in 5 seconds.</p>
       </div>
-        `
+        `,
+    
+    addStudentProject:`
+    <div class="addProject popIn">
+      <h1>Add a Project</h1>
+      <p class="optional_text">Optional<span class="optional">*</span></p>
+
+      <form class="project">
+        
+          <label for="project_date">Project Date</label>
+          <input type="date" name="project_date" id="project_date">
+
+          <label for="project_name">Project Name</label>
+          <input type="text" name="project_name" id="project_name">
+
+          <label for="project_description">Project Description</label>
+          <input type="text" name="project_description" id="project_description">
+
+          <label for="project_comments">Project Comments</label>
+          <input type="textarea" name="project_comments" id="project_comments">
+          
+          <div class="button_container">
+          <button type="submit" name="add_student">Add Student</button>
+          </div>
+      
+      </form>
+    </div>
+    `,
+    
+    studentList: `
+    <div class="studentList popIn">
+      <h1>Student List</h1>
+    </div>`
   }
 };
 
@@ -167,7 +196,7 @@ function navbarListener() {
     if ($(this).text() === 'Add Student Project') {
       $('div.background').empty();
       // TODO Make template
-      // $('div.background').html(state.templates.register);
+      $('div.background').html(state.templates.addStudentProject);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
     }
@@ -175,7 +204,7 @@ function navbarListener() {
     if ($(this).text() === 'Student List and Schedule') {
       $('div.background').empty();
       // TODO Make template
-      // $('div.background').html(state.templates.login);
+      $('div.background').html(state.templates.studentList);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
     }
@@ -258,7 +287,7 @@ function addStudentListener() {
       startTime: $('input[name="startTime"]').val(), // 12:30
       endTime: $('input[name="endTime"]').val(), // 01:30
       teacher_comments: $('input[name="teacher_comments"]').val()
-    }
+    };
 
 
     console.log(studentObj.startDate);
@@ -269,7 +298,7 @@ function addStudentListener() {
 
     validateNewStudent(studentObj);
 
-  })
+  });
 }
 
 function validateNewStudent(studentObj) {
@@ -291,9 +320,9 @@ function validateNewStudent(studentObj) {
     default:
 
       if (studentObj[field] === "") {
-          var clField = field.replace('_', '');
-          errors[clField] = `The ${field} field is empty.`;
-        }
+        var clField = field.replace('_', '');
+        errors[clField] = `The ${field} field is empty.`;
+      }
     }
   });
 
@@ -346,7 +375,7 @@ function authenticateResult() {
       $('div.background').html(state.templates.unauthorized);
       redirectHome(err);
 
-    })
+    });
 }
 
 

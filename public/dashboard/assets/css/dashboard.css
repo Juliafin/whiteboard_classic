@@ -181,6 +181,7 @@ button[name="add_student"] {
     background: rgb(178,18,18);
     border: none;
     color: aliceblue;
+    font-size: 2vw;
 }
 
 button[name="add_student"]:hover {
@@ -194,11 +195,11 @@ button[name="add_student"]:hover {
     background-color: #b7c3ce;
  }
 
-p.required_text {
+p.optional_text {
     color: aliceblue;
 }
 
-span.required {
+span.optional {
     color: rgb(178,18,18);
     margin-left: .5vw;
 }
@@ -214,4 +215,41 @@ p.error {
     font-size: 1.5vw;
 }
 
+form.project > label {
+    display: block;
+    margin-bottom: 4vh;
+}
 
+input#project_comments {
+    width: 76vw;
+    height: 50vw;
+}
+
+form.project input{
+    height: 3.5vw;
+    width: 30vw;
+}
+
+.hidden{
+  transform: scale(0);
+}
+
+@keyframes displayElement {
+  from {
+    transform:scale(.5);
+    opacity: 0;
+  }
+  to {
+    transform:scale(1);
+    opacity:(1);
+  }
+}
+
+.popIn {
+  animation-name: displayElement;
+  animation-duration: 400ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count:1;
+  animation-fill-mode: forwards;
+  animation-direction: normal
+}

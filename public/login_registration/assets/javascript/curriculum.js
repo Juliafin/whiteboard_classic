@@ -1,6 +1,6 @@
 var state = {
   templates: {
-    register: `<div class="signupbox">
+    register: `<div class="signupbox popIn">
 
       <form class="signup">
         <fieldset>
@@ -36,7 +36,7 @@ var state = {
       </form>
     </div>`,
 
-    login: `<div class="signupbox">
+    login: `<div class="signupbox popIn">
 
       <form class="login">
         <fieldset>
@@ -53,7 +53,7 @@ var state = {
 
       </form>
     </div>`,
-    home: `<h1 class="landing_heading">Curriculum Manager</h1>
+    home: `<h1 class="landing_heading popIn">Curriculum Manager</h1>
     <div>
 
     </div>
