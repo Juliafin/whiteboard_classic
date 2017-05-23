@@ -12,8 +12,7 @@ var state = {
 
         <label for="first_name" style="
 ">First name<span class="required">*</span></label>
-        <input type="text" name="first_name" id="first_name" style="
-">
+        <input type="text" name="first_name" id="first_name">
 
         <label for="last_name">Last name<span class="required">*</span></label>
         <input type="text" name="last_name" id="last_name">
@@ -150,7 +149,7 @@ var state = {
       </div>
         `
   }
-}; 
+};
 
 function navbarListener() {
 
@@ -210,13 +209,13 @@ function displayNav() {
     $('body').append(loggedIn);
     navbarListener();
 
-  } 
+  }
 
 }
 
 
 
-function getStudentData () {
+function getStudentData() {
   return $.ajax({
     type: 'GET',
     url: '/cu-manager/',
@@ -227,7 +226,7 @@ function getStudentData () {
 }
 
 
-function postStudentData (studentObj) {
+function postStudentData(studentObj) {
   return $.ajax({
     type: 'POST',
     url: '/cu-manager/',
@@ -238,33 +237,86 @@ function postStudentData (studentObj) {
   });
 }
 
-function addStudentListener () {
-  
-  $('button[name="add_student"]').click(function(event) {
-    event.preventDefault();
-    var first_name = $('input[name="first_name"]').val();
-    var last_name = $('input[name="last_name"]').val();
-    var email = $('input[name="email"]').val();
-    var parent_first_name = $('input[name="parent_first_name"]').val();
-    var parent_last_name = $('input[name="parent_last_name"]').val();
-    var street_address = $('input[name="street_address"]').val();
-    var apartment_number = $('input[name="apartment_number"]').val();
-    var city = $('input[name="city"]').val();
-    var state = $('select#state').val();
-    var zipcode = $('input[name="zipcode"]').val();
-    var startDate = $('input[name="startDate"]').val();
-    var weekday = $('select#weekday').val();
-    var startTime = $('input[name="startTime"]').val(); // 12:30
-    var endTime = $('input[name="endTime"]').val(); // 01:30
-    var teacher_comments = $('input[name="teacher_comments"]').val();
+function addStudentListener() {
 
-    console.log(startDate);
-    var time = moment(startDate, 'YYYY-MM-DD');
+  $('button[name="add_student"]').click(function (event) {
+    event.preventDefault();
+    var studentObj = {
+
+      first_name: $('input[name="first_name"]').val(),
+      last_name: $('input[name="last_name"]').val(),
+      email: $('input[name="email"]').val(),
+      parent_first_name: $('input[name="parent_first_name"]').val(),
+      parent_last_name: $('input[name="parent_last_name"]').val(),
+      street_address: $('input[name="street_address"]').val(),
+      apartment_number: $('input[name="apartment_number"]').val(),
+      city: $('input[name="city"]').val(),
+      state: $('select#state').val(),
+      zipcode: $('input[name="zipcode"]').val(),
+      startDate: $('input[name="startDate"]').val(),
+      weekday: $('select#weekday').val(),
+      startTime: $('input[name="startTime"]').val(), // 12:30
+      endTime: $('input[name="endTime"]').val(), // 01:30
+      teacher_comments: $('input[name="teacher_comments"]').val()
+    }
+
+
+    console.log(studentObj.startDate);
+    var time = moment(studentObj.startDate, 'YYYY-MM-DD');
     console.log(time);
-    
-    console.log('first_name', first_name, 'last_name', last_name, 'email', email, 'parent_first_name', parent_first_name, 'parent_last_name', parent_last_name,'street_address', street_address, 'apartment_number', apartment_number, 'city', city, 'state', state, 'zipcode', zipcode, 'startDate', startDate, 'weekday', weekday, 'startTime', startTime, 'endTime', endTime, 'teacher_comments', teacher_comments);
+
+    console.log(studentObj);
+
+    validateNewStudent(studentObj);
+
   })
 }
+
+function validateNewStudent(studentObj) {
+  var errors = {};
+  var formData = {};
+  $('.error').remove();
+  console.log(studentObj);
+
+  Object.keys(studentObj).forEach(function (field) {
+    console.log(studentObj[field]);
+    console.log(field);
+
+    switch (field) {
+    case 'parent_first_name':
+    case 'parent_last_name':
+    case 'apartment_number':
+    case 'teacher_comments':
+      break;
+    default:
+
+      if (studentObj[field] === "") {
+          var clField = field.replace('_', '');
+          errors[clField] = `The ${field} field is empty.`;
+        }
+    }
+  });
+
+  if (Object.keys(errors).length > 0) {
+
+    console.log(errors);
+
+    Object.keys(errors).forEach(function (elem) {
+      var currentError = errors[elem];
+      var errorMsg = `<p class="error" id="${elem}_error"> ${currentError}</p>`;
+      $(`input[name="${elem}"]`).after(errorMsg);
+    });
+    return errors;
+
+
+
+  }
+
+
+
+}
+
+
 
 function authenticateToken() {
   return $.ajax({
@@ -279,45 +331,45 @@ function authenticateToken() {
 
 
 
-function authenticateResult () {
+function authenticateResult() {
   authenticateToken()
-    .then(function(result) {
+    .then(function (result) {
       console.log(result);
-      if ( redirectHome() === false) {
+      if (redirectHome() === false) {
         displayNav();
       } else {
         $('div.background').html(state.templates.unauthorized);
       }
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(err);
       $('div.background').html(state.templates.unauthorized);
       redirectHome(err);
-      
+
     })
 }
 
 
 function redirectHome(err = null) {
   var pathArr = window.location.pathname.split('/');
-  var urlUser = pathArr.slice(pathArr.length-2, pathArr.length-1)[0];
+  var urlUser = pathArr.slice(pathArr.length - 2, pathArr.length - 1)[0];
 
-  if ((urlUser !== localStorage.getItem('current_user')) || (err) ) {
-    setTimeout(function() {
+  if ((urlUser !== localStorage.getItem('current_user')) || (err)) {
+    setTimeout(function () {
       window.location = "/";
-    }, 5000 );
-    return true; 
+    }, 5000);
+    return true;
   } else {
-    return false; 
+    return false;
   }
 }
 
 
-function renderStudentData () {
+function renderStudentData() {
   getStudentData()
-  .then(function(data) {
-    console.log(data);
-  });
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
 
