@@ -357,15 +357,4 @@ curriculum_router.delete('/student-curriculum-projects/:id', (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
 module.exports = curriculum_router;
