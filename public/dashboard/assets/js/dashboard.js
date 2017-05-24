@@ -1,5 +1,5 @@
 var state = {
-  student_records: "",
+  student_records: [],
   templates: {
     addStudent: `
     <div class="addStudent popIn">
@@ -145,8 +145,8 @@ var state = {
         <p class="unauthorized_redirect">You are being redirected back to the login page in 5 seconds.</p>
       </div>
         `,
-    
-    addStudentProject:`
+
+    addStudentProject: `
     <div class="addProject popIn">
       <h1>Add a Project</h1>
       <p class="optional_text">Optional<span class="optional">*</span></p>
@@ -172,7 +172,7 @@ var state = {
       </form>
     </div>
     `,
-    
+
     studentList: `
     <div class="studentList popIn">
       <h1>Student List</h1>
@@ -311,19 +311,35 @@ function validateNewStudent(studentObj) {
     console.log(studentObj[field]);
     console.log(field);
 
-    switch (field) {
-    case 'parent_first_name':
-    case 'parent_last_name':
-    case 'apartment_number':
-    case 'teacher_comments':
-      break;
-    default:
-
-      if (studentObj[field] === "") {
-        var clField = field.replace('_', '');
-        errors[clField] = `The ${field} field is empty.`;
+    if (studentObj[field] === "") {
+      // if the following fields are empty, do nothing (they are optional)
+      switch (field) {
+        case 'parent_first_name':
+        case 'parent_last_name':
+        case 'apartment_number':
+        case 'teacher_comments':
+          break;
+        default:
+          errors[field] = `The ${field.replace('_', ' ')} field is empty.`;
       }
+
+    } else {
+      switch (field) {
+        case "first_name":
+        case "last_name":
+        case "parent_first_name":
+        case "parent_last_name":
+          var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{4,20})+$/);
+          if (!(nameValid.test(studentObj[field]))) {
+            errors[field] = `The ${field.replace('_', ' ')} field must be between 2 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
+          } else {
+            formData[field] = studentObj[field];
+          }
+
+      }
+
     }
+
   });
 
   if (Object.keys(errors).length > 0) {
@@ -337,12 +353,11 @@ function validateNewStudent(studentObj) {
     });
     return errors;
 
-
-
+  } else {
+    formData.message = "No errors found.";
+    console.log(formData);
+    return formData
   }
-
-
-
 }
 
 
@@ -394,10 +409,15 @@ function redirectHome(err = null) {
 }
 
 
-function renderStudentData() {
+function saveStudentData() {
   getStudentData()
     .then(function (data) {
       console.log(data);
+      data.student_records.forEach(function (record, index) {
+        record.order = index + 1;
+        state.student_records.push(record);
+      });
+      console.log('state.student_records', state.student_records);
     });
 }
 
@@ -406,7 +426,7 @@ function renderStudentData() {
 ($(document).ready(function () {
   $(this).scrollTop(0);
   authenticateResult();
-  renderStudentData();
+  saveStudentData();
 
 
 }));
