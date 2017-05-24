@@ -304,6 +304,8 @@ function addStudentListener() {
 function validateNewStudent(studentObj) {
   var errors = {};
   var formData = {};
+  formData.address = {};
+  formData.student_lesson_time = {};
   $('.error').remove();
   console.log(studentObj);
 
@@ -314,32 +316,71 @@ function validateNewStudent(studentObj) {
     if (studentObj[field] === "") {
       // if the following fields are empty, do nothing (they are optional)
       switch (field) {
-        case 'parent_first_name':
-        case 'parent_last_name':
-        case 'apartment_number':
-        case 'teacher_comments':
-          break;
-        default:
-          errors[field] = `The ${field.replace('_', ' ')} field is empty.`;
+      case 'parent_first_name':
+      case 'parent_last_name':
+      case 'apartment_number':
+      case 'teacher_comments':
+        break;
+      default:
+        errors[field] = `The ${field.replace('_', ' ')} field is empty.`;
       }
 
     } else {
       switch (field) {
-        case "first_name":
-        case "last_name":
-        case "parent_first_name":
-        case "parent_last_name":
-          var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{4,20})+$/);
-          if (!(nameValid.test(studentObj[field]))) {
+
+      case "first_name":
+      case "last_name":
+      case "parent_first_name":
+      case "parent_last_name":
+        var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
+        if (!(nameValid.test(studentObj[field]))) {
             errors[field] = `The ${field.replace('_', ' ')} field must be between 2 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
           } else {
             formData[field] = studentObj[field];
           }
+        break;
 
+      case "email":
+        var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
+        if (!(emailValid.test(studentObj[field]))) {
+            errors[field] = `The ${field} field is not valid.`;
+          } else {
+            formData[field] = studentObj[field];
+          }
+        break;
+
+      case "city":
+        var cityValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
+        if (!(cityValid.test(studentObj[field]))) {
+            errors[field] = `The ${field} field must contain only UTF-8 letters and be between 2 and 20 characters.`;
+          } else {
+            formData.address[field] = studentObj[field];
+          }
+        break;
+
+      case "zipcode":
+        var zipcodeValid = new RegExp(/^\d{5}(?:[-\s]\d{4})?$/);;
+        if (!(zipcodeValid.test(studentObj[field]))) {
+            errors[field] = `The ${field} field must either be in the format XXXXX or XXXXX-XXXX.`
+          } else {
+            formData.address[field] = studentObj[field];
+          }
+        break;
+
+      case "apartment_number":
+      case "state":
+      case "street_address":
+      case "teacher_comments":
+        formData.address[field] = studentObj[field];
+        break;
+      
+      case "startDate":
+      case "weekday":
+      case "startTime":
+      case "endTime":
+        formData.student_lesson_time[field] = studentObj[field];
       }
-
     }
-
   });
 
   if (Object.keys(errors).length > 0) {
