@@ -57,10 +57,10 @@ var state = {
     <div>
 
     </div>
-    <h2 class="features">~Manage and view your students' personal data</h2>
-    <h2 class="features">~Add student projects</h2>
-    <h2 class="features">~Keep track of lesson times</h2>
-    <h2 class="features">~Students can view their latest project and lesson data</h2>`,
+    <h2 class="features F_one">Manage and view your students' personal data</h2>
+    <h2 class="features F_two">Add student projects</h2>
+    <h2 class="features F_three">Keep track of lesson times</h2>
+    <h2 class="features F_four">Students can view their latest project and lesson data</h2>`,
 
   }
 
@@ -276,7 +276,7 @@ function validateRegistrationData(password, username, first_name, last_name) {
   }
 
   // Testing if first name is valid  
-  var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-])+$/);
+  var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{4,20})+$/);
 
   if (first_name) {
     if (nameValid.test(first_name) === false || first_name.length < 2 || first_name.length > 20) {
