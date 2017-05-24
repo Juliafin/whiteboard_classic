@@ -289,16 +289,25 @@ function addStudentListener() {
       teacher_comments: $('input[name="teacher_comments"]').val()
     };
 
-
-    console.log(studentObj.startDate);
-    var time = moment(studentObj.startDate, 'YYYY-MM-DD');
-    console.log(time);
+    var startTime = moment(studentObj.startTime, "hh:mm").toISOString();
+    var endTime = moment(studentObj.endTime, "hh:mm").toISOString();
+    var startDate = moment(studentObj.startDate, 'YYYY-MM-DD').toISOString();
+    studentObj.startTime = startTime;
+    studentObj.startTime = startTime;
+    studentObj.endTime = endTime;
+    // console.log(studentObj.startDate);
+    console.log(startDate);
 
     console.log(studentObj);
 
     validateNewStudent(studentObj);
 
   });
+}
+
+function timeToDateISOconverter (time) {
+  var timeArr = time.split(":");
+  return moment(time, "hh:mm").toISOString();
 }
 
 function validateNewStudent(studentObj) {
@@ -334,37 +343,37 @@ function validateNewStudent(studentObj) {
       case "parent_last_name":
         var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
         if (!(nameValid.test(studentObj[field]))) {
-            errors[field] = `The ${field.replace('_', ' ')} field must be between 2 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
-          } else {
-            formData[field] = studentObj[field];
-          }
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 2 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
+        } else {
+          formData[field] = studentObj[field];
+        }
         break;
 
       case "email":
         var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
         if (!(emailValid.test(studentObj[field]))) {
-            errors[field] = `The ${field} field is not valid.`;
-          } else {
-            formData[field] = studentObj[field];
-          }
+          errors[field] = `The ${field} field is not valid.`;
+        } else {
+          formData[field] = studentObj[field];
+        }
         break;
 
       case "city":
         var cityValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
         if (!(cityValid.test(studentObj[field]))) {
-            errors[field] = `The ${field} field must contain only UTF-8 letters and be between 2 and 20 characters.`;
-          } else {
-            formData.address[field] = studentObj[field];
-          }
+          errors[field] = `The ${field} field must contain only UTF-8 letters and be between 2 and 20 characters.`;
+        } else {
+          formData.address[field] = studentObj[field];
+        }
         break;
 
       case "zipcode":
-        var zipcodeValid = new RegExp(/^\d{5}(?:[-\s]\d{4})?$/);;
+        var zipcodeValid = new RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
         if (!(zipcodeValid.test(studentObj[field]))) {
-            errors[field] = `The ${field} field must either be in the format XXXXX or XXXXX-XXXX.`
-          } else {
-            formData.address[field] = studentObj[field];
-          }
+          errors[field] = `The ${field} field must either be in the format XXXXX or XXXXX-XXXX.`;
+        } else {
+          formData.address[field] = studentObj[field];
+        }
         break;
 
       case "apartment_number":
@@ -377,8 +386,20 @@ function validateNewStudent(studentObj) {
       case "startDate":
       case "weekday":
       case "startTime":
-      case "endTime":
         formData.student_lesson_time[field] = studentObj[field];
+        break;
+      case "endTime":
+        var startTime = moment(studentObj.startTime).format("HH:mm");
+        var endTime = moment(studentObj.endTime).format("HH:mm");
+        var startTimeN = parseInt(startTime.replace(":",""));
+        var endTimeN = parseInt(endTime.replace(":",""));
+        console.log(startTime);
+        console.log('start time',startTimeN);
+        console.log(endTime);
+        console.log('end time', endTimeN);
+        if (endTimeN < startTimeN) {
+          errors[field] = `The ${field} cannot be before the start time.`;
+        }
       }
     }
   });
@@ -397,7 +418,7 @@ function validateNewStudent(studentObj) {
   } else {
     formData.message = "No errors found.";
     console.log(formData);
-    return formData
+    return formData;
   }
 }
 
