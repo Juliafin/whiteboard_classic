@@ -16,6 +16,7 @@ const {
 
 
 mongoose.Promise = global.Promise;
+curriculum_router.use(bodyParser.urlencoded({     extended: true }));
 curriculum_router.use(bodyParser.json());
 curriculum_router.use(express_jwt({
   secret: SECRET
@@ -126,7 +127,9 @@ curriculum_router.get('/:id', (req, res) => {
 
     // Only teachers can post a new student record
 curriculum_router.post('/', (req, res) => {
-      // console.log('This is the req.body', req.body);
+      console.log('This is the req.body !@#$%!', req.body);
+      console.log('headers', req.headers);
+      // console.log(req);
 
   if (req.user._user.role === 'teacher') {
 
@@ -167,7 +170,6 @@ curriculum_router.post('/', (req, res) => {
     // });
 
     // if (Object.keys(student_curriculum).length !== 0) {
-    //   missing.student_curriculum = student_curriculum;
     // }
 
         //  check if student lesson times are missing

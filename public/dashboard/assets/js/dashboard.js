@@ -256,6 +256,7 @@ function getStudentData() {
 
 
 function postStudentData(studentObj) {
+  console.log('this is the obj to be sent', studentObj);
   return $.ajax({
     type: 'POST',
     url: '/cu-manager/',
@@ -289,6 +290,7 @@ function addStudentListener() {
       teacher_comments: $('input[name="teacher_comments"]').val()
     };
 
+    // convert time/date fiels to ISO strings
     var startTime = moment(studentObj.startTime, "hh:mm").toISOString();
     var endTime = moment(studentObj.endTime, "hh:mm").toISOString();
     var startDate = moment(studentObj.startDate, 'YYYY-MM-DD').toISOString();
@@ -300,15 +302,23 @@ function addStudentListener() {
 
     console.log(studentObj);
 
-    validateNewStudent(studentObj);
+    var validatedStudent = validateNewStudent(studentObj);
+    console.log('validated student', validatedStudent);
+    if ('message' in validatedStudent && validatedStudent.message === 'No errors found.') {
+      delete validatedStudent.message;
+      postStudentData(validatedStudent)
+        .then(function(data) {
+          console.log(data);
+        })
+        .catch(function(err) {
+          console.log('There was an error');
+          console.log(err);
+        });
+    }
 
   });
 }
 
-function timeToDateISOconverter (time) {
-  var timeArr = time.split(":");
-  return moment(time, "hh:mm").toISOString();
-}
 
 function validateNewStudent(studentObj) {
   var errors = {};
@@ -399,6 +409,8 @@ function validateNewStudent(studentObj) {
         console.log('end time', endTimeN);
         if (endTimeN < startTimeN) {
           errors[field] = `The ${field} cannot be before the start time.`;
+        } else {
+          formData.student_lesson_time[field] = studentObj[field];
         }
       }
     }
