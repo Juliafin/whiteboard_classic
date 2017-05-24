@@ -27,21 +27,20 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfdXNlciI6eyJfaWQiO
 Content-Type: application/json
 
   { 
-    "first_name": "Manny",
-    "last_name": "Wilder",
-    "email": "V@gmail.com",
-    "parent_first_name": "Miles",
-    "parent_last_name": "Heather",
+    "first_name": "Emily",
+    "last_name": "Johnson",
+    "email": "emaily@yahoo.com",
+    "parent_first_name": "Danny",
+    "parent_last_name": "Johnson",
     "address": {
-        "street_address": "23523 Main St",
-        "state": "AL",
-        "zipcode": "21154",
-        "city": "Birmingham",
-        "country": "United States"
+        "street_address": "342 ryder St",
+        "state": "OR",
+        "zipcode": "56754",
+        "city": "Birmingham"
         },
     "student_lesson_time": {
       "weekday": "Friday",
-      "startTime": "2016-02-03",
+      "startTime": "Fri Apr 28 2017 14:50:25 GMT-0400 (Eastern Daylight Time)",
       "endTime": "Fri Apr 28 2017 23:50:25 GMT-0400 (Eastern Daylight Time)"
     },
     "teacher_comments": "Student has made excellent progress."
