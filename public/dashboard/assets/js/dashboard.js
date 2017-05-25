@@ -176,6 +176,8 @@ var state = {
     studentList: `
     <div class="studentList popIn">
       <h1>Student List</h1>
+      <div class="card_container">
+      </div>
     </div>`
   }
 };
@@ -207,6 +209,7 @@ function navbarListener() {
       $('div.background').html(state.templates.studentList);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
+      renderStudentCard(state.student_records);
     }
 
     if ($(this).attr('id') === 'logged_in') {
@@ -219,7 +222,6 @@ function navbarListener() {
     }
   });
 }
-
 
 function displayNav() {
   if (window.localStorage.getItem('token')) {
@@ -432,6 +434,31 @@ function validateNewStudent(studentObj) {
     console.log(formData);
     return formData;
   }
+}
+
+
+function renderStudentCard (state) {
+  
+  state.forEach(function(student_record) {
+
+    var studentCard = `
+    <div class="card popIn" id=${student_record.id}>
+      <div class="card_color">
+      </div>
+      <div class="student_container">
+      <p class="student_basic_info">Name: ${student_record.first_name} ${student_record.last_name}</p>
+      <p class="lesson_time">Lesson time: ${student_record.student_lesson_time.weekday} at ${moment(student_record.student_lesson_time.startTime).format("HH:mm")}</p>
+      </div>
+    </div>
+  `;
+
+    setTimeout(function() {
+      $('.card_container').append(studentCard);
+    }, 3000);
+
+
+  })
+
 }
 
 
