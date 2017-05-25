@@ -264,12 +264,14 @@ form.project input{
 }
 
 div.card {
-    width: 13vw;
+    width: 17vw;
     height: 20vw;
     border: 1px solid bisque;
     background-color: antiquewhite;
     border-radius: 5px;
-    margin: 0px 9.5vw;
+    margin: 0 7.5vw;
+    margin-bottom: 5vw;
+    margin-top: 4vw;
 }
 
 .card_color {
