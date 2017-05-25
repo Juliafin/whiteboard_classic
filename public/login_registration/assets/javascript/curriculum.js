@@ -145,7 +145,7 @@ function registerSubmitListener() {
       register(validatedData)
         .then(function (data) {
           console.log(data);
-          $('div.button_container').before('<p>Registration Successful!</p>');
+          $('div.button_container').before('<p class="success">Registration Successful!</p>');
         })
         .catch(function (err) {
           console.log(err);
@@ -276,11 +276,11 @@ function validateRegistrationData(password, username, first_name, last_name) {
   }
 
   // Testing if first name is valid  
-  var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{4,20})+$/);
+  var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
 
   if (first_name) {
-    if (nameValid.test(first_name) === false || first_name.length < 2 || first_name.length > 20) {
-      errors.first_name = "First name must be 2 to 20 characters in length and contain only UTF-8 letters and a hyphen.";
+    if (nameValid.test(first_name) === false) {
+      errors.first_name = "First name must be 1 to 20 characters in length and contain only UTF-8 letters and a hyphen.";
     } else {
       formData.first_name = first_name;
     }
