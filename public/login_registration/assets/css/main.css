@@ -163,6 +163,10 @@ p.error {
     font-weight: bold;
 }
 
+p.success {
+    color: lightgreen;
+}
+
 p > a {
   display: inline;
   margin-left: auto;
@@ -238,32 +242,5 @@ li#logged_in {
   animation-iteration-count:1;
   animation-fill-mode: forwards;
   animation-direction: normal
-}
-
-.card_container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    min-height: 100%;
-}
-
-div.card {
-    width: 13vw;
-    height: 20vw;
-    border: 1px solid bisque;
-    background-color: antiquewhite;
-    border-radius: 5px;
-}
-
-.card_color {
-    position: relative;
-    top: 0;
-    width: 100%;
-    height: 10vw;
-    background-color: cadetblue;
-}
-
-.student_container {
-    height: 50%;
 }
 
