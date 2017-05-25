@@ -438,12 +438,13 @@ function validateNewStudent(studentObj) {
 
 
 function renderStudentCard (state) {
+  var lastColor = "";
   
   state.forEach(function(student_record, index) {
 
     var studentCard = `
     <div class="card popIn" id=${student_record.id}>
-      <div class="card_color">
+      <div class="card_color card_color${index}">
       </div>
       <div class="student_container">
       <p class="student_basic_info">Name: ${student_record.first_name} ${student_record.last_name}</p>
@@ -452,8 +453,18 @@ function renderStudentCard (state) {
     </div>
   `;
 
+  var colorArr = ['#4caf50','#9c27b0', '#ff5722', '#ffc107' ];
+    var bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
+    if (index > 0) {
+      lastColor = bgColor;
+      while (bgColor === lastColor) {
+        bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
+      }
+    }
+
     setTimeout(function() {
       $('.card_container').append(studentCard);
+      $(`.card_color${index}`).css('background-color', bgColor);
     }, 400 * index);
 
 
