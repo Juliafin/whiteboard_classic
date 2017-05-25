@@ -439,7 +439,7 @@ function validateNewStudent(studentObj) {
 
 function renderStudentCard (state) {
   
-  state.forEach(function(student_record) {
+  state.forEach(function(student_record, index) {
 
     var studentCard = `
     <div class="card popIn" id=${student_record.id}>
@@ -454,7 +454,7 @@ function renderStudentCard (state) {
 
     setTimeout(function() {
       $('.card_container').append(studentCard);
-    }, 3000);
+    }, 400 * index);
 
 
   })
