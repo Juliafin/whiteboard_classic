@@ -359,9 +359,9 @@ function validateNewStudent(studentObj) {
       case "last_name":
       case "parent_first_name":
       case "parent_last_name":
-        var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
+        var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
         if (!(nameValid.test(studentObj[field]))) {
-          errors[field] = `The ${field.replace('_', ' ')} field must be between 2 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
         } else {
           formData[field] = studentObj[field];
         }
