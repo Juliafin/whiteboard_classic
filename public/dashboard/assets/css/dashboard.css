@@ -266,12 +266,12 @@ form.project input{
 div.card {
     width: 17vw;
     height: 20vw;
-    border: 1px solid bisque;
-    background-color: antiquewhite;
+    background-color: #fffaf3;
     border-radius: 5px;
     margin: 0 7.5vw;
     margin-bottom: 5vw;
     margin-top: 4vw;
+    box-shadow: 1px 1px 5px black;
 }
 
 .card_color {
@@ -279,7 +279,6 @@ div.card {
     top: 0;
     width: 100%;
     height: 10vw;
-    background-color: cadetblue;
 }
 
 .student_container {
@@ -289,3 +288,44 @@ div.card {
 .student_container p {
     padding: 2%;
 }
+
+p.success {
+    color: lightgreen;
+}
+
+@keyframes cardFlip {
+  from {
+    transform:rotateY(180deg);
+    opacity: 0;
+  }
+  to {
+    transform:rotateY(0deg);
+    opacity:(1);
+  }
+}
+
+.flip {
+  animation-name: cardFlip;
+  animation-duration: 400ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count:1;
+  animation-fill-mode: forwards;
+  animation-direction: normal
+}
+
+.card:nth-child(4n+1) > .card_color {
+  background-color: #9c27b0; 
+}
+
+
+.card:nth-child(4n+2) > .card_color {
+  background-color: #ff5722; 
+}
+.card:nth-child(4n+3) > .card_color {
+  background-color: #ffc107; 
+}
+.card:nth-child(4n+4) > .card_color {
+  background-color: #4caf50; 
+}
+
+

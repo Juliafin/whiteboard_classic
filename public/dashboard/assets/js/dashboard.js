@@ -311,6 +311,12 @@ function addStudentListener() {
       postStudentData(validatedStudent)
         .then(function(data) {
           console.log(data);
+          state.student_records.push(data);
+          var success = `
+          <p class="success">Student successfully added!</p>
+          `
+          $('div.button_container').before(success);
+          clearStudentform();
         })
         .catch(function(err) {
           console.log('There was an error');
@@ -436,15 +442,38 @@ function validateNewStudent(studentObj) {
   }
 }
 
+function clearStudentform () {
+    $('input[name="first_name"]').val(''),
+    $('input[name="last_name"]').val(''),
+    $('input[name="email"]').val(''),
+    $('input[name="parent_first_name"]').val(''),
+    $('input[name="parent_last_name"]').val(''),
+    $('input[name="street_address"]').val(''),
+    $('input[name="apartment_number"]').val(''),
+    $('input[name="city"]').val(''),
+    $('select#state').val(''),
+    $('input[name="zipcode"]').val(''),
+    $('input[name="startDate"]').val(''),
+    $('select#weekday').val(''),
+    $('input[name="startTime"]').val(''), 
+    $('input[name="endTime"]').val(''),
+    $('input[name="teacher_comments"]').val('')
+} 
+
 
 function renderStudentCard (state) {
-  var lastColor = "";
   
   state.forEach(function(student_record, index) {
+    // var colorArr = ['#4caf50','#9c27b0', '#ff5722', '#ffc107' ];
+  // var lastColor = colorArr[Math.floor(Math.random() * colorArr.length)];
+  //  var colorIndex = 0;
+  //  if (colorIndex > 3) {
+  //    colorIndex = 0;
+  //  }
 
     var studentCard = `
-    <div class="card popIn" id=${student_record.id}>
-      <div class="card_color card_color${index}">
+    <div class="card flip" id=${student_record.id}>
+      <div class="card_color">
       </div>
       <div class="student_container">
       <p class="student_basic_info">Name: ${student_record.first_name} ${student_record.last_name}</p>
@@ -452,22 +481,19 @@ function renderStudentCard (state) {
       </div>
     </div>
   `;
-
-  var colorArr = ['#4caf50','#9c27b0', '#ff5722', '#ffc107' ];
-    var bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
-    if (index > 0) {
-      lastColor = bgColor;
-      while (bgColor === lastColor) {
-        bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
-      }
-    }
-
+    
     setTimeout(function() {
+      // var bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
+      // while (bgColor === lastColor) {
+      //   bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
+      // }
       $('.card_container').append(studentCard);
-      $(`.card_color${index}`).css('background-color', bgColor);
+      // console.log(colorIndex);
+      // console.log(colorArr[colorIndex]);
+      // $(`.card_color${colorIndex}`).css('background-color', lastColor);
+      // colorIndex +=1;
     }, 400 * index);
-
-
+    
   })
 
 }
