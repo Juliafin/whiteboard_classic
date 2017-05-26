@@ -126,7 +126,7 @@ input {
     border: none;
     box-shadow: 3px 3px 5px 0px #444343;
     text-align: left;
-    padding: 1vw;
+    padding-left: 1vw;
     margin: 0 4vw 0px 1vw;
 }
 
@@ -172,9 +172,10 @@ input#zipcode {
     width: 10vw;
 }
 
-label[for="teacher_comments"] {
-    margin: 0;
+input[type="date"] {
+    font-size: 2vw;
 }
+
 button[name="add_student"] {
     margin: 2vw;
     width: 16vw;
@@ -264,11 +265,12 @@ form.project input{
 }
 
 div.card {
-    width: 17vw;
+    width: 19vw;
     height: 20vw;
     background-color: #fffaf3;
-    border-radius: 5px;
-    margin: 0 7.5vw;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 1px;
+    margin: 0px 6.5vw;
     margin-bottom: 5vw;
     margin-top: 4vw;
     box-shadow: 1px 1px 5px black;
@@ -286,7 +288,9 @@ div.card {
 }
 
 .student_container p {
-    padding: 2%;
+    padding: 3%;
+    font-size: 1.5vw;
+    margin-top: 3%;
 }
 
 p.success {
@@ -327,5 +331,4 @@ p.success {
 .card:nth-child(4n+4) > .card_color {
   background-color: #4caf50; 
 }
-
 

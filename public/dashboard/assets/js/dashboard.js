@@ -119,10 +119,10 @@ var state = {
 
           <br>
 
-          <label for="startTime">Start Time<input type="time" name="startTime" id="startTime">
+          <label for="startTime">Start Time</label><input type="text" name="startTime" class="time_element" id="startTime">
 
-            <label for="endTime">End Time</label>
-          <input type="time" name="endTime" id="endTime">
+          <label for="endTime">End Time</label>
+          <input type="text" name="endTime" class="time_element" id="endTime">
 
           </label>
         </fieldset>
@@ -152,6 +152,11 @@ var state = {
       <p class="optional_text">Optional<span class="optional">*</span></p>
 
       <form class="project">
+          <label for="first_name">First name</label>
+          <input type="text" name="first_name" id="first_name">
+
+          <label for="last_name">Last name</label>
+          <input type="text" name="last_name" id="last_name">
         
           <label for="project_date">Project Date</label>
           <input type="date" name="project_date" id="project_date">
@@ -191,6 +196,12 @@ function navbarListener() {
       $('div.background').html(state.templates.addStudent);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
+      $('.time_element').timepicki({
+        overflow_minutes: true,
+        increase_direction: 'up',
+        step_size_minutes:15
+      });
+
       addStudentListener();
 
     }
@@ -292,10 +303,16 @@ function addStudentListener() {
       teacher_comments: $('input[name="teacher_comments"]').val()
     };
 
+    console.log( studentObj.startTime);
+    console.log(studentObj.endTime);
+
     // convert time/date fiels to ISO strings
-    var startTime = moment(studentObj.startTime, "hh:mm").toISOString();
-    var endTime = moment(studentObj.endTime, "hh:mm").toISOString();
+    var rawstartTime = moment(studentObj.startTime, "hh:mm:A").format("HH:mm");
+    var rawendTime = moment(studentObj.endTime, "hh:mm:A").format("HH:mm");
     var startDate = moment(studentObj.startDate, 'YYYY-MM-DD').toISOString();
+    console.log(rawendTime, rawstartTime);
+    var startTime = moment(rawstartTime, "hh:mm").toISOString();
+    var endTime = moment(rawendTime, "hh:mm").toISOString();
     studentObj.startTime = startTime;
     studentObj.startTime = startTime;
     studentObj.endTime = endTime;
@@ -477,7 +494,7 @@ function renderStudentCard (state) {
       </div>
       <div class="student_container">
       <p class="student_basic_info">Name: ${student_record.first_name} ${student_record.last_name}</p>
-      <p class="lesson_time">Lesson time: ${student_record.student_lesson_time.weekday} at ${moment(student_record.student_lesson_time.startTime).format("HH:mm")}</p>
+      <p class="lesson_time">Lesson time: <br> ${student_record.student_lesson_time.weekday} at ${moment(student_record.student_lesson_time.startTime, ["HH:mm"]).format("hh:mm A")}</p>
       </div>
     </div>
   `;
