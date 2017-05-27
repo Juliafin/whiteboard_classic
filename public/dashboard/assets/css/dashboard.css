@@ -258,6 +258,37 @@ form.project input{
   animation-direction: normal
 }
 
+.slowPopIn {
+  animation-name: displayElement;
+  animation-duration: 600ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count:1;
+  animation-fill-mode: forwards;
+  animation-direction: normal
+}
+
+@keyframes removeElement {
+  from {
+    transform:scale(1);
+    opacity: 1;
+  }
+  to {
+    transform:scale(0);
+    opacity:(0);
+  }
+
+}
+
+.slowPopOut {
+  animation-name: removeElement;
+  animation-duration: 600ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count:1;
+  animation-fill-mode: forwards;
+  animation-direction: normal
+}
+
+
 
 .card_container {
     display: flex;
@@ -376,5 +407,68 @@ button.add_student_project:active, button.student_info:active, .nav > li:active 
     transform: scale(1.2);
     transition: all linear 200ms;
 
+}
 
+.student_modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    text-align: center;
+    background: rgba(0, 80, 144, 0.45);
+}
+
+.student_main_info {
+    width: 80vw;
+    height: 80vh;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid black;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color:rgba(255, 255, 255, 0.91);
+    z-index: 200;
+}
+
+.student_main_info h2 {
+    font-family: Trocchi;
+    margin-top: 5%;
+}
+
+div.frame_bottom, div.frame_top, div.frame_left, div.frame_right {
+  color: rgba(0, 0, 0, 0);  
+}
+
+.frame_bottom {
+    position: absolute;
+    bottom: 0;
+    height: 6.5vh;
+    z-index: 1300;
+    width: 100%;
+}
+
+.frame_top {
+    position: absolute;
+    top: 0;
+    height: 10.5vh;
+    z-index: 1300;
+    width: 100%;
+}
+
+.frame_left {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    z-index: 1300;
+    width: 9.5vw;
+}
+
+.frame_right {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    z-index: 1300;
+    width: 9.5vw;
 }
