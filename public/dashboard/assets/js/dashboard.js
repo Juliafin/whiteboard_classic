@@ -149,14 +149,14 @@ var state = {
     addStudentProject: `
     <div class="addProject popIn">
       <h1>Add a Project</h1>
-      <p class="optional_text">Optional<span class="optional">*</span></p>
+      <p class="optional_text">Student name must match an existing student.<span class="optional">*</span></p>
 
       <form class="project">
-          <label for="first_name">First name</label>
-          <input type="text" name="first_name" id="first_name">
+          <label for="first_name">Student's first name</label>
+          <input type="text" name="student_first_name" id="student_first_name">
 
-          <label for="last_name">Last name</label>
-          <input type="text" name="last_name" id="last_name">
+          <label for="last_name">Student's last name</label>
+          <input type="text" name="student_last_name" id="student_last_name">
         
           <label for="project_date">Project Date</label>
           <input type="date" name="project_date" id="project_date">
@@ -171,7 +171,7 @@ var state = {
           <input type="textarea" name="project_comments" id="project_comments">
           
           <div class="button_container">
-          <button type="submit" name="add_student">Add Student</button>
+          <button type="submit" name="add_student_project" id="student_project">Add Student Project</button>
           </div>
       
       </form>
@@ -212,6 +212,7 @@ function navbarListener() {
       $('div.background').html(state.templates.addStudentProject);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
+      studentProjectListener();
     }
 
     if ($(this).text() === 'Student List and Schedule') {
@@ -458,6 +459,20 @@ function validateNewStudent(studentObj) {
     return formData;
   }
 }
+
+function studentProjectListener() {
+  $('button#student_project').click(function(event) {
+    event.preventDefault();
+    var student_first_name = $('input[name="student_first_name"]').val()
+    var student_last_name = $('input[name="student_last_name"]').val();
+    var project_date = $('input#project_date').val();
+    var project_name = $('input#project_name').val();
+    var project_description = $('input#project_description').val();
+    var project_comments = $('input#project_comments').val();
+    console.log(student_first_name, student_last_name, project_date, project_name, project_description, project_comments);
+  })
+}
+
 
 function clearStudentform () {
     $('input[name="first_name"]').val(''),
