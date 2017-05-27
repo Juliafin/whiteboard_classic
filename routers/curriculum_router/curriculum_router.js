@@ -67,7 +67,7 @@ curriculum_router.get('/', (req, res) => {
       console.log(Object.keys(req.query).length);
 
 
-      console.log(req.user)
+      console.log(req.user);
       const filtersToSearch = {};
       const queryableFields = ['first_name', 'last_name', 'email', 'parent_first_name', 'parent_last_name', 'student_lesson_time'];
       queryableFields.forEach(field => {
@@ -127,8 +127,8 @@ curriculum_router.get('/:id', (req, res) => {
 
     // Only teachers can post a new student record
 curriculum_router.post('/', (req, res) => {
-      console.log('This is the req.body !@#$%!', req.body);
-      console.log('headers', req.headers);
+  console.log('This is the req.body !@#$%!', req.body);
+  console.log('headers', req.headers);
       // console.log(req);
 
   if (req.user._user.role === 'teacher') {
@@ -190,6 +190,27 @@ curriculum_router.post('/', (req, res) => {
       };
       return res.status(400).json(missingObj);
     }
+
+    Curriculum
+      .find({        
+        'first_name':req.body.first_name,
+        'last_name':req.body.last_name,
+        'email': req.body.email
+      })
+      .count()
+      .then( (student_record) => {
+        console.log('this is inside the duplicate search')
+        console.log(student_record);
+        if (student_record) {
+          return res.status(500).json({error: 'student already exists'});
+        }
+      })
+      .catch( (err) => {
+        console.log(err);
+      });
+
+
+
         // attach user data to created document
     req.body.author = {};
     req.body.author.id = req.user._user._id;
