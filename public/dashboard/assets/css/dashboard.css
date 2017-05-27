@@ -262,6 +262,7 @@ form.project input{
     justify-content: left;
     flex-wrap: wrap;
     min-height: 100%;
+    margin: 1vw;
 }
 
 div.card {
