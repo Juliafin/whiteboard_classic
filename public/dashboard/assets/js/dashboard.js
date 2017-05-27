@@ -209,7 +209,6 @@ function navbarListener() {
       });
 
       addStudentListener();
-      // renderStudentInfo();
 
     }
 
@@ -602,27 +601,102 @@ function renderStudentCard (state) {
 
 }
 
-function renderStudentInfo () {
+function studentInfoListener () {
 
   $('div.background').on('click', 'button.student_info', function(event) {
     event.preventDefault();
-    console.log('this listener is working');
+    // console.log('this listener is working');
     var id = $(this).closest('div.card').attr('id');
-    console.log(id);
+    // console.log(id);
     var student_record = state.student_records.find(function(record, index) {
-      console.log(id);
+      // console.log(id);
       if (record.id === id) {
         return record;
       }
-      console.log(student_record);
+      // console.log(student_record);
     });
 
+      renderStudentInfo(student_record);
 
     console.log(student_record);
     
   });
 }
 
+
+function renderStudentInfo (student_record) {
+
+  // Stop scroll on main window
+  $('html, body').css('overflow', 'hidden');
+  console.log('This is the student record inside the student info render',student_record);
+
+  // disable bottom click events
+  $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "none");
+
+  var studentHtml = `
+    <div class="student_modal slowPopIn">
+    <div class="frame_top"></div>
+    <div class="frame_bottom"></div>
+    <div class="frame_left"></div>
+    <div class="frame_right"></div>
+      <div class="student_main_info">
+        <h2 class="student_name">${student_record.first_name} ${student_record.last_name}</h2>
+        <p class="email">Email: ${student_record.email}</p>
+        <div class="columns">
+        <p class="parent_name"> Parent's name: ${student_record.parent_first_name} ${student_record.parent_last_name}</p>
+        <p class="street_address">Address: <br>${student_record.address.street_address}</p>
+        <p class="street_address_2">${student_record.address.city}, ${student_record.address.state} ${student_record.address.zipcode}</p>
+        <p class="lesson_time">Lesson Time: ${student_record.student_lesson_time.weekday} at ${moment(student_record.student_lesson_time.startTime, ["HH:mm"]).format("hh:mm A")}</p>
+        <p class=lesson_date">First lesson date: ${moment(student_record.student_lesson_time.startDate).format('dddd, MMMM Do YYYY')}</p>
+
+        </div
+
+        <button class="student_exit">
+        </button>
+      </div>
+    </div>
+    `;
+    console.log(studentHtml);
+    $('body').prepend(studentHtml);
+
+    setTimeout(function() {
+    $('div.student_modal').css('overflow', 'scroll');
+      
+    }, 800);
+      
+      studentInfoExitListener();
+
+    
+}
+
+function studentInfoExitListener() {
+
+  $('.frame_bottom, .frame_top, .frame_left, .frame_right, button.student_exit').click(function(event) {
+    
+    event.preventDefault();
+    event.stopPropagation();
+
+    if ($(this) === $('.student_main_info')) {
+      console.log( 'clicked');
+      return false;
+    }
+    // Re-allow scrolling on main page
+    $('html, body').css('overflow', 'auto');
+
+    // Remove scroll from the modal
+    $('div.student_modal').css('overflow', 'auto');
+    
+
+    // Re-allow clicks on the main page
+    $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "auto");
+
+    // Remove the modal
+    $('div.student_modal').addClass('slowPopOut');
+    $('div.student_modal').remove();
+    
+
+  })
+}
 
 
 function authenticateToken() {
@@ -644,7 +718,7 @@ function authenticateResult() {
       console.log(result);
       if (redirectHome() === false) {
         displayNav();
-        renderStudentInfo();
+        studentInfoListener();
       } else {
         $('div.background').html(state.templates.unauthorized);
       }
