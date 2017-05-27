@@ -335,7 +335,7 @@ p.success {
   background-color: #4caf50; 
 }
 
-button.add_student_project {
+button.add_student_project, button.student_info {
     margin-top: 2vw;
     border-radius: 2px;
     outline: none;
@@ -357,8 +357,7 @@ input:focus, textarea:focus {
     transform: scale(1.1, 1.3);
 }
 
-button.add_student_project:hover,
- button.add_student_project:focus {
+button.add_student_project:hover, button.add_student_project:focus, button.student_info:hover, button.student_info:focus {
     background: rgb(33, 80, 97);
     filter: brightness(120%);
     transform: scale(1.1);
@@ -371,7 +370,11 @@ button.add_student_project:hover,
     transition: all linear 300ms;
 }
 
-button.add_student_project:active, .nav > li:active {
+button.add_student_project:active, button.student_info:active, .nav > li:active {
     color: #ffaa5b;
-    transition: color linear 300ms;
+    filter:brightness(130%);
+    transform: scale(1.2);
+    transition: all linear 200ms;
+
+
 }

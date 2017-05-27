@@ -204,10 +204,12 @@ function navbarListener() {
       $('.time_element').timepicki({
         overflow_minutes: true,
         increase_direction: 'up',
-        step_size_minutes:15
+        step_size_minutes:15,
+        reset:true
       });
 
       addStudentListener();
+      // renderStudentInfo();
 
     }
 
@@ -573,6 +575,9 @@ function renderStudentCard (state) {
         <button class="add_student_project">
         Add Student Project
         </button>
+        <button class="student_info">
+        Student info
+        </button>
       </div>
       <div class="student_container">
       <p class="student_basic_info">Name: ${student_record.first_name} ${student_record.last_name}</p>
@@ -597,6 +602,27 @@ function renderStudentCard (state) {
 
 }
 
+function renderStudentInfo () {
+
+  $('div.background').on('click', 'button.student_info', function(event) {
+    event.preventDefault();
+    console.log('this listener is working');
+    var id = $(this).closest('div.card').attr('id');
+    console.log(id);
+    var student_record = state.student_records.find(function(record, index) {
+      console.log(id);
+      if (record.id === id) {
+        return record;
+      }
+      console.log(student_record);
+    });
+
+
+    console.log(student_record);
+    
+  });
+}
+
 
 
 function authenticateToken() {
@@ -618,6 +644,7 @@ function authenticateResult() {
       console.log(result);
       if (redirectHome() === false) {
         displayNav();
+        renderStudentInfo();
       } else {
         $('div.background').html(state.templates.unauthorized);
       }
