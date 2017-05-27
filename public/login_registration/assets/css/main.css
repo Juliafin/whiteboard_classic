@@ -1,19 +1,19 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 nav {
   position: fixed;
   display: block;
   z-index: 2;
-  height: 8vh;
+  height: 10vh;
   width: 100%;
   top: 0px;
   left: 0px;
   right: 0px;
-  background-color: rgb(178,18,18);
+  background-color: rgb(178, 18, 18);
   background-size: cover;
   background-position: center;
   box-shadow: 0px 2px 5px 0px #3e3c3c;
@@ -24,97 +24,96 @@ nav {
   transition: background-color linear 300ms;
 }
 
-
 body {
-    background-color:  rgb(33, 80, 97);
-    font-family: Roboto, sans-serif;
+  background-color: rgb(33, 80, 97);
+  font-family: Roboto, sans-serif;
 }
 
 .signupbox {
-    display: block;
-    position: relative;
-    width: 66vw;
-    min-height: 100%;
-    padding: 0px 4% 5% 4%;
-    margin: 9% auto;
-    background-color: white;
+  display: block;
+  position: relative;
+  width: 66vw;
+  min-height: 100%;
+  padding: 0px 4% 5% 4%;
+  margin: 9% auto;
+  background-color: white;
 }
 
 
 /*Fieldset reset*/
 
 fieldset {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    min-width: 0;
-    display: flex;
-    flex-wrap: wrap;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 h1 {
-    padding-top: 40px;
-    text-align: center;
-    color: rgb(80, 80, 80);
-    margin: 0;
-    margin-bottom: 30px;
+  padding-top: 40px;
+  text-align: center;
+  color: rgb(80, 80, 80);
+  margin: 0;
+  margin-bottom: 30px;
 }
 
 h2.features {
-    color: antiquewhite;
-    margin-bottom: 3.5%;
-    margin-top: 4%;
-    font-family: Trocchi;
-    font-weight: 100;
-    margin-left: 10;
-    font-size: 1.8vw;
+  color: antiquewhite;
+  margin-bottom: 3.5%;
+  margin-top: 4%;
+  font-family: Trocchi;
+  font-weight: 100;
+  margin-left: 10;
+  font-size: 1.8vw;
 }
 
 h2.features.F_one {
-    margin-left: 10vw;
+  margin-left: 10vw;
 }
 
 h2.features.F_two {
-    margin-left: 20vw;
+  margin-left: 20vw;
 }
 
 h2.features.F_three {
-    margin-left: 30vw;
+  margin-left: 30vw;
 }
 
 h2.features.F_four {
-    margin-left: 40vw;
+  margin-left: 40vw;
 }
 
 h1.landing_heading {
-    color: aliceblue;
-    font-size: 5vw;
-    font-family: Trocchi;
-    margin-top: 7vh;
-    font-kerning: none;
-    text-transform: uppercase;
-    font-weight: 100;
+  color: aliceblue;
+  font-size: 5vw;
+  font-family: Trocchi;
+  margin-top: 7vh;
+  font-kerning: none;
+  text-transform: uppercase;
+  font-weight: 100;
 }
 
 label {
-    display: block;
-    text-align: left;
-    color: black;
-    margin: 1.2vw 0 1vw 10vw;
-    font-weight: bold;
-    margin-left: 10vw;
+  display: block;
+  text-align: left;
+  color: black;
+  margin: 1.2vw 0 1vw 10vw;
+  font-weight: bold;
+  margin-left: 10vw;
 }
 
 input {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 38vw;
-    height: 40px;
-    padding: 15px;
-    border: 2px solid;
-    border-color: #868686;
-    border-radius: 5px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 38vw;
+  height: 40px;
+  padding: 15px;
+  border: 2px solid;
+  border-color: #868686;
+  border-radius: 5px;
 }
 
 button {
@@ -125,113 +124,118 @@ button {
   color: white;
   font-size: 16px;
   border: none;
-  font-family:Roboto;
+  font-family: Roboto;
 }
 
-label#teacher_label, label#student_label {
-    display: inline;
+label#teacher_label,
+label#student_label {
+  display: inline;
 }
 
-input#teacher, input#student {
-    display: inline;
-    width: 17%;
+input#teacher,
+input#student {
+  display: inline;
+  width: 17%;
 }
 
 input[type="radio"] {
-    height: 19px;
-    margin-top: 11%;
-    margin-left: 0%;
-    margin-right: 2%;
-    padding: 0;
-    cursor: pointer;
+  height: 19px;
+  margin-top: 11%;
+  margin-left: 0%;
+  margin-right: 2%;
+  padding: 0;
+  cursor: pointer;
 }
 
-button:hover{
-color: rgb(255,133,3);
-transition: all ease-in-out 200ms;
+button:hover {
+  color: rgb(255, 133, 3);
+  transition: all ease-in-out 200ms;
 }
 
-p{
+p {
   text-align: center;
 }
 
 p.error {
-    color: #cc6969;
-    font-family: monospace;
-    margin-top: 2%;
-    font-size: 1.5vw;
-    font-weight: bold;
+  color: #cc6969;
+  font-family: monospace;
+  margin-top: 2%;
+  font-size: 1.5vw;
+  font-weight: bold;
 }
 
 p.success {
-    color: lightgreen;
+  color: lightgreen;
 }
 
-p > a {
+p>a {
   display: inline;
   margin-left: auto;
-  margin-right: auto
-  text-decoration: none;
+  margin-right: auto text-decoration: none;
   color: rgb(69, 173, 76);
 }
 
-.accountq, a.login {
-    margin-top: 30px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
+.accountq,
+a.login {
+  margin-top: 30px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
 
 .teacher_student_select {
-    text-align: center;
+  text-align: center;
 }
 
 .button_container {
-    text-align: center;
+  text-align: center;
 }
-
 
 .nav {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    height: 100%;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 100%;
+  align-items: center;
 }
 
-.nav > li {
-    text-decoration: none;
-    outline: none;
-    list-style-type: none;
-    color: aliceblue;
-    font-family: Ruboto;
-    text-transform: uppercase;
-    cursor: pointer;
-    font-size: 2.3vw;
-    width: 20%;
-    text-align: center;
-    border-radius: 20px;
+.nav>li {
+  text-decoration: none;
+  outline: none;
+  list-style-type: none;
+  color: aliceblue;
+  font-family: Ruboto;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 1.6vw;
+  width: 20%;
+  text-align: center;
+  border-radius: 20px;
 }
 
 li:hover {
-    color: rgb(255,133,3);
-    transition: color linear 200ms;
+  transform: scale(1.1);
+  transition: all linear 300ms;
+}
+
+nav li:active {
+  color: #ffaa5b;
+  transition: color linear 300ms;
 }
 
 li#logged_in {
-    font-size: 1.2vw;
-    text-transform: initial;
+  font-size: 1.2vw;
+  text-transform: initial;
 }
 
 @keyframes displayElement {
   from {
-    transform:scale(.5);
+    transform: scale(.5);
     opacity: 0;
   }
   to {
-    transform:scale(1);
-    opacity:(1);
+    transform: scale(1);
+    opacity: (1);
   }
 }
 
@@ -239,8 +243,7 @@ li#logged_in {
   animation-name: displayElement;
   animation-duration: 200ms;
   animation-timing-function: ease-in-out;
-  animation-iteration-count:1;
+  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-direction: normal
 }
-

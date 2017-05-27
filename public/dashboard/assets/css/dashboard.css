@@ -56,7 +56,7 @@ nav {
   position: fixed;
   display: block;
   z-index: 2;
-  height: 8vh;
+  height: 10vh;
   width: 100%;
   top: 0px;
   left: 0px;
@@ -130,11 +130,13 @@ input {
     margin: 0 4vw 0px 1vw;
 }
 
-input#teacher_comments {
+textarea#teacher_comments {
     width: 80vw;
     height: 24vw;
     margin: 2vw;
     text-align: left;
+    font-size: 2vw;
+    padding: 1vw;
 }
 
 select {
@@ -333,3 +335,43 @@ p.success {
   background-color: #4caf50; 
 }
 
+button.add_student_project {
+    margin-top: 2vw;
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    background: white;
+    padding: 0.3vw;
+    width: 60%;
+    max-height: 22%;
+    font-size: 1.1vw;
+    border: 1px grey solid;
+}
+
+textarea {
+  resize: none;
+}
+
+input:focus, textarea:focus {
+    border: 2px solid rgb(178,18,18);
+    transform: scale(1.1, 1.3);
+}
+
+button.add_student_project:hover,
+ button.add_student_project:focus {
+    background: rgb(33, 80, 97);
+    filter: brightness(120%);
+    transform: scale(1.1);
+    color: white;
+    transition: all ease-in-out 301ms;
+}
+
+.nav li:hover, .nav li:focus {
+    transform: scale(1.1);
+    transition: all linear 300ms;
+}
+
+button.add_student_project:active, .nav > li:active {
+    color: #ffaa5b;
+    transition: color linear 300ms;
+}

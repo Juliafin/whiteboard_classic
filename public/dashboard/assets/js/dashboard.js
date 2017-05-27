@@ -128,7 +128,8 @@ var state = {
         </fieldset>
         <label for="teacher_comments">Teacher Comments<span class="optional">*</span></label>
         <br>
-        <input type="textarea" name="teacher_comments" id="teacher_comments">
+        <textarea type="textarea" name="teacher_comments" id="teacher_comments">
+        </textarea>
 
         <div class="button_container">
           <button type="submit" name="add_student">Add Student</button>
@@ -157,6 +158,9 @@ var state = {
 
           <label for="last_name">Student's last name</label>
           <input type="text" name="student_last_name" id="student_last_name">
+
+          <label for="email">Student's Email</label>
+          <input type="email" name="student_email" id="student_email">
         
           <label for="project_date">Project Date</label>
           <input type="date" name="project_date" id="project_date">
@@ -168,7 +172,8 @@ var state = {
           <input type="text" name="project_description" id="project_description">
 
           <label for="project_comments">Project Comments</label>
-          <input type="textarea" name="project_comments" id="project_comments">
+          <textarea type="textarea" name="project_comments" id="project_comments">
+          </textarea>
           
           <div class="button_container">
           <button type="submit" name="add_student_project" id="student_project">Add Student Project</button>
@@ -253,10 +258,7 @@ function displayNav() {
     navbarListener();
 
   }
-
 }
-
-
 
 function getStudentData() {
   return $.ajax({
@@ -301,7 +303,7 @@ function addStudentListener() {
       weekday: $('select#weekday').val(),
       startTime: $('input[name="startTime"]').val(), // 12:30
       endTime: $('input[name="endTime"]').val(), // 01:30
-      teacher_comments: $('input[name="teacher_comments"]').val()
+      teacher_comments: $('textarea[name="teacher_comments"]').val()
     };
 
     console.log( studentObj.startTime);
@@ -463,19 +465,81 @@ function validateNewStudent(studentObj) {
 function studentProjectListener() {
   $('button#student_project').click(function(event) {
     event.preventDefault();
-    var student_first_name = $('input[name="student_first_name"]').val()
-    var student_last_name = $('input[name="student_last_name"]').val();
-    var project_date = $('input#project_date').val();
-    var project_name = $('input#project_name').val();
-    var project_description = $('input#project_description').val();
-    var project_comments = $('input#project_comments').val();
-    console.log(student_first_name, student_last_name, project_date, project_name, project_description, project_comments);
-  })
+
+    var student_curriculum = {
+      student_first_name : $('input[name="student_first_name"]').val(),
+      student_last_name : $('input[name="student_last_name"]').val(),
+      email: $('input[name="student_email"]').val(),
+      project_date : $('input#project_date').val(),
+      project_name : $('input#project_name').val(),
+      project_description : $('input#project_description').val(),
+      project_comments : $('textarea#project_comments').val()
+
+    } 
+    validateStudentProject(student_curriculum);
+    console.log(student_curriculum);
+  });
+}
+
+function validateStudentProject(curriculum) {
+  var errors = {};
+  var formdata = {};
+
+
+  Object.keys(curriculum).forEach(function(field) {
+    if (curriculum[field] === '') {
+      errors[field] = `The ${field} field is empty.`
+    } else {
+      switch (field) {
+
+      case 'student_first_name':
+      case 'student_last_name':
+      case 'project_name':
+        var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
+        if (!(nameValid.test(curriculum[field]))) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
+        } else {
+          formdata[field] = curriculum[field];
+        }
+      
+      case 'project_description':
+        if (curriculum[field].length > 255) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 255 characters.`;
+        } else {
+          formdata[field] = curriculum[field]
+        }
+
+        case 'project_date':
+        formdata[field] = curriculum[field];
+
+        case "email":
+        var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
+        if (!(emailValid.test(curriculum[field]))) {
+          errors[field] = `The ${field} field is not valid.`;
+        } else {
+          formData[field] = curriculum[field];
+        }
+
+      } // ends switch
+    }
+  });
+
+  if (Object.keys(errors).length > 0) {
+
+    
+  console.log(errors);
+  return errors;
+  } else {
+    formdata.message = "No errors found.";
+    console.log(formdata);
+    return formdata;
+  }
+
 }
 
 
 function clearStudentform () {
-    $('input[name="first_name"]').val(''),
+  $('input[name="first_name"]').val(''),
     $('input[name="last_name"]').val(''),
     $('input[name="email"]').val(''),
     $('input[name="parent_first_name"]').val(''),
@@ -506,6 +570,9 @@ function renderStudentCard (state) {
     var studentCard = `
     <div class="card flip" id=${student_record.id}>
       <div class="card_color">
+        <button class="add_student_project">
+        Add Student Project
+        </button>
       </div>
       <div class="student_container">
       <p class="student_basic_info">Name: ${student_record.first_name} ${student_record.last_name}</p>
