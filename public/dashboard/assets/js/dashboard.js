@@ -615,8 +615,8 @@ function studentInfoListener () {
       }
       // console.log(student_record);
     });
-
-      renderStudentInfo(student_record);
+      var bgColor = $(this).closest('.card_color').css('background-color');
+      renderStudentInfo(student_record, bgColor);
 
     console.log(student_record);
     
@@ -624,7 +624,7 @@ function studentInfoListener () {
 }
 
 
-function renderStudentInfo (student_record) {
+function renderStudentInfo (student_record, color) {
 
   // Stop scroll on main window
   $('html, body').css('overflow', 'hidden');
@@ -633,6 +633,12 @@ function renderStudentInfo (student_record) {
   // disable bottom click events
   $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "none");
 
+  var lesson_duration = moment(student_record.student_lesson_time.endTime).diff(moment(student_record.student_lesson_time.startTime), 'minutes'); 
+  var lesson_start_time = moment(student_record.student_lesson_time.startTime, ["HH:mm"]).format("hh:mm A");
+  var lesson_end_time = moment(student_record.student_lesson_time.endTime, ["HH:mm"]).format("hh:mm A");
+  
+
+
   var studentHtml = `
     <div class="student_modal slowPopIn">
     <div class="frame_top"></div>
@@ -640,24 +646,31 @@ function renderStudentInfo (student_record) {
     <div class="frame_left"></div>
     <div class="frame_right"></div>
       <div class="student_main_info">
+      <div class="color_strip"></div>
         <h2 class="student_name">${student_record.first_name} ${student_record.last_name}</h2>
         <p class="email">Email: ${student_record.email}</p>
         <div class="columns">
         <p class="parent_name"> Parent's name: ${student_record.parent_first_name} ${student_record.parent_last_name}</p>
         <p class="street_address">Address: <br>${student_record.address.street_address}</p>
         <p class="street_address_2">${student_record.address.city}, ${student_record.address.state} ${student_record.address.zipcode}</p>
-        <p class="lesson_time">Lesson Time: ${student_record.student_lesson_time.weekday} at ${moment(student_record.student_lesson_time.startTime, ["HH:mm"]).format("hh:mm A")}</p>
-        <p class=lesson_date">First lesson date: ${moment(student_record.student_lesson_time.startDate).format('dddd, MMMM Do YYYY')}</p>
+        <p class="lesson_time">Lesson Time: ${student_record.student_lesson_time.weekday} from ${lesson_start_time} to ${lesson_end_time}</p>
+        <p class="lesson_date">First lesson date: ${moment(student_record.student_lesson_time.startDate).format('dddd, MMMM Do YYYY')}</p>
+        <p class="lesson_duration">Lesson Duration: ${lesson_duration} minutes</p>
 
-        </div
-
+        </div>
         <button class="student_exit">
+        Back to List
         </button>
+        <button class="edit_info">
+        Edit Student Info
+        </button>
+
       </div>
     </div>
     `;
     console.log(studentHtml);
     $('body').prepend(studentHtml);
+    $('.color_strip').css('background-color', color);
 
     setTimeout(function() {
     $('div.student_modal').css('overflow', 'scroll');
@@ -691,8 +704,12 @@ function studentInfoExitListener() {
     $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "auto");
 
     // Remove the modal
-    $('div.student_modal').addClass('slowPopOut');
+    $('div.student_modal').fadeOut();
+    setTimeout(function() {
     $('div.student_modal').remove();
+      
+    }, 700);
+    
     
 
   })
