@@ -73,6 +73,7 @@ function navbarListener() {
 
     if ($(this).text() === 'Home') {
       $('div.background').empty();
+      $(this).scrollTop(0);
       $('div.background').html(state.templates.home);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
@@ -81,6 +82,7 @@ function navbarListener() {
 
     if ($(this).text() === 'Register') {
       $('div.background').empty();
+      $(this).scrollTop(0);
       $('div.background').html(state.templates.register);
       $(this).toggleClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
@@ -89,6 +91,7 @@ function navbarListener() {
 
     if ($(this).text() === 'Login') {
       $('div.background').empty();
+      $(this).scrollTop(0);
       $('div.background').html(state.templates.login);
       loginSubmitListener();
       $(this).toggleClass('selected');
@@ -440,9 +443,6 @@ function testDashboard() {
     console.log(token);
   })
 }
-
-
-
 
 ($(document).ready(function () {
   navbarListener();
