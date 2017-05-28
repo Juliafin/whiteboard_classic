@@ -197,6 +197,12 @@ function navbarListener() {
   $('nav li').click(function (event) {
 
     if ($(this).text() === 'Add Student') {
+      setTimeout(function() {
+      console.log('scrolling up');
+      $(this).scrollTop(0);
+        
+      }, 1);
+      
       $('div.background').empty();
       $('div.background').html(state.templates.addStudent);
       $(this).toggleClass('selected');
@@ -213,6 +219,13 @@ function navbarListener() {
     }
 
     if ($(this).text() === 'Add Student Project') {
+      
+      setTimeout(function() {
+      console.log('scrolling up');
+      $(this).scrollTop(0);
+        
+      }, 1);
+      
       $('div.background').empty();
       // TODO Make template
       $('div.background').html(state.templates.addStudentProject);
@@ -222,6 +235,12 @@ function navbarListener() {
     }
 
     if ($(this).text() === 'Student List and Schedule') {
+      setTimeout(function() {
+      console.log('scrolling up');
+      $(this).scrollTop(0);
+        
+      }, 1);
+      
       $('div.background').empty();
       // TODO Make template
       $('div.background').html(state.templates.studentList);
@@ -477,8 +496,8 @@ function studentProjectListener() {
       project_comments : $('textarea#project_comments').val()
 
     } 
-    validateStudentProject(student_curriculum);
-    console.log(student_curriculum);
+    var validatedProject = validateStudentProject(student_curriculum);
+    console.log(validatedProject);
   });
 }
 
@@ -495,15 +514,28 @@ function validateStudentProject(curriculum) {
 
       case 'student_first_name':
       case 'student_last_name':
-      case 'project_name':
         var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
         if (!(nameValid.test(curriculum[field]))) {
           errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
         } else {
           formdata[field] = curriculum[field];
         }
-      
+
+      case 'project_name':
+        if (curriculum[field].length > 30) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 30 characters.`;
+        } else {
+          formdata[field] = curriculum[field]
+        }
+
       case 'project_description':
+        if (curriculum[field].length > 40) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 40 characters.`;
+        } else {
+          formdata[field] = curriculum[field]
+        }
+
+      case 'project_comments':
         if (curriculum[field].length > 255) {
           errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 255 characters.`;
         } else {
@@ -518,7 +550,7 @@ function validateStudentProject(curriculum) {
         if (!(emailValid.test(curriculum[field]))) {
           errors[field] = `The ${field} field is not valid.`;
         } else {
-          formData[field] = curriculum[field];
+          formdata[field] = curriculum[field];
         }
 
       } // ends switch
@@ -580,7 +612,7 @@ function renderStudentCard (state) {
       </div>
       <div class="student_container">
       <p class="student_basic_info">Name: ${student_record.first_name} ${student_record.last_name}</p>
-      <p class="lesson_time">Lesson time: <br> ${student_record.student_lesson_time.weekday} at ${moment(student_record.student_lesson_time.startTime, ["HH:mm"]).format("hh:mm A")}</p>
+      <p class="lesson_time">Lesson time: <br> ${student_record.student_lesson_time.weekday} at ${moment(student_record.student_lesson_time.startTime).format("hh:mm A")}</p>
       </div>
     </div>
   `;
@@ -634,8 +666,12 @@ function renderStudentInfo (student_record, color) {
   $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "none");
 
   var lesson_duration = moment(student_record.student_lesson_time.endTime).diff(moment(student_record.student_lesson_time.startTime), 'minutes'); 
-  var lesson_start_time = moment(student_record.student_lesson_time.startTime, ["HH:mm"]).format("hh:mm A");
-  var lesson_end_time = moment(student_record.student_lesson_time.endTime, ["HH:mm"]).format("hh:mm A");
+  var lesson_start_time = moment(student_record.student_lesson_time.startTime).format("hh:mm A");
+  var lesson_end_time = moment(student_record.student_lesson_time.endTime).format("hh:mm A");
+  console.log(student_record.student_lesson_time.startTime);
+  console.log(student_record.student_lesson_time.endTime);
+  console.log(lesson_start_time);
+  console.log(lesson_end_time);
   
 
 
@@ -714,6 +750,19 @@ function studentInfoExitListener() {
 
   })
 }
+
+
+function addStudentProject(project, id) {
+  return $.ajax({
+    type: 'PUT',
+    url: `/cu-manager/student-curriculum-projects/${id}`,
+    data: project,
+    headers: {
+      Authorization: `bearer ${window.localStorage.getItem('token')}`
+    }
+  });
+}
+
 
 
 function authenticateToken() {

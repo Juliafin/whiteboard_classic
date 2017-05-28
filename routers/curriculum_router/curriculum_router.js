@@ -291,8 +291,9 @@ curriculum_router.put('/:id', (req, res) => {
         });
 });
 
+// Update student by adding a student project
 curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
-  if (req.user._user.role === 'student') {
+  if (req.user._user.role === 'student' || !('user' in req)) {
     return res.status(401).json({
       error: 'unauthorized'
     });
