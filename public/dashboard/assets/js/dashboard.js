@@ -369,6 +369,9 @@ function addStudentListener() {
 
 
 function validateNewStudent(studentObj) {
+
+  $('.error').remove();
+
   var errors = {};
   var formData = {};
   formData.address = {};
@@ -487,13 +490,13 @@ function studentProjectListener() {
     event.preventDefault();
 
     var student_curriculum = {
-      student_first_name : $('input[name="student_first_name"]').val(),
-      student_last_name : $('input[name="student_last_name"]').val(),
-      email: $('input[name="student_email"]').val(),
-      project_date : $('input#project_date').val(),
-      project_name : $('input#project_name').val(),
-      project_description : $('input#project_description').val(),
-      project_comments : $('textarea#project_comments').val()
+      student_first_name : $('input[name="student_first_name"]').val().trim(),
+      student_last_name : $('input[name="student_last_name"]').val().trim(),
+      email: $('input[name="student_email"]').val().trim(),
+      project_date : $('input#project_date').val().trim(),
+      project_name : $('input#project_name').val().trim(),
+      project_description : $('input#project_description').val().trim(),
+      project_comments : $('textarea#project_comments').val().trim()
     }
 
     // Validate the input and verify the 'no errors' message 
@@ -518,18 +521,14 @@ function studentProjectListener() {
       });
       // use the index to update the returned item in the state if it is found
 
-      var searchResultIndex = searchResult.order;
+      var searchResultIndex = searchResult.order-1;
       console.log('Search result in state matching the student the project belongs to', searchResult);
       // If the result is found, build the object to send
       // for the update containing: student_curriculum (project date, project name, project description, project comments), the id
       // Delete the extra keys not needed in the object
-      var index; 
       if (searchResult) {
-        if (searchResult.student_curriculum.length === 0) {
-          index = 0 
-        } else {
-          var index = searchResult.student_curriculum.length - 1;
-        }
+        var index = searchResult.student_curriculum.length.toString();       
+        
         delete validatedProject.student_first_name;
         delete validatedProject.student_last_name;
         delete validatedProject.email;
@@ -539,8 +538,13 @@ function studentProjectListener() {
             console.log('the result was successful');
             console.log(student_record);
             // write the change back to the state;
-            student_record.order = searchResultIndex;
-            state.student_records[searchResultIndex] = student_record;
+            
+            student_record.updated.student_curriculum.forEach(function(project, projectIndex) {
+	console.log(project[0]);
+	console.log(state.student_records[searchResultIndex].student_curriculum[projectIndex]);
+	state.student_records[searchResultIndex].student_curriculum[projectIndex] = project[0];
+});
+
             console.log('Updated state:' , state.student_records);
             
           })
@@ -570,9 +574,11 @@ function validateStudentProject(curriculum) {
 
       case 'student_first_name':
       case 'student_last_name':
-        var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
-        if (!(nameValid.test(curriculum[field]))) {
-          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
+      var whiteSpace = new RegExp(/\s/);
+        if (curriculum[field].length > 25) {
+          errors[field] = `The ${field.replace('_', ' ')} field must have a maximum of 25 characters.`;
+        } else if (  ( whiteSpace.test(curriculum[field] === false ) ) ) {
+          errors[field] = `The ${field.replace('_', ' ')} field must not have spaces.`;
         } else {
           formdata[field] = curriculum[field];
         }
@@ -825,7 +831,7 @@ function addStudentProject(project, id, index) {
   return $.ajax({
     type: 'PUT',
     url: `/cu-manager/student-curriculum-projects/${id}`,
-    data: projectData ,
+    data: projectData,
     headers: {
       Authorization: `bearer ${window.localStorage.getItem('token')}`
     }
