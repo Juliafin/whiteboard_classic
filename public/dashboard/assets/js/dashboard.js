@@ -494,14 +494,70 @@ function studentProjectListener() {
       project_name : $('input#project_name').val(),
       project_description : $('input#project_description').val(),
       project_comments : $('textarea#project_comments').val()
+    }
 
-    } 
+    // Validate the input and verify the 'no errors' message 
     var validatedProject = validateStudentProject(student_curriculum);
+    
     console.log(validatedProject);
+
+    if ('message' in validatedProject && validatedProject.message === 'No errors found.') {
+      delete validatedProject.message;
+
+      // Find the student record in the state, and append it's position in the array to the object for later processing 
+      var searchResult = state.student_records.find(function (record) {
+        if (record.first_name === validatedProject.student_first_name &&
+            record.last_name === validatedProject.student_last_name &&
+            record.email === validatedProject.email
+        ) {
+          return record;
+        } else {
+          return false;
+        }
+
+      });
+      // use the index to update the returned item in the state if it is found
+
+      var searchResultIndex = searchResult.order;
+      console.log('Search result in state matching the student the project belongs to', searchResult);
+      // If the result is found, build the object to send
+      // for the update containing: student_curriculum (project date, project name, project description, project comments), the id
+      // Delete the extra keys not needed in the object
+      var index; 
+      if (searchResult) {
+        if (searchResult.student_curriculum.length === 0) {
+          index = 0 
+        } else {
+          var index = searchResult.student_curriculum.length - 1;
+        }
+        delete validatedProject.student_first_name;
+        delete validatedProject.student_last_name;
+        delete validatedProject.email;
+
+        addStudentProject(validatedProject, searchResult.id, index)
+          .then(function(student_record){
+            console.log('the result was successful');
+            console.log(student_record);
+            // write the change back to the state;
+            student_record.order = searchResultIndex;
+            state.student_records[searchResultIndex] = student_record;
+            console.log('Updated state:' , state.student_records);
+            
+          })
+          .catch(function(err) {
+            console.log(err);
+          })
+
+
+      } else {
+        console.log ('the search result wasnt found');
+      }
+    }
   });
 }
 
 function validateStudentProject(curriculum) {
+  console.log(curriculum);
   var errors = {};
   var formdata = {};
 
@@ -520,6 +576,7 @@ function validateStudentProject(curriculum) {
         } else {
           formdata[field] = curriculum[field];
         }
+        break;
 
       case 'project_name':
         if (curriculum[field].length > 30) {
@@ -527,23 +584,23 @@ function validateStudentProject(curriculum) {
         } else {
           formdata[field] = curriculum[field]
         }
+        break;
 
       case 'project_description':
-        if (curriculum[field].length > 40) {
-          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 40 characters.`;
+        if (curriculum[field].length > 100) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 100 characters.`;
         } else {
           formdata[field] = curriculum[field]
         }
+        break;
 
       case 'project_comments':
-        if (curriculum[field].length > 255) {
-          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 255 characters.`;
-        } else {
           formdata[field] = curriculum[field]
-        }
+        break;
 
         case 'project_date':
         formdata[field] = curriculum[field];
+        break;
 
         case "email":
         var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
@@ -552,12 +609,18 @@ function validateStudentProject(curriculum) {
         } else {
           formdata[field] = curriculum[field];
         }
+        break;
 
       } // ends switch
     }
   });
 
   if (Object.keys(errors).length > 0) {
+    Object.keys(errors).forEach(function (elem) {
+      var currentError = errors[elem];
+      var errorMsg = `<p class="error" id="${elem}_error"> ${currentError}</p>`;
+      $(`input[name="${elem}"]`).after(errorMsg);
+    });
 
     
   console.log(errors);
@@ -752,17 +815,22 @@ function studentInfoExitListener() {
 }
 
 
-function addStudentProject(project, id) {
+function addStudentProject(project, id, index) {
+  var projectData = {
+      'student_curriculum': project,
+      'id': id,
+      'index': index 
+    }
+    console.log('Project Data to be sent to server', projectData);
   return $.ajax({
     type: 'PUT',
     url: `/cu-manager/student-curriculum-projects/${id}`,
-    data: project,
+    data: projectData ,
     headers: {
       Authorization: `bearer ${window.localStorage.getItem('token')}`
     }
   });
 }
-
 
 
 function authenticateToken() {
@@ -774,8 +842,6 @@ function authenticateToken() {
     }
   });
 }
-
-
 
 
 function authenticateResult() {
