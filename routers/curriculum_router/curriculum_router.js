@@ -292,6 +292,9 @@ curriculum_router.put('/:id', (req, res) => {
 });
 
 // Update student by adding a student project
+// Provide the following:
+// Index key to write to, student curriculum object with four properties: project date, project name, project description, and project comments
+// also provide the id in the body
 curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
   if (req.user._user.role === 'student' || !('user' in req)) {
     return res.status(401).json({
@@ -300,8 +303,18 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
 
   } else if (req.user._user.role === 'teacher') {
 
+    const requiredFields = ['student_curriculum', 'id', 'index'];
+    const missingFields = {}
+    requiredFields.forEach( (field ) => {
+      if (!(field in req.body)) {
+        missingFields.push(field);
+      }
+    })
 
-    if ('student_curriculum' in req.body) {
+    if (Object.keys(missingFields).length !== 0) {
+      return res.status(400).json({missingFields});
+    } else {
+
       const index = req.body.index;
       const student_curriculum_index = "student_curriculum." + index;
 
@@ -326,7 +339,8 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
               });
 
             });
-    }
+      }
+    
   }
 
 });
