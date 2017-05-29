@@ -496,7 +496,7 @@ function studentProjectListener() {
       project_date : $('input#project_date').val().trim(),
       project_name : $('input#project_name').val().trim(),
       project_description : $('input#project_description').val().trim(),
-      project_comments : $('textarea#project_comments').val().trim()
+      teacher_project_comments : $('textarea#project_comments').val().trim()
     }
 
     // Validate the input and verify the 'no errors' message 
@@ -540,9 +540,9 @@ function studentProjectListener() {
             // write the change back to the state;
             
             student_record.updated.student_curriculum.forEach(function(project, projectIndex) {
-	console.log(project[0]);
+	console.log(project);
 	console.log(state.student_records[searchResultIndex].student_curriculum[projectIndex]);
-	state.student_records[searchResultIndex].student_curriculum[projectIndex] = project[0];
+	state.student_records[searchResultIndex].student_curriculum[projectIndex] = project;
 });
 
             console.log('Updated state:' , state.student_records);
@@ -600,7 +600,7 @@ function validateStudentProject(curriculum) {
         }
         break;
 
-      case 'project_comments':
+      case 'teacher_project_comments':
           formdata[field] = curriculum[field]
         break;
 
