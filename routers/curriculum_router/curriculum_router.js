@@ -303,6 +303,7 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
 
   } else if (req.user._user.role === 'teacher') {
 
+    console.log('This is the req.body from the add student project PUT request', req.body);
     const requiredFields = ['student_curriculum', 'id', 'index'];
     const missingFields = {}
     requiredFields.forEach( (field ) => {
@@ -315,22 +316,23 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
       return res.status(400).json({missingFields});
     } else {
 
-      const index = req.body.index;
-      const student_curriculum_index = "student_curriculum." + index;
-
+      const index = parseInt(req.body.index);
+      console.log ('student curriculum before update', req.body.student_curriculum);
       Curriculum
-            .findByIdAndUpdate(req.params.id, {
-              $push: {
-                [student_curriculum_index]: req.body.student_curriculum
-              }
-            }, {
-              new: true,
-              runValidators: true
-            })
+            .findById(req.params.id)            
             .then((student_record) => {
+              student_record.student_curriculum[index] = req.body.student_curriculum;
+              console.log('student record just before save', student_record);
+              student_record
+                .save()
+                .then( (result) => {
+
+              console.log('student record after saving', result);
               return res.status(201).json({
-                updated: student_record.apiView()
+                updated: result.apiView()
               });
+                });
+
             })
             .catch((err) => {
               console.error(err);
