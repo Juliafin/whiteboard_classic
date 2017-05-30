@@ -1,56 +1,54 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    text-align: center;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  text-align: center;
 }
 
 .unauthorized {
-    background-image: url(./../images/403.jpg);
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    width: 100%;
-    background-size: contain;
-    margin: 0 auto;
-    position: relative;
-    left:  0;
-    right: 0;
-    background-position: center center;
+  background-image: url(./../images/403.jpg);
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  width: 100%;
+  background-size: contain;
+  margin: 0 auto;
+  position: relative;
+  left: 0;
+  right: 0;
+  background-position: center center;
 }
 
 p.unauthorized_redirect {
-    position: fixed;
-    display: inline-block;
-    top: 13.3vw;
-    font-size: 1.5vw;
-    color: red;
-    left: 28.5%;
-    font-weight: 600;
+  position: fixed;
+  display: inline-block;
+  top: 13.3vw;
+  font-size: 1.5vw;
+  color: red;
+  left: 28.5%;
+  font-weight: 600;
 }
 
-
 body {
-    background-color:  rgb(33, 80, 97);
-    font-family: sans-serif;
+  background-color: rgb(33, 80, 97);
+  font-family: sans-serif;
 }
 
 label {
-    display: inline-block;
-    margin: 2% auto;
-    font-family: Trocchi;
-    color: #ffaa5b;
-    font-size: 2vw;
-    height: 2vw;
+  display: inline-block;
+  margin: 2% auto;
+  font-family: Trocchi;
+  color: #ffaa5b;
+  font-size: 2vw;
+  height: 2vw;
 }
 
 h1 {
-    padding: 16px;
-    color: white;
-    margin-top: 5vw;
-    font-family: Trocchi;
-    font-size: 4vw;
+  padding: 16px;
+  color: white;
+  margin-top: 5vw;
+  font-family: Trocchi;
+  font-size: 4vw;
 }
-
 
 nav {
   position: fixed;
@@ -61,7 +59,7 @@ nav {
   top: 0px;
   left: 0px;
   right: 0px;
-  background-color: rgb(178,18,18);
+  background-color: rgb(178, 18, 18);
   background-size: cover;
   background-position: center;
   box-shadow: 0px 2px 5px 0px #3e3c3c;
@@ -73,161 +71,158 @@ nav {
 }
 
 .nav {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    height: 100%;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 100%;
+  align-items: center;
 }
 
-.nav > li {
-    text-decoration: none;
-    outline: none;
-    list-style-type: none;
-    color: aliceblue;
-    font-family: Trocchi;
-    text-transform: uppercase;
-    cursor: pointer;
-    font-size: 1.4vw;
-    width: 100%;
-    text-align: center;
-    border-radius: 20px;
+.nav>li {
+  text-decoration: none;
+  outline: none;
+  list-style-type: none;
+  color: aliceblue;
+  font-family: Trocchi;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 1.4vw;
+  width: 100%;
+  text-align: center;
+  border-radius: 20px;
 }
 
 fieldset.general_info {
-    margin-top: 5vw;
+  margin-top: 5vw;
 }
 
 fieldset {
-    color: antiquewhite;
-    margin-top: 3vw;
-    padding: 2vw 0;
-    font-size: 3vw;
-    min-width: 90vw;
-    margin-left: auto;
-    margin-right: auto;
-    border: none;
-    border-top: #ffaa5b 1px solid;
-    padding-bottom: 1vw;
-    padding-top: 3vw;
+  color: antiquewhite;
+  margin-top: 3vw;
+  padding: 2vw 0;
+  font-size: 3vw;
+  min-width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+  border-top: #ffaa5b 1px solid;
+  padding-bottom: 1vw;
+  padding-top: 3vw;
 }
 
 input#apartment_number {
-    width: 5vw;
+  width: 5vw;
 }
 
 input#street_address {
-    width: 35vw;
+  width: 35vw;
 }
 
 input {
-    height: 3vw;
-    border-radius: 2px;
-    border: none;
-    box-shadow: 3px 3px 5px 0px #444343;
-    text-align: left;
-    padding-left: 1vw;
-    margin: 0 4vw 0px 1vw;
+  height: 3vw;
+  border-radius: 2px;
+  border: none;
+  box-shadow: 3px 3px 5px 0px #444343;
+  text-align: left;
+  padding-left: 1vw;
+  margin: 0 4vw 0px 1vw;
 }
 
 textarea {
-    width: 80vw;
-    height: 24vw;
-    margin: 2vw;
-    text-align: left;
-    font-size: 2vw;
-    padding: 1vw;
-    resize: none;
+  width: 80vw;
+  height: 24vw;
+  margin: 2vw;
+  text-align: left;
+  font-size: 2vw;
+  padding: 1vw;
+  resize: none;
 }
 
 select {
-    box-shadow: 3px 5px 5px 0px #3e3c3c;
-    border: none;
-    border-radius: 2px;
-    width: 10vw;
-    margin-right: 3vw;
-    height: 3vw;
+  box-shadow: 3px 5px 5px 0px #3e3c3c;
+  border: none;
+  border-radius: 2px;
+  width: 10vw;
+  margin-right: 3vw;
+  height: 3vw;
 }
 
-
 input#parent_first_name {
-    width: 13vw;
+  width: 13vw;
 }
 
 input#parent_last_name {
-    width: 18vw;
+  width: 18vw;
 }
 
 input#first_name {
-    width: 13vw;
+  width: 13vw;
 }
 
 input#last_name {
-    width: 21vw;
+  width: 21vw;
 }
 
 input#city {
-    width: 18vw;
-    margin-right: 2vw;
+  width: 18vw;
+  margin-right: 2vw;
 }
 
 input#zipcode {
-    width: 10vw;
+  width: 10vw;
 }
 
 input[type="date"] {
-    font-size: 2vw;
+  font-size: 2vw;
 }
 
-
-
 p.optional_text {
-    color: aliceblue;
+  color: aliceblue;
 }
 
 span.optional {
-    color: rgb(178,18,18);
-    margin-left: .5vw;
+  color: rgb(178, 18, 18);
+  margin-left: .5vw;
 }
 
-label > span {
-    font-size: 1.5vw;
+label>span {
+  font-size: 1.5vw;
 }
 
 p.error {
-    display: inline-block;
-    color: rgb(178,18,18);
-    margin-right: 2vw;
-    font-size: 1.5vw;
+  display: inline-block;
+  color: rgb(178, 18, 18);
+  margin-right: 2vw;
+  font-size: 1.5vw;
 }
 
-form.project > label {
-    display: block;
-    margin-bottom: 4vh;
+form.project>label {
+  display: block;
+  margin-bottom: 4vh;
 }
 
 input#project_comments {
-    width: 76vw;
-    height: 50vw;
+  width: 76vw;
+  height: 50vw;
 }
 
-form.project input{
-    height: 3.5vw;
-    width: 30vw;
+form.project input {
+  height: 3.5vw;
+  width: 30vw;
 }
 
-.hidden{
+.hidden {
   transform: scale(0);
 }
 
 @keyframes displayElement {
   from {
-    transform:scale(.5);
+    transform: scale(.5);
     opacity: 0;
   }
   to {
-    transform:scale(1);
-    opacity:(1);
+    transform: scale(1);
+    opacity: (1);
   }
 }
 
@@ -235,7 +230,7 @@ form.project input{
   animation-name: displayElement;
   animation-duration: 400ms;
   animation-timing-function: ease-in-out;
-  animation-iteration-count:1;
+  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-direction: normal
 }
@@ -244,82 +239,80 @@ form.project input{
   animation-name: displayElement;
   animation-duration: 600ms;
   animation-timing-function: ease-in-out;
-  animation-iteration-count:1;
+  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-direction: normal
 }
 
 @keyframes removeElement {
   from {
-    transform:scale(1);
+    transform: scale(1);
     opacity: 1;
   }
   to {
-    transform:scale(0);
-    opacity:(0);
+    transform: scale(0);
+    opacity: (0);
   }
-
 }
 
 .slowPopOut {
   animation-name: removeElement;
   animation-duration: 600ms;
   animation-timing-function: ease-in-out;
-  animation-iteration-count:1;
+  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-direction: normal
 }
 
-
 .card_container {
-    display: flex;
-    justify-content: left;
-    flex-wrap: wrap;
-    min-height: 100%;
-    margin: 1vw;
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  min-height: 100%;
+  margin: 1vw;
 }
 
 div.card {
-    width: 19vw;
-    height: 20vw;
-    background-color: #fffaf3;
-    border: 1px solid rgba(0, 0, 0, 0.18);
-    border-radius: 1px;
-    margin: 0px 6.5vw;
-    margin-bottom: 5vw;
-    margin-top: 4vw;
-    box-shadow: 1px 1px 5px black;
+  width: 19vw;
+  height: 20vw;
+  background-color: #fffaf3;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 1px;
+  margin: 0px 6.5vw;
+  margin-bottom: 5vw;
+  margin-top: 4vw;
+  box-shadow: 1px 1px 5px black;
 }
 
 .card_color {
-    position: relative;
-    top: 0;
-    width: 100%;
-    height: 10vw;
+  position: relative;
+  top: 0;
+  width: 100%;
+  height: 10vw;
 }
 
 .student_container {
-    height: 50%;
+  height: 50%;
 }
 
 .student_container p {
-    padding: 3%;
-    font-size: 1.5vw;
-    margin-top: 3%;
+  padding: 3%;
+  font-size: 1.5vw;
+  margin-top: 3%;
 }
 
 p.success {
-    color: lightgreen;
+  color: lightgreen;
 }
 
 @keyframes cardFlip {
   from {
-    transform:rotateY(180deg);
+    transform: rotateY(180deg);
     opacity: 0;
   }
   to {
-    transform:rotateY(0deg);
-    opacity:(1);
+    transform: rotateY(0deg);
+    opacity: (1);
   }
 }
 
@@ -327,176 +320,217 @@ p.success {
   animation-name: cardFlip;
   animation-duration: 400ms;
   animation-timing-function: ease-in-out;
-  animation-iteration-count:1;
+  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-direction: normal
 }
 
-.card:nth-child(4n+1) > .card_color {
-  background-color: #9c27b0; 
+.card:nth-child(4n+1)>.card_color {
+  background-color: #9c27b0;
 }
 
-
-.card:nth-child(4n+2) > .card_color {
-  background-color: #ff5722; 
-}
-.card:nth-child(4n+3) > .card_color {
-  background-color: #ffc107; 
-}
-.card:nth-child(4n+4) > .card_color {
-  background-color: #4caf50; 
+.card:nth-child(4n+2)>.card_color {
+  background-color: #ff5722;
 }
 
-button.add_student_project, button.student_info, button.student_exit, button.edit_info {
-    margin-top: 2vw;
-    border-radius: 2px;
-    outline: none;
-    border: none;
-    background: white;
-    padding: 0.3vw;
-    width: 60%;
-    max-height: 22%;
-    font-size: 1.1vw;
-    border: 1px grey solid;
+.card:nth-child(4n+3)>.card_color {
+  background-color: #ffc107;
 }
 
-button[name="add_student"], button#student_project {
-    margin: 2vw;
-    width: 20vw;
-    height: 5vw;
-    background: rgb(178,18,18);
-    border: none;
-    color: aliceblue;
-    font-size: 2vw;
+.card:nth-child(4n+4)>.card_color {
+  background-color: #4caf50;
 }
 
-button[name="add_student"]:hover, button#student_project:hover {
-    filter:brightness(120%);
-    color: #ffaa5b;
-    transition: all 300ms linear;
- }
-
- button[name="add_student"]:active, button#student_project:active {
-    color:aliceblue;
-    background-color: #b7c3ce;
- }
-
-
-button.add_student_project:hover, button.add_student_project:focus, button.student_info:hover, button.student_info:focus, button.edit_info:hover, button.edit_info:focus, button.student_exit:hover, button.student_exit:focus  {
-    background: rgb(33, 80, 97);
-    filter: brightness(120%);
-    transform: scale(1.1);
-    color: white;
-    transition: all ease-in-out 301ms;
+button.add_student_project,
+button.student_info,
+button.student_exit,
+button.edit_info {
+  margin-top: 2vw;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  background: white;
+  padding: 0.3vw;
+  width: 60%;
+  max-height: 22%;
+  font-size: 1.1vw;
+  border: 1px grey solid;
 }
 
-button.add_student_project:active, button.student_info:active, .nav > li:active {
-    color: #ffaa5b;
-    filter:brightness(130%);
-    transform: scale(1.2);
-    transition: all linear 200ms;
-
+button[name="add_student"],
+button#student_project {
+  margin: 2vw;
+  width: 20vw;
+  height: 5vw;
+  background: rgb(178, 18, 18);
+  border: none;
+  color: aliceblue;
+  font-size: 2vw;
 }
 
-.nav li:hover, .nav li:focus {
-    transform: scale(1.1);
-    transition: all linear 300ms;
+button[name="add_student"]:hover,
+button#student_project:hover {
+  filter: brightness(120%);
+  color: #ffaa5b;
+  transition: all 300ms linear;
 }
 
-input:focus, textarea:focus {
-    border: 2px solid rgb(178,18,18);
-    transform: scale(1.1, 1.3);
+button[name="add_student"]:active,
+button#student_project:active {
+  color: aliceblue;
+  background-color: #b7c3ce;
 }
 
+button.add_student_project:hover,
+button.add_student_project:focus,
+button.student_info:hover,
+button.student_info:focus,
+button.edit_info:hover,
+button.edit_info:focus,
+button.student_exit:hover,
+button.student_exit:focus {
+  background: rgb(33, 80, 97);
+  filter: brightness(120%);
+  transform: scale(1.1);
+  color: white;
+  transition: all ease-in-out 301ms;
+}
+
+button.add_student_project:active,
+button.student_info:active,
+.nav>li:active {
+  color: #ffaa5b;
+  filter: brightness(130%);
+  transform: scale(1.2);
+  transition: all linear 200ms;
+}
+
+.nav li:hover,
+.nav li:focus {
+  transform: scale(1.1);
+  transition: all linear 300ms;
+}
+
+input:focus,
+textarea:focus {
+  border: 2px solid rgb(178, 18, 18);
+  transform: scale(1.1, 1.3);
+}
 
 .student_modal {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    text-align: center;
-    background: rgba(0, 80, 144, 0.45);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  text-align: center;
+  background: rgba(0, 80, 144, 0.45);
 }
 
 .student_main_info {
-    width: 80vw;
-    height: 80vh;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    border: 3px solid black;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color:rgba(255, 255, 255, 0.91);
-    z-index: 200;
+  width: 80vw;
+  height: 80vh;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  border: 3px solid black;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.91);
+  z-index: 200;
 }
 
 .student_main_info h2 {
-    font-family: Trocchi;
-    margin-top: 3%;
-    color: white;
-    z-index: 1000;
-    position: relative;
+  font-family: Trocchi;
+  margin-top: 3%;
+  color: white;
+  z-index: 1000;
+  position: relative;
 }
 
-div.frame_bottom, div.frame_top, div.frame_left, div.frame_right {
-  color: rgba(0, 0, 0, 0);  
+div.frame_bottom,
+div.frame_top,
+div.frame_left,
+div.frame_right {
+  color: rgba(0, 0, 0, 0);
 }
 
 .frame_bottom {
-    position: absolute;
-    bottom: 0;
-    height: 6.5vh;
-    z-index: 1300;
-    width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 6.5vh;
+  z-index: 1300;
+  width: 100%;
 }
 
 .frame_top {
-    position: absolute;
-    top: 0;
-    height: 10.5vh;
-    z-index: 1300;
-    width: 100%;
+  position: absolute;
+  top: 0;
+  height: 10.5vh;
+  z-index: 1300;
+  width: 100%;
 }
 
 .frame_left {
-    position: absolute;
-    left: 0;
-    height: 100%;
-    z-index: 1300;
-    width: 9.5vw;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  z-index: 1300;
+  width: 9.5vw;
 }
 
 .frame_right {
-    position: absolute;
-    right: 0;
-    height: 100%;
-    z-index: 1300;
-    width: 9.5vw;
+  position: absolute;
+  right: 0;
+  height: 100%;
+  z-index: 1300;
+  width: 9.5vw;
 }
 
 .columns {
-    column-count: 2;
+  column-count: 2;
 }
 
 p.email {
-    margin-bottom: 12vh;
-    z-index: 1000;
-    position: relative;
-    color: whitesmoke;
+  margin-bottom: 12vh;
+  z-index: 1000;
+  position: relative;
+  color: whitesmoke;
 }
 
-p.street_address_2, p.lesson_duration {
-    margin-bottom: 4vw;
+p.street_address_2,
+p.lesson_duration {
+  margin-bottom: 4vw;
 }
 
 p.parent_name {
-    margin-bottom: 1vw;
+  margin-bottom: 1vw;
 }
 
 .color_strip {
-    position: absolute;
-    width: 100%;
-    height: 8vw;
+  position: absolute;
+  width: 100%;
+  height: 8vw;
+}
+
+div.flex-viewport {
+  overflow: hidden;
+  position: relative;
+}
+
+div.flex-viewport li {
+  width: 503px;
+  margin-right: 0px;
+  float: left;
+  display: block
+}
+
+div.flex-viewport>ul.slides {
+  width: 1200%;
+  transition-duration: 0.6s;
+  transform: translate3d(-1006px, 0px, 0px);
+}
+
+.flex-viewport {
+    height: 12vw;
 }

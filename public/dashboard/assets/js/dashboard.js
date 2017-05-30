@@ -197,12 +197,12 @@ function navbarListener() {
   $('nav li').click(function (event) {
 
     if ($(this).text() === 'Add Student') {
-      setTimeout(function() {
-      console.log('scrolling up');
-      $(this).scrollTop(0);
-        
+      setTimeout(function () {
+        console.log('scrolling up');
+        $(this).scrollTop(0);
+
       }, 1);
-      
+
       $('div.background').empty();
       $('div.background').html(state.templates.addStudent);
       $(this).toggleClass('selected');
@@ -210,8 +210,8 @@ function navbarListener() {
       $('.time_element').timepicki({
         overflow_minutes: true,
         increase_direction: 'up',
-        step_size_minutes:15,
-        reset:true
+        step_size_minutes: 15,
+        reset: true
       });
 
       addStudentListener();
@@ -219,13 +219,13 @@ function navbarListener() {
     }
 
     if ($(this).text() === 'Add Student Project') {
-      
-      setTimeout(function() {
-      console.log('scrolling up');
-      $(this).scrollTop(0);
-        
+
+      setTimeout(function () {
+        console.log('scrolling up');
+        $(this).scrollTop(0);
+
       }, 1);
-      
+
       $('div.background').empty();
       // TODO Make template
       $('div.background').html(state.templates.addStudentProject);
@@ -235,12 +235,12 @@ function navbarListener() {
     }
 
     if ($(this).text() === 'Student List and Schedule') {
-      setTimeout(function() {
-      console.log('scrolling up');
-      $(this).scrollTop(0);
-        
+      setTimeout(function () {
+        console.log('scrolling up');
+        $(this).scrollTop(0);
+
       }, 1);
-      
+
       $('div.background').empty();
       // TODO Make template
       $('div.background').html(state.templates.studentList);
@@ -326,7 +326,7 @@ function addStudentListener() {
       teacher_comments: $('textarea[name="teacher_comments"]').val()
     };
 
-    console.log( studentObj.startTime);
+    console.log(studentObj.startTime);
     console.log(studentObj.endTime);
 
     // convert time/date fiels to ISO strings
@@ -349,7 +349,7 @@ function addStudentListener() {
     if ('message' in validatedStudent && validatedStudent.message === 'No errors found.') {
       delete validatedStudent.message;
       postStudentData(validatedStudent)
-        .then(function(data) {
+        .then(function (data) {
           console.log(data);
           state.student_records.push(data);
           var success = `
@@ -358,7 +358,7 @@ function addStudentListener() {
           $('div.button_container').before(success);
           clearStudentform();
         })
-        .catch(function(err) {
+        .catch(function (err) {
           console.log('There was an error');
           console.log(err);
         });
@@ -386,83 +386,83 @@ function validateNewStudent(studentObj) {
     if (studentObj[field] === "") {
       // if the following fields are empty, do nothing (they are optional)
       switch (field) {
-      case 'parent_first_name':
-      case 'parent_last_name':
-      case 'apartment_number':
-      case 'teacher_comments':
-        break;
-      default:
-        errors[field] = `The ${field.replace('_', ' ')} field is empty.`;
+        case 'parent_first_name':
+        case 'parent_last_name':
+        case 'apartment_number':
+        case 'teacher_comments':
+          break;
+        default:
+          errors[field] = `The ${field.replace('_', ' ')} field is empty.`;
       }
 
     } else {
       switch (field) {
 
-      case "first_name":
-      case "last_name":
-      case "parent_first_name":
-      case "parent_last_name":
-        var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
-        if (!(nameValid.test(studentObj[field]))) {
-          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
-        } else {
-          formData[field] = studentObj[field];
-        }
-        break;
+        case "first_name":
+        case "last_name":
+        case "parent_first_name":
+        case "parent_last_name":
+          var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
+          if (!(nameValid.test(studentObj[field]))) {
+            errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
+          } else {
+            formData[field] = studentObj[field];
+          }
+          break;
 
-      case "email":
-        var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
-        if (!(emailValid.test(studentObj[field]))) {
-          errors[field] = `The ${field} field is not valid.`;
-        } else {
-          formData[field] = studentObj[field];
-        }
-        break;
+        case "email":
+          var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
+          if (!(emailValid.test(studentObj[field]))) {
+            errors[field] = `The ${field} field is not valid.`;
+          } else {
+            formData[field] = studentObj[field];
+          }
+          break;
 
-      case "city":
-        var cityValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
-        if (!(cityValid.test(studentObj[field]))) {
-          errors[field] = `The ${field} field must contain only UTF-8 letters and be between 2 and 20 characters.`;
-        } else {
+        case "city":
+          var cityValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
+          if (!(cityValid.test(studentObj[field]))) {
+            errors[field] = `The ${field} field must contain only UTF-8 letters and be between 2 and 20 characters.`;
+          } else {
+            formData.address[field] = studentObj[field];
+          }
+          break;
+
+        case "zipcode":
+          var zipcodeValid = new RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
+          if (!(zipcodeValid.test(studentObj[field]))) {
+            errors[field] = `The ${field} field must either be in the format XXXXX or XXXXX-XXXX.`;
+          } else {
+            formData.address[field] = studentObj[field];
+          }
+          break;
+
+        case "apartment_number":
+        case "state":
+        case "street_address":
+        case "teacher_comments":
           formData.address[field] = studentObj[field];
-        }
-        break;
+          break;
 
-      case "zipcode":
-        var zipcodeValid = new RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
-        if (!(zipcodeValid.test(studentObj[field]))) {
-          errors[field] = `The ${field} field must either be in the format XXXXX or XXXXX-XXXX.`;
-        } else {
-          formData.address[field] = studentObj[field];
-        }
-        break;
-
-      case "apartment_number":
-      case "state":
-      case "street_address":
-      case "teacher_comments":
-        formData.address[field] = studentObj[field];
-        break;
-      
-      case "startDate":
-      case "weekday":
-      case "startTime":
-        formData.student_lesson_time[field] = studentObj[field];
-        break;
-      case "endTime":
-        var startTime = moment(studentObj.startTime).format("HH:mm");
-        var endTime = moment(studentObj.endTime).format("HH:mm");
-        var startTimeN = parseInt(startTime.replace(":",""));
-        var endTimeN = parseInt(endTime.replace(":",""));
-        console.log(startTime);
-        console.log('start time',startTimeN);
-        console.log(endTime);
-        console.log('end time', endTimeN);
-        if (endTimeN < startTimeN) {
-          errors[field] = `The ${field} cannot be before the start time.`;
-        } else {
+        case "startDate":
+        case "weekday":
+        case "startTime":
           formData.student_lesson_time[field] = studentObj[field];
-        }
+          break;
+        case "endTime":
+          var startTime = moment(studentObj.startTime).format("HH:mm");
+          var endTime = moment(studentObj.endTime).format("HH:mm");
+          var startTimeN = parseInt(startTime.replace(":", ""));
+          var endTimeN = parseInt(endTime.replace(":", ""));
+          console.log(startTime);
+          console.log('start time', startTimeN);
+          console.log(endTime);
+          console.log('end time', endTimeN);
+          if (endTimeN < startTimeN) {
+            errors[field] = `The ${field} cannot be before the start time.`;
+          } else {
+            formData.student_lesson_time[field] = studentObj[field];
+          }
       }
     }
   });
@@ -486,32 +486,39 @@ function validateNewStudent(studentObj) {
 }
 
 function studentProjectListener() {
-  $('button#student_project').click(function(event) {
+  $('button#student_project').click(function (event) {
     event.preventDefault();
 
     var student_curriculum = {
-      student_first_name : $('input[name="student_first_name"]').val().trim(),
-      student_last_name : $('input[name="student_last_name"]').val().trim(),
+      student_first_name: $('input[name="student_first_name"]').val().trim(),
+      student_last_name: $('input[name="student_last_name"]').val().trim(),
       email: $('input[name="student_email"]').val().trim(),
-      project_date : $('input#project_date').val().trim(),
-      project_name : $('input#project_name').val().trim(),
-      project_description : $('input#project_description').val().trim(),
-      teacher_project_comments : $('textarea#project_comments').val().trim()
+      project_date: $('input#project_date').val().trim(),
+      project_name: $('input#project_name').val().trim(),
+      project_description: $('input#project_description').val().trim(),
+      teacher_project_comments: $('textarea#project_comments').val().trim()
     }
 
     // Validate the input and verify the 'no errors' message 
     var validatedProject = validateStudentProject(student_curriculum);
-    
-    console.log(validatedProject);
 
-    if ('message' in validatedProject && validatedProject.message === 'No errors found.') {
-      delete validatedProject.message;
+    console.log(validatedProject);
+    UpdateStudentProject(validatedProject);
+
+    
+  });
+}
+
+function UpdateStudentProject (checkedProject) {
+
+  if ('message' in checkedProject && checkedProject.message === 'No errors found.') {
+      delete checkedProject.message;
 
       // Find the student record in the state, and append it's position in the array to the object for later processing 
       var searchResult = state.student_records.find(function (record) {
-        if (record.first_name === validatedProject.student_first_name &&
-            record.last_name === validatedProject.student_last_name &&
-            record.email === validatedProject.email
+        if (record.first_name === checkedProject.student_first_name &&
+          record.last_name === checkedProject.student_last_name &&
+          record.email === checkedProject.email
         ) {
           return record;
         } else {
@@ -521,44 +528,53 @@ function studentProjectListener() {
       });
       // use the index to update the returned item in the state if it is found
 
-      var searchResultIndex = searchResult.order-1;
+      var searchResultIndex = searchResult.order - 1;
       console.log('Search result in state matching the student the project belongs to', searchResult);
       // If the result is found, build the object to send
       // for the update containing: student_curriculum (project date, project name, project description, project comments), the id
       // Delete the extra keys not needed in the object
       if (searchResult) {
-        var index = searchResult.student_curriculum.length.toString();       
-        
-        delete validatedProject.student_first_name;
-        delete validatedProject.student_last_name;
-        delete validatedProject.email;
+        var index = searchResult.student_curriculum.length.toString();
 
-        addStudentProject(validatedProject, searchResult.id, index)
-          .then(function(student_record){
+        delete checkedProject.student_first_name;
+        delete checkedProject.student_last_name;
+        delete checkedProject.email;
+
+        sendStudentProject(checkedProject, searchResult.id, index)
+          .then(function (student_record) {
             console.log('the result was successful');
             console.log(student_record);
             // write the change back to the state;
-            
-            student_record.updated.student_curriculum.forEach(function(project, projectIndex) {
-	console.log(project);
-	console.log(state.student_records[searchResultIndex].student_curriculum[projectIndex]);
-	state.student_records[searchResultIndex].student_curriculum[projectIndex] = project;
-});
 
-            console.log('Updated state:' , state.student_records);
+            student_record.updated.student_curriculum.forEach(function (project, projectIndex) {
+              console.log(project);
+              console.log(state.student_records[searchResultIndex].student_curriculum[projectIndex]);
+              state.student_records[searchResultIndex].student_curriculum[projectIndex] = project;
+            });
+
+            var success = `<p class="success">Project successfully added.</p>`;
+
+            $('button#student_project').before(success);
+
+
             
+
+            console.log('Updated state:', state.student_records);
+
           })
-          .catch(function(err) {
+          .catch(function (err) {
             console.log(err);
           })
 
 
       } else {
-        console.log ('the search result wasnt found');
+        console.log('the search result wasnt found');
       }
     }
-  });
 }
+
+
+
 
 function validateStudentProject(curriculum) {
   console.log(curriculum);
@@ -566,56 +582,56 @@ function validateStudentProject(curriculum) {
   var formdata = {};
 
 
-  Object.keys(curriculum).forEach(function(field) {
+  Object.keys(curriculum).forEach(function (field) {
     if (curriculum[field] === '') {
       errors[field] = `The ${field} field is empty.`
     } else {
       switch (field) {
 
-      case 'student_first_name':
-      case 'student_last_name':
-      var whiteSpace = new RegExp(/\s/);
-        if (curriculum[field].length > 25) {
-          errors[field] = `The ${field.replace('_', ' ')} field must have a maximum of 25 characters.`;
-        } else if (  ( whiteSpace.test(curriculum[field] === false ) ) ) {
-          errors[field] = `The ${field.replace('_', ' ')} field must not have spaces.`;
-        } else {
-          formdata[field] = curriculum[field];
-        }
-        break;
+        case 'student_first_name':
+        case 'student_last_name':
+          var whiteSpace = new RegExp(/\s/);
+          if (curriculum[field].length > 25) {
+            errors[field] = `The ${field.replace('_', ' ')} field must have a maximum of 25 characters.`;
+          } else if ((whiteSpace.test(curriculum[field] === false))) {
+            errors[field] = `The ${field.replace('_', ' ')} field must not have spaces.`;
+          } else {
+            formdata[field] = curriculum[field];
+          }
+          break;
 
-      case 'project_name':
-        if (curriculum[field].length > 30) {
-          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 30 characters.`;
-        } else {
-          formdata[field] = curriculum[field]
-        }
-        break;
+        case 'project_name':
+          if (curriculum[field].length > 30) {
+            errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 30 characters.`;
+          } else {
+            formdata[field] = curriculum[field]
+          }
+          break;
 
-      case 'project_description':
-        if (curriculum[field].length > 100) {
-          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 100 characters.`;
-        } else {
-          formdata[field] = curriculum[field]
-        }
-        break;
+        case 'project_description':
+          if (curriculum[field].length > 100) {
+            errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 100 characters.`;
+          } else {
+            formdata[field] = curriculum[field]
+          }
+          break;
 
-      case 'teacher_project_comments':
+        case 'teacher_project_comments':
           formdata[field] = curriculum[field]
-        break;
+          break;
 
         case 'project_date':
-        formdata[field] = curriculum[field];
-        break;
+          formdata[field] = curriculum[field];
+          break;
 
         case "email":
-        var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
-        if (!(emailValid.test(curriculum[field]))) {
-          errors[field] = `The ${field} field is not valid.`;
-        } else {
-          formdata[field] = curriculum[field];
-        }
-        break;
+          var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
+          if (!(emailValid.test(curriculum[field]))) {
+            errors[field] = `The ${field} field is not valid.`;
+          } else {
+            formdata[field] = curriculum[field];
+          }
+          break;
 
       } // ends switch
     }
@@ -628,9 +644,9 @@ function validateStudentProject(curriculum) {
       $(`input[name="${elem}"]`).after(errorMsg);
     });
 
-    
-  console.log(errors);
-  return errors;
+
+    console.log(errors);
+    return errors;
   } else {
     formdata.message = "No errors found.";
     console.log(formdata);
@@ -640,7 +656,7 @@ function validateStudentProject(curriculum) {
 }
 
 
-function clearStudentform () {
+function clearStudentform() {
   $('input[name="first_name"]').val(''),
     $('input[name="last_name"]').val(''),
     $('input[name="email"]').val(''),
@@ -653,21 +669,21 @@ function clearStudentform () {
     $('input[name="zipcode"]').val(''),
     $('input[name="startDate"]').val(''),
     $('select#weekday').val(''),
-    $('input[name="startTime"]').val(''), 
+    $('input[name="startTime"]').val(''),
     $('input[name="endTime"]').val(''),
     $('input[name="teacher_comments"]').val('')
-} 
+}
 
 
-function renderStudentCard (state) {
-  
-  state.forEach(function(student_record, index) {
+function renderStudentCard(state) {
+
+  state.forEach(function (student_record, index) {
     // var colorArr = ['#4caf50','#9c27b0', '#ff5722', '#ffc107' ];
-  // var lastColor = colorArr[Math.floor(Math.random() * colorArr.length)];
-  //  var colorIndex = 0;
-  //  if (colorIndex > 3) {
-  //    colorIndex = 0;
-  //  }
+    // var lastColor = colorArr[Math.floor(Math.random() * colorArr.length)];
+    //  var colorIndex = 0;
+    //  if (colorIndex > 3) {
+    //    colorIndex = 0;
+    //  }
 
     var studentCard = `
     <div class="card flip" id=${student_record.id}>
@@ -685,8 +701,8 @@ function renderStudentCard (state) {
       </div>
     </div>
   `;
-    
-    setTimeout(function() {
+
+    setTimeout(function () {
       // var bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
       // while (bgColor === lastColor) {
       //   bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
@@ -697,51 +713,53 @@ function renderStudentCard (state) {
       // $(`.card_color${colorIndex}`).css('background-color', lastColor);
       // colorIndex +=1;
     }, 400 * index);
-    
+
   })
 
 }
 
-function studentInfoListener () {
+function studentInfoListener() {
 
-  $('div.background').on('click', 'button.student_info', function(event) {
+  $('div.background').on('click', 'button.student_info', function (event) {
     event.preventDefault();
     // console.log('this listener is working');
     var id = $(this).closest('div.card').attr('id');
     // console.log(id);
-    var student_record = state.student_records.find(function(record, index) {
+    var student_record = state.student_records.find(function (record, index) {
       // console.log(id);
       if (record.id === id) {
         return record;
       }
       // console.log(student_record);
     });
-      var bgColor = $(this).closest('.card_color').css('background-color');
-      renderStudentInfo(student_record, bgColor);
+    var bgColor = $(this).closest('.card_color').css('background-color');
+    renderStudentInfo(student_record, bgColor);
 
     console.log(student_record);
-    
+
   });
 }
 
 
-function renderStudentInfo (student_record, color) {
+
+
+function renderStudentInfo(student_record, color) {
 
   // Stop scroll on main window
   $('html, body').css('overflow', 'hidden');
-  console.log('This is the student record inside the student info render',student_record);
+  console.log('This is the student record inside the student info render', student_record);
 
   // disable bottom click events
   $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "none");
 
-  var lesson_duration = moment(student_record.student_lesson_time.endTime).diff(moment(student_record.student_lesson_time.startTime), 'minutes'); 
+  var lesson_duration = moment(student_record.student_lesson_time.endTime).diff(moment(student_record.student_lesson_time.startTime), 'minutes');
   var lesson_start_time = moment(student_record.student_lesson_time.startTime).format("hh:mm A");
   var lesson_end_time = moment(student_record.student_lesson_time.endTime).format("hh:mm A");
   console.log(student_record.student_lesson_time.startTime);
   console.log(student_record.student_lesson_time.endTime);
   console.log(lesson_start_time);
   console.log(lesson_end_time);
-  
+
 
 
   var studentHtml = `
@@ -773,29 +791,29 @@ function renderStudentInfo (student_record, color) {
       </div>
     </div>
     `;
-    console.log(studentHtml);
-    $('body').prepend(studentHtml);
-    $('.color_strip').css('background-color', color);
+  console.log(studentHtml);
+  $('body').prepend(studentHtml);
+  $('.color_strip').css('background-color', color);
 
-    setTimeout(function() {
+  setTimeout(function () {
     $('div.student_modal').css('overflow', 'scroll');
-      
-    }, 800);
-      
-      studentInfoExitListener();
 
-    
+  }, 800);
+
+  studentInfoExitListener();
+
+
 }
 
 function studentInfoExitListener() {
 
-  $('.frame_bottom, .frame_top, .frame_left, .frame_right, button.student_exit').click(function(event) {
-    
+  $('.frame_bottom, .frame_top, .frame_left, .frame_right, button.student_exit').click(function (event) {
+
     event.preventDefault();
     event.stopPropagation();
 
     if ($(this) === $('.student_main_info')) {
-      console.log( 'clicked');
+      console.log('clicked');
       return false;
     }
     // Re-allow scrolling on main page
@@ -803,31 +821,31 @@ function studentInfoExitListener() {
 
     // Remove scroll from the modal
     $('div.student_modal').css('overflow', 'auto');
-    
+
 
     // Re-allow clicks on the main page
     $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "auto");
 
     // Remove the modal
     $('div.student_modal').fadeOut();
-    setTimeout(function() {
-    $('div.student_modal').remove();
-      
+    setTimeout(function () {
+      $('div.student_modal').remove();
+
     }, 700);
-    
-    
+
+
 
   })
 }
 
 
-function addStudentProject(project, id, index) {
+function sendStudentProject(project, id, index) {
   var projectData = {
-      'student_curriculum': project,
-      'id': id,
-      'index': index 
-    }
-    console.log('Project Data to be sent to server', projectData);
+    'student_curriculum': project,
+    'id': id,
+    'index': index
+  }
+  console.log('Project Data to be sent to server', projectData);
   return $.ajax({
     type: 'PUT',
     url: `/cu-manager/student-curriculum-projects/${id}`,
@@ -903,6 +921,9 @@ function saveStudentData() {
   $(this).scrollTop(0);
   authenticateResult();
   saveStudentData();
+  $('.flexslider').flexslider({
+    animation: "slide"
+  });
 
 
 }));
