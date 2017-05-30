@@ -232,6 +232,7 @@ function navbarListener() {
       $(this).addClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
       studentProjectListener();
+      $('input#project_date').val(moment().format('YYYY-MM-DD'));
     }
 
     if ($(this).text() === 'Student List and Schedule') {
@@ -440,9 +441,11 @@ function validateNewStudent(studentObj) {
         case "apartment_number":
         case "state":
         case "street_address":
-        case "teacher_comments":
           formData.address[field] = studentObj[field];
           break;
+
+        case "teacher_comments":
+          formData[field] = studentObj[field];
 
         case "startDate":
         case "weekday":
@@ -766,10 +769,10 @@ function addstudentProjecCardListener () {
       .removeClass('selected');
 
 
-      $('input#student_first_name').val(student_record.first_name)
-      $('input#student_last_name').val(student_record.last_name)
+      $('input#student_first_name').val(student_record.first_name);
+      $('input#student_last_name').val(student_record.last_name);
       $('input#student_email').val(student_record.email);
-      $('input#project_date').val(moment().format('YYYY-MM-DD'))
+      $('input#project_date').val(moment().format('YYYY-MM-DD'));
 
       
       
@@ -823,6 +826,9 @@ function renderStudentInfo(student_record, color) {
   console.log(lesson_start_time);
   console.log(lesson_end_time);
 
+var parentEmpty = `Parent's name not provided`;
+var teacherCommentsEmpty = `Teacher comments not provided`;
+
 
 
   var studentHtml = `
@@ -833,15 +839,23 @@ function renderStudentInfo(student_record, color) {
     <div class="frame_right"></div>
       <div class="student_main_info">
       <div class="color_strip"></div>
-        <h2 class="student_name">${student_record.first_name} ${student_record.last_name}</h2>
-        <p class="email">Email: ${student_record.email}</p>
+        <h2 class="student_name"><span id="first_name">${student_record.first_name}</span> <span id="last_name">${student_record.last_name}</h2>
+        <p class="email">Email: <span id="email">${student_record.email}</span></p>
         <div class="columns">
-        <p class="parent_name"> Parent's name: ${student_record.parent_first_name} ${student_record.parent_last_name}</p>
-        <p class="street_address">Address: <br>${student_record.address.street_address}</p>
-        <p class="street_address_2">${student_record.address.city}, ${student_record.address.state} ${student_record.address.zipcode}</p>
-        <p class="lesson_time">Lesson Time: ${student_record.student_lesson_time.weekday} from ${lesson_start_time} to ${lesson_end_time}</p>
-        <p class="lesson_date">First lesson date: ${moment(student_record.student_lesson_time.startDate).format('dddd, MMMM Do YYYY')}</p>
-        <p class="lesson_duration">Lesson Duration: ${lesson_duration} minutes</p>
+          
+          <p class="parent_name"> Parent's name: <br><span id="parent_first_name">${student_record.parent_first_name}</span> <span id="parent_last_name">${student_record.parent_last_name}</span></p>
+          
+          <p class="street_address">Address: <br><span id="street_address">${student_record.address.street_address}</span></p>
+          
+          <p class="street_address_2"><span id="city">${student_record.address.city}</span>, <span id="state">${student_record.address.state}</span> <span id="zipcode">${student_record.address.zipcode}</span></p>
+          
+          <p class="lesson_time">Lesson Time: <br><span id="weekday">${student_record.student_lesson_time.weekday}</span> from <span id="lesson_start_time">${lesson_start_time}</span> to <span id="lesson_end_time">${lesson_end_time}</span></p>
+          
+          <p class="lesson_date">First lesson date: <span id="first_lesson_date">${moment(student_record.student_lesson_time.startDate).format('dddd, MMMM Do YYYY')}</span></p>
+          
+          <p class="lesson_duration">Lesson duration: <span id="lesson_duration">${lesson_duration}</span> minutes</p>
+
+          <p class="teacher_comments">Teacher comments: <br><span id="Teacher comments">${student_record.teacher_comments}</span></p>
 
         </div>
         <button class="student_exit">
@@ -856,7 +870,39 @@ function renderStudentInfo(student_record, color) {
     `;
   console.log(studentHtml);
   $('body').prepend(studentHtml);
-  $('.color_strip').css('background-color', color);
+  $('.color_strip, button.edit_info, button.student_exit').css('background-color', color);
+
+  if ($('.color_strip').css('background-color') === 'rgb(255, 193, 7)') {
+    $('button.edit_info, button.student_exit').css('color', 'black');
+  }
+
+  $('button.edit_info, button.student_exit').hover(
+    function(event) {
+    $(this).css('background-color', 'rgb(33, 80, 97)');
+    if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
+      $(this).css('color', 'white');
+    }
+  },
+    function(event) {
+      $(this).css('background-color', color);
+      if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
+      $(this).css('color', 'black');
+      }
+
+
+
+    }
+  
+  );
+
+
+  if (student_record.parent_first_name === undefined && student_record.parent_last_name === undefined) {
+    $('p.parent_name').html(parentEmpty);
+  }
+
+  if (student_record.teacher_comments === undefined) {
+    $('p.teacher_comments').html(teacherCommentsEmpty);
+  }
 
   setTimeout(function () {
     $('div.student_modal').css('overflow', 'scroll');
@@ -864,9 +910,19 @@ function renderStudentInfo(student_record, color) {
   }, 800);
 
   studentInfoExitListener();
-
+  studentEditListener();
 
 }
+
+function studentEditListener() {
+  $('button.edit_info').click(function(event) {
+    event.preventDefault();
+    console.log('This is the edit info listener');
+
+  }); 
+}
+
+
 
 function studentInfoExitListener() {
 
