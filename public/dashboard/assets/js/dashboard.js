@@ -198,14 +198,14 @@ function navbarListener() {
 
     if ($(this).text() === 'Add Student') {
       setTimeout(function () {
-        console.log('scrolling up');
+        // console.log('scrolling up');
         $(this).scrollTop(0);
 
       }, 1);
 
       $('div.background').empty();
       $('div.background').html(state.templates.addStudent);
-      $(this).toggleClass('selected');
+      $(this).addClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
       $('.time_element').timepicki({
         overflow_minutes: true,
@@ -221,7 +221,7 @@ function navbarListener() {
     if ($(this).text() === 'Add Student Project') {
 
       setTimeout(function () {
-        console.log('scrolling up');
+        // console.log('scrolling up');
         $(this).scrollTop(0);
 
       }, 1);
@@ -229,14 +229,14 @@ function navbarListener() {
       $('div.background').empty();
       // TODO Make template
       $('div.background').html(state.templates.addStudentProject);
-      $(this).toggleClass('selected');
+      $(this).addClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
       studentProjectListener();
     }
 
     if ($(this).text() === 'Student List and Schedule') {
       setTimeout(function () {
-        console.log('scrolling up');
+        // console.log('scrolling up');
         $(this).scrollTop(0);
 
       }, 1);
@@ -244,7 +244,7 @@ function navbarListener() {
       $('div.background').empty();
       // TODO Make template
       $('div.background').html(state.templates.studentList);
-      $(this).toggleClass('selected');
+      $(this).addClass('selected');
       $('div.nav li').not($(this)).removeClass('selected');
       renderStudentCard(state.student_records);
     }
@@ -337,7 +337,7 @@ function addStudentListener() {
     var startTime = moment(rawstartTime, "hh:mm").toISOString();
     var endTime = moment(rawendTime, "hh:mm").toISOString();
     studentObj.startTime = startTime;
-    studentObj.startTime = startTime;
+    studentObj.startDate = startDate;
     studentObj.endTime = endTime;
     // console.log(studentObj.startDate);
     console.log(startDate);
@@ -354,7 +354,7 @@ function addStudentListener() {
           state.student_records.push(data);
           var success = `
           <p class="success">Student successfully added!</p>
-          `
+          `;
           $('div.button_container').before(success);
           clearStudentform();
         })
@@ -488,7 +488,7 @@ function validateNewStudent(studentObj) {
 function studentProjectListener() {
   $('button#student_project').click(function (event) {
     event.preventDefault();
-
+    $('input#project_date').val(moment().format('YYYY-MM-DD'))
     var student_curriculum = {
       student_first_name: $('input[name="student_first_name"]').val().trim(),
       student_last_name: $('input[name="student_last_name"]').val().trim(),
@@ -497,7 +497,7 @@ function studentProjectListener() {
       project_name: $('input#project_name').val().trim(),
       project_description: $('input#project_description').val().trim(),
       teacher_project_comments: $('textarea#project_comments').val().trim()
-    }
+    };
 
     // Validate the input and verify the 'no errors' message 
     var validatedProject = validateStudentProject(student_curriculum);
@@ -508,6 +508,9 @@ function studentProjectListener() {
     
   });
 }
+
+
+
 
 function UpdateStudentProject (checkedProject) {
 
@@ -564,13 +567,13 @@ function UpdateStudentProject (checkedProject) {
           })
           .catch(function (err) {
             console.log(err);
-          })
+          });
 
 
       } else {
         console.log('the search result wasnt found');
       }
-    }
+    };
 }
 
 
@@ -584,7 +587,7 @@ function validateStudentProject(curriculum) {
 
   Object.keys(curriculum).forEach(function (field) {
     if (curriculum[field] === '') {
-      errors[field] = `The ${field} field is empty.`
+      errors[field] = `The ${field} field is empty.`;
     } else {
       switch (field) {
 
@@ -604,7 +607,7 @@ function validateStudentProject(curriculum) {
           if (curriculum[field].length > 30) {
             errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 30 characters.`;
           } else {
-            formdata[field] = curriculum[field]
+            formdata[field] = curriculum[field];
           }
           break;
 
@@ -612,12 +615,12 @@ function validateStudentProject(curriculum) {
           if (curriculum[field].length > 100) {
             errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 100 characters.`;
           } else {
-            formdata[field] = curriculum[field]
+            formdata[field] = curriculum[field];
           }
           break;
 
         case 'teacher_project_comments':
-          formdata[field] = curriculum[field]
+          formdata[field] = curriculum[field];
           break;
 
         case 'project_date':
@@ -671,7 +674,7 @@ function clearStudentform() {
     $('select#weekday').val(''),
     $('input[name="startTime"]').val(''),
     $('input[name="endTime"]').val(''),
-    $('input[name="teacher_comments"]').val('')
+    $('input[name="teacher_comments"]').val('');
 }
 
 
@@ -701,7 +704,9 @@ function renderStudentCard(state) {
       </div>
     </div>
   `;
+    
 
+    // stagger the append of the cards
     setTimeout(function () {
       // var bgColor = colorArr[Math.floor(Math.random() * colorArr.length)];
       // while (bgColor === lastColor) {
@@ -714,9 +719,67 @@ function renderStudentCard(state) {
       // colorIndex +=1;
     }, 400 * index);
 
-  })
+  });
 
 }
+
+
+function addstudentProjecCardListener () {
+
+  $('div.background').on('click', 'button.add_student_project', function (event) {
+    event.preventDefault();
+
+    console.log('add student project clicked on card');
+
+    var id = $(this).closest('div.card').attr('id');
+    // console.log(id);
+    var student_record = state.student_records.find(function (record) {
+      // console.log(id);
+      if (record.id === id) {
+        return record;
+      }
+      // console.log(student_record);
+    });
+
+
+      // 'redirect' to student Project form
+      setTimeout(function () {
+        // console.log('scrolling up');
+        $(this).scrollTop(0);
+
+      }, 1);
+
+      $('div.background').empty();
+      // TODO Make template
+      $('div.background').html(state.templates.addStudentProject);
+      
+      $('div.nav li')
+      .filter(function(index) {
+        return $(this).text() === "Add Student Project";
+      })
+      .addClass('selected');
+      
+      $('div.nav li')
+      .filter(function(index) {
+        return $(this).text() === "Student List and Schedule";
+      })
+      .removeClass('selected');
+
+
+      $('input#student_first_name').val(student_record.first_name)
+      $('input#student_last_name').val(student_record.last_name)
+      $('input#student_email').val(student_record.email);
+      $('input#project_date').val(moment().format('YYYY-MM-DD'))
+
+      
+      
+    studentProjectListener();
+
+
+
+  });
+}
+
 
 function studentInfoListener() {
 
@@ -725,7 +788,7 @@ function studentInfoListener() {
     // console.log('this listener is working');
     var id = $(this).closest('div.card').attr('id');
     // console.log(id);
-    var student_record = state.student_records.find(function (record, index) {
+    var student_record = state.student_records.find(function (record) {
       // console.log(id);
       if (record.id === id) {
         return record;
@@ -835,7 +898,7 @@ function studentInfoExitListener() {
 
 
 
-  })
+  });
 }
 
 
@@ -844,7 +907,7 @@ function sendStudentProject(project, id, index) {
     'student_curriculum': project,
     'id': id,
     'index': index
-  }
+  };
   console.log('Project Data to be sent to server', projectData);
   return $.ajax({
     type: 'PUT',
@@ -875,6 +938,7 @@ function authenticateResult() {
       if (redirectHome() === false) {
         displayNav();
         studentInfoListener();
+        addstudentProjecCardListener();
       } else {
         $('div.background').html(state.templates.unauthorized);
       }
@@ -916,7 +980,7 @@ function saveStudentData() {
 }
 
 
-
+// Check for the existence of a token and render appropriate pages based on the result
 ($(document).ready(function () {
   $(this).scrollTop(0);
   authenticateResult();
