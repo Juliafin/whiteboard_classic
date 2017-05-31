@@ -393,7 +393,7 @@ button.student_info:focus,
 button.edit_info:hover,
 button.edit_info:focus,
 button.student_exit:hover,
-button.student_exit:focus
+button.student_exit:focus,
 button.student_curriculum:hover,
 button.student_curriculum:focus {
   background: rgb(33, 80, 97);
