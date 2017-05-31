@@ -138,6 +138,10 @@ input#student {
   width: 17%;
 }
 
+label#teacher_label, label#student_label {
+    margin-left: 0;
+}
+
 input[type="radio"] {
   height: 19px;
   margin-top: 11%;
