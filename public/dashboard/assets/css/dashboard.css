@@ -394,7 +394,8 @@ button.add_student_project,
 button.student_info,
 button.student_exit,
 button.edit_info,
-button.student_curriculum {
+button.student_curriculum,
+.exit_student_curriculum {
   margin-top: 2vw;
   border-radius: 2px;
   outline: none;
@@ -440,7 +441,9 @@ button.edit_info:focus,
 button.student_exit:hover,
 button.student_exit:focus,
 button.student_curriculum:hover,
-button.student_curriculum:focus {
+button.student_curriculum:focus,
+button.exit_student_curriculum:hover,
+button.exit_student_curriculum:focus {
   background: rgb(33, 80, 97);
   filter: brightness(120%);
   transform: scale(1.1);
@@ -665,4 +668,7 @@ p.no_projects {
 
 button.exit_student_curriculum {
     margin-top: 4vw;
+    color: white;
+    height: 4vw;
+    font-size: 2vw;
 }

@@ -1018,6 +1018,25 @@ function renderStudentCurriculum (record, color) {
 
     $('.flexslider').css('background-color', color);
 
+    $('button.exit_student_curriculum').css('background-color', color);
+
+    $('button.exit_student_curriculum').hover(
+    function(event) {
+      $(this).css('background-color', 'rgb(33, 80, 97)');
+      if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
+        $(this).css('color', 'white');
+      }
+    },
+    function(event) {
+      $(this).css('background-color', color);
+      if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
+        $(this).css('color', 'black');
+      }
+    }
+  
+  );
+
+
 
     $('.flexslider').flexslider({
       animation: "slide"
