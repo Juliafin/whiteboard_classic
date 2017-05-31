@@ -32,28 +32,28 @@ const studentAddressSchema = new mongoose.Schema({
 });
 
 const studentCurriculumSchema = new mongoose.Schema({
-    project_date: {
-      type: Date,
-      default: Date.now(),
-      required: true
-    },
-    project_name: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    project_description: {
-      type: String,
-      required: true,
-      trim: true
-    },
+  project_date: {
+    type: Date,
+    default: Date.now(),
+    required: true
+  },
+  project_name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  project_description: {
+    type: String,
+    required: true,
+    trim: true
+  },
     // array of comments TODO
-    teacher_project_comments: {
-      type: String,
-      trim: true
-    },
-    _id: false
-  });
+  teacher_project_comments: {
+    type: String,
+    trim: true
+  },
+  _id: false
+});
 
 const studentLessonTimeSchema = new mongoose.Schema({
   startDate: {

@@ -131,6 +131,13 @@ var state = {
         <textarea type="textarea" name="teacher_comments" id="teacher_comments">
         </textarea>
 
+        <div class="mode_select">
+          <label for="add_student" id="add_label">Add Student</label>            
+          <input type="radio" name="radSize" id="add_student" value="add_student" checked="checked">
+          <label for="edit_student" id="edit_label">Edit Student</label>
+          <input type="radio" name="radSize" id="edit_student" value="edit_student">
+        </div>
+
         <div class="button_container">
           <button type="submit" name="add_student">Add Student</button>
         </div>
@@ -196,7 +203,7 @@ function navbarListener() {
 
   $('nav li').click(function (event) {
 
-    if ($(this).text() === 'Add Student') {
+    if ($(this).text() === 'Add / Edit Student') {
       setTimeout(function () {
         // console.log('scrolling up');
         $(this).scrollTop(0);
@@ -267,7 +274,7 @@ function displayNav() {
     var loggedIn = `
     <nav>
       <div class="nav">
-        <li>Add Student</li>
+        <li>Add / Edit Student</li>
         <li>Add Student Project</li>      
   		  <li>Student List and Schedule</li>
         <li id="logged_in">Not <span>${window.localStorage.getItem('current_user')}?</span class="logged_user"><br><span>Log out</span></li>
@@ -387,85 +394,86 @@ function validateNewStudent(studentObj) {
     if (studentObj[field] === "") {
       // if the following fields are empty, do nothing (they are optional)
       switch (field) {
-        case 'parent_first_name':
-        case 'parent_last_name':
-        case 'apartment_number':
-        case 'teacher_comments':
-          break;
-        default:
-          errors[field] = `The ${field.replace('_', ' ')} field is empty.`;
+      case 'parent_first_name':
+      case 'parent_last_name':
+      case 'apartment_number':
+      case 'teacher_comments':
+        break;
+      default:
+        errors[field] = `The ${field.replace('_', ' ')} field is empty.`;
       }
 
     } else {
       switch (field) {
 
-        case "first_name":
-        case "last_name":
-        case "parent_first_name":
-        case "parent_last_name":
-          var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
-          if (!(nameValid.test(studentObj[field]))) {
-            errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
-          } else {
-            formData[field] = studentObj[field];
-          }
-          break;
-
-        case "email":
-          var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
-          if (!(emailValid.test(studentObj[field]))) {
-            errors[field] = `The ${field} field is not valid.`;
-          } else {
-            formData[field] = studentObj[field];
-          }
-          break;
-
-        case "city":
-          var cityValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
-          if (!(cityValid.test(studentObj[field]))) {
-            errors[field] = `The ${field} field must contain only UTF-8 letters and be between 2 and 20 characters.`;
-          } else {
-            formData.address[field] = studentObj[field];
-          }
-          break;
-
-        case "zipcode":
-          var zipcodeValid = new RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
-          if (!(zipcodeValid.test(studentObj[field]))) {
-            errors[field] = `The ${field} field must either be in the format XXXXX or XXXXX-XXXX.`;
-          } else {
-            formData.address[field] = studentObj[field];
-          }
-          break;
-
-        case "apartment_number":
-        case "state":
-        case "street_address":
-          formData.address[field] = studentObj[field];
-          break;
-
-        case "teacher_comments":
+      case "first_name":
+      case "last_name":
+      case "parent_first_name":
+      case "parent_last_name":
+        var nameValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{1,20})+$/);
+        if (!(nameValid.test(studentObj[field]))) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 20 characters and contain only UTF-8 letters and/or a hyphen.`;
+        } else {
           formData[field] = studentObj[field];
+        }
+        break;
 
-        case "startDate":
-        case "weekday":
-        case "startTime":
+      case "email":
+        var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
+        if (!(emailValid.test(studentObj[field]))) {
+          errors[field] = `The ${field} field is not valid.`;
+        } else {
+          formData[field] = studentObj[field];
+        }
+        break;
+
+      case "city":
+        var cityValid = new RegExp(/^([ \u00c0-\u01ffa-zA-Z'\-]{2,20})+$/);
+        if (!(cityValid.test(studentObj[field]))) {
+          errors[field] = `The ${field} field must contain only UTF-8 letters and be between 2 and 20 characters.`;
+        } else {
+          formData.address[field] = studentObj[field];
+        }
+        break;
+
+      case "zipcode":
+        var zipcodeValid = new RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
+        if (!(zipcodeValid.test(studentObj[field]))) {
+          errors[field] = `The ${field} field must either be in the format XXXXX or XXXXX-XXXX.`;
+        } else {
+          formData.address[field] = studentObj[field];
+        }
+        break;
+
+      case "apartment_number":
+      case "state":
+      case "street_address":
+        formData.address[field] = studentObj[field];
+        break;
+
+      case "teacher_comments":
+        formData[field] = studentObj[field];
+        break;
+
+      case "startDate":
+      case "weekday":
+      case "startTime":
+        formData.student_lesson_time[field] = studentObj[field];
+        break;
+      case "endTime":
+        var startTime = moment(studentObj.startTime).format("HH:mm");
+        var endTime = moment(studentObj.endTime).format("HH:mm");
+        var startTimeN = parseInt(startTime.replace(":", ""));
+        var endTimeN = parseInt(endTime.replace(":", ""));
+        console.log(startTime);
+        console.log('start time', startTimeN);
+        console.log(endTime);
+        console.log('end time', endTimeN);
+        if (endTimeN < startTimeN) {
+          errors[field] = `The ${field} cannot be before the start time.`;
+        } else {
           formData.student_lesson_time[field] = studentObj[field];
-          break;
-        case "endTime":
-          var startTime = moment(studentObj.startTime).format("HH:mm");
-          var endTime = moment(studentObj.endTime).format("HH:mm");
-          var startTimeN = parseInt(startTime.replace(":", ""));
-          var endTimeN = parseInt(endTime.replace(":", ""));
-          console.log(startTime);
-          console.log('start time', startTimeN);
-          console.log(endTime);
-          console.log('end time', endTimeN);
-          if (endTimeN < startTimeN) {
-            errors[field] = `The ${field} cannot be before the start time.`;
-          } else {
-            formData.student_lesson_time[field] = studentObj[field];
-          }
+        }
       }
     }
   });
@@ -491,7 +499,7 @@ function validateNewStudent(studentObj) {
 function studentProjectListener() {
   $('button#student_project').click(function (event) {
     event.preventDefault();
-    $('input#project_date').val(moment().format('YYYY-MM-DD'))
+    $('input#project_date').val(moment().format('YYYY-MM-DD'));
     var student_curriculum = {
       student_first_name: $('input[name="student_first_name"]').val().trim(),
       student_last_name: $('input[name="student_last_name"]').val().trim(),
@@ -518,35 +526,35 @@ function studentProjectListener() {
 function UpdateStudentProject (checkedProject) {
 
   if ('message' in checkedProject && checkedProject.message === 'No errors found.') {
-      delete checkedProject.message;
+    delete checkedProject.message;
 
       // Find the student record in the state, and append it's position in the array to the object for later processing 
-      var searchResult = state.student_records.find(function (record) {
-        if (record.first_name === checkedProject.student_first_name &&
+    var searchResult = state.student_records.find(function (record) {
+      if (record.first_name === checkedProject.student_first_name &&
           record.last_name === checkedProject.student_last_name &&
           record.email === checkedProject.email
         ) {
-          return record;
-        } else {
-          return false;
-        }
+        return record;
+      } else {
+        return false;
+      }
 
-      });
+    });
       // use the index to update the returned item in the state if it is found
 
-      var searchResultIndex = searchResult.order - 1;
-      console.log('Search result in state matching the student the project belongs to', searchResult);
+    var searchResultIndex = searchResult.order - 1;
+    console.log('Search result in state matching the student the project belongs to', searchResult);
       // If the result is found, build the object to send
       // for the update containing: student_curriculum (project date, project name, project description, project comments), the id
       // Delete the extra keys not needed in the object
-      if (searchResult) {
-        var index = searchResult.student_curriculum.length.toString();
+    if (searchResult) {
+      var index = searchResult.student_curriculum.length.toString();
 
-        delete checkedProject.student_first_name;
-        delete checkedProject.student_last_name;
-        delete checkedProject.email;
+      delete checkedProject.student_first_name;
+      delete checkedProject.student_last_name;
+      delete checkedProject.email;
 
-        sendStudentProject(checkedProject, searchResult.id, index)
+      sendStudentProject(checkedProject, searchResult.id, index)
           .then(function (student_record) {
             console.log('the result was successful');
             console.log(student_record);
@@ -573,10 +581,10 @@ function UpdateStudentProject (checkedProject) {
           });
 
 
-      } else {
-        console.log('the search result wasnt found');
-      }
-    };
+    } else {
+      console.log('the search result wasnt found');
+    }
+  }
 }
 
 
@@ -594,50 +602,50 @@ function validateStudentProject(curriculum) {
     } else {
       switch (field) {
 
-        case 'student_first_name':
-        case 'student_last_name':
-          var whiteSpace = new RegExp(/\s/);
-          if (curriculum[field].length > 25) {
-            errors[field] = `The ${field.replace('_', ' ')} field must have a maximum of 25 characters.`;
-          } else if ((whiteSpace.test(curriculum[field] === false))) {
-            errors[field] = `The ${field.replace('_', ' ')} field must not have spaces.`;
-          } else {
-            formdata[field] = curriculum[field];
-          }
-          break;
-
-        case 'project_name':
-          if (curriculum[field].length > 30) {
-            errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 30 characters.`;
-          } else {
-            formdata[field] = curriculum[field];
-          }
-          break;
-
-        case 'project_description':
-          if (curriculum[field].length > 100) {
-            errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 100 characters.`;
-          } else {
-            formdata[field] = curriculum[field];
-          }
-          break;
-
-        case 'teacher_project_comments':
+      case 'student_first_name':
+      case 'student_last_name':
+        var whiteSpace = new RegExp(/\s/);
+        if (curriculum[field].length > 25) {
+          errors[field] = `The ${field.replace('_', ' ')} field must have a maximum of 25 characters.`;
+        } else if ((whiteSpace.test(curriculum[field] === false))) {
+          errors[field] = `The ${field.replace('_', ' ')} field must not have spaces.`;
+        } else {
           formdata[field] = curriculum[field];
-          break;
+        }
+        break;
 
-        case 'project_date':
+      case 'project_name':
+        if (curriculum[field].length > 30) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 30 characters.`;
+        } else {
           formdata[field] = curriculum[field];
-          break;
+        }
+        break;
 
-        case "email":
-          var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
-          if (!(emailValid.test(curriculum[field]))) {
-            errors[field] = `The ${field} field is not valid.`;
-          } else {
-            formdata[field] = curriculum[field];
-          }
-          break;
+      case 'project_description':
+        if (curriculum[field].length > 100) {
+          errors[field] = `The ${field.replace('_', ' ')} field must be between 1 and 100 characters.`;
+        } else {
+          formdata[field] = curriculum[field];
+        }
+        break;
+
+      case 'teacher_project_comments':
+        formdata[field] = curriculum[field];
+        break;
+
+      case 'project_date':
+        formdata[field] = curriculum[field];
+        break;
+
+      case "email":
+        var emailValid = new RegExp(/^.+@{1}.+\.[a-zA-Z]{2,4}$/);
+        if (!(emailValid.test(curriculum[field]))) {
+          errors[field] = `The ${field} field is not valid.`;
+        } else {
+          formdata[field] = curriculum[field];
+        }
+        break;
 
       } // ends switch
     }
@@ -746,33 +754,33 @@ function addstudentProjecCardListener () {
 
 
       // 'redirect' to student Project form
-      setTimeout(function () {
+    setTimeout(function () {
         // console.log('scrolling up');
-        $(this).scrollTop(0);
+      $(this).scrollTop(0);
 
-      }, 1);
+    }, 1);
 
-      $('div.background').empty();
+    $('div.background').empty();
       // TODO Make template
-      $('div.background').html(state.templates.addStudentProject);
+    $('div.background').html(state.templates.addStudentProject);
       
-      $('div.nav li')
+    $('div.nav li')
       .filter(function(index) {
-        return $(this).text() === "Add Student Project";
+        return $(this).text() === "Add / Edit Student Project";
       })
       .addClass('selected');
       
-      $('div.nav li')
+    $('div.nav li')
       .filter(function(index) {
         return $(this).text() === "Student List and Schedule";
       })
       .removeClass('selected');
 
 
-      $('input#student_first_name').val(student_record.first_name);
-      $('input#student_last_name').val(student_record.last_name);
-      $('input#student_email').val(student_record.email);
-      $('input#project_date').val(moment().format('YYYY-MM-DD'));
+    $('input#student_first_name').val(student_record.first_name);
+    $('input#student_last_name').val(student_record.last_name);
+    $('input#student_email').val(student_record.email);
+    $('input#project_date').val(moment().format('YYYY-MM-DD'));
 
       
       
@@ -826,8 +834,8 @@ function renderStudentInfo(student_record, color) {
   console.log(lesson_start_time);
   console.log(lesson_end_time);
 
-var parentEmpty = `Parent's name not provided`;
-var teacherCommentsEmpty = `Teacher comments not provided`;
+  var parentEmpty = `Parent's name not provided`;
+  var teacherCommentsEmpty = `Teacher comments not provided`;
 
 
 
@@ -837,7 +845,7 @@ var teacherCommentsEmpty = `Teacher comments not provided`;
     <div class="frame_bottom"></div>
     <div class="frame_left"></div>
     <div class="frame_right"></div>
-      <div class="student_main_info">
+      <div class="student_main_info" id="${student_record.id}">
       <div class="color_strip"></div>
         <h2 class="student_name"><span id="first_name">${student_record.first_name}</span> <span id="last_name">${student_record.last_name}</h2>
         <p class="email">Email: <span id="email">${student_record.email}</span></p>
@@ -855,7 +863,9 @@ var teacherCommentsEmpty = `Teacher comments not provided`;
           
           <p class="lesson_duration">Lesson duration: <span id="lesson_duration">${lesson_duration}</span> minutes</p>
 
-          <p class="teacher_comments">Teacher comments: <br><span id="Teacher comments">${student_record.teacher_comments}</span></p>
+          <div class="comments_container">
+            <p class="teacher_comments">Teacher comments: <br><span id="Teacher comments">${student_record.teacher_comments}</span></p>
+          </div>
 
         </div>
         <button class="student_exit">
@@ -864,29 +874,32 @@ var teacherCommentsEmpty = `Teacher comments not provided`;
         <button class="edit_info">
         Edit Student Info
         </button>
+        <button class ="student_curriculum">
+        Student Projects
+        </button>
 
       </div>
     </div>
     `;
   console.log(studentHtml);
   $('body').prepend(studentHtml);
-  $('.color_strip, button.edit_info, button.student_exit').css('background-color', color);
+  $('.color_strip, button.edit_info, button.student_exit, button.student_curriculum').css('background-color', color);
 
   if ($('.color_strip').css('background-color') === 'rgb(255, 193, 7)') {
     $('button.edit_info, button.student_exit').css('color', 'black');
   }
 
-  $('button.edit_info, button.student_exit').hover(
+  $('button.edit_info, button.student_exit, button.student_curriculum').hover(
     function(event) {
-    $(this).css('background-color', 'rgb(33, 80, 97)');
-    if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
-      $(this).css('color', 'white');
-    }
-  },
+      $(this).css('background-color', 'rgb(33, 80, 97)');
+      if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
+        $(this).css('color', 'white');
+      }
+    },
     function(event) {
       $(this).css('background-color', color);
       if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
-      $(this).css('color', 'black');
+        $(this).css('color', 'black');
       }
 
 
@@ -918,6 +931,101 @@ function studentEditListener() {
   $('button.edit_info').click(function(event) {
     event.preventDefault();
     console.log('This is the edit info listener');
+
+    var id = $(this).closest('.student_main_info').attr('id');
+    console.log(id);
+
+
+    var student_record = state.student_records.find( function(record) {
+      if (record.id === id) {
+        return record;
+      }
+    });
+
+
+
+
+
+
+
+// Re-allow scrolling on main page
+    $('html, body').css('overflow', 'auto');
+
+    // Remove scroll from the modal
+    $('div.student_modal').css('overflow', 'auto');
+
+
+    // Re-allow clicks on the main page
+    $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "auto");
+
+    // Remove the modal
+    $('div.student_modal').fadeOut();
+    setTimeout(function () {
+      $('div.student_modal').remove();
+
+    }, 700);
+
+
+
+
+    
+    setTimeout(function () {
+        // console.log('scrolling up');
+      $(this).scrollTop(0);
+
+    }, 1);
+
+    $('div.background').empty();
+    $('div.background').html(state.templates.addStudent);
+      
+      
+    $('div.nav li')
+      .filter(function(index) {
+        return $(this).text() === "Add / Edit Student";
+      })
+      .addClass('selected');
+      
+    $('div.nav li')
+      .filter(function(index) {
+        return $(this).text() === "Student List and Schedule";
+      })
+      .removeClass('selected');
+
+
+    $('.time_element').timepicki({
+      overflow_minutes: true,
+      increase_direction: 'up',
+      step_size_minutes: 15,
+      reset: true
+    });
+
+    addStudentListener();
+
+    var optionalFields = ['parent_first_name', 'parent_last_name', 'teacher_comments', 'apartment_number'];
+
+    optionalFields.forEach(function (field) {
+      if ((student_record.address[field]) && field === 'apartment_number' ) {
+        $(`input[name="${field}"]`).val(student_record.address[field]);
+      } else if ((student_record[field]) && field === 'teacher_comments' ) {
+        $(`textarea[name="${field}"]`).val(student_record.address[field]); 
+      } else if (field) {
+        $(`input[name="${field}"]`).val(student_record[field]);  
+      }
+    });
+
+
+    $('input[name="first_name"]').val(student_record.first_name);
+    $('input[name="last_name"]').val(student_record.last_name);
+    $('input[name="email"]').val(student_record.email);
+    $('input[name="street_address"]').val(student_record.address.street_address);
+    $('input[name="city"]').val(student_record.address.city);
+    $('select#state').val(student_record.address.state);
+    $('input[name="zipcode"]').val(student_record.address.zipcode);
+    $('input[name="startDate"]').val(moment(student_record.student_lesson_time.startDate).format('YYYY-MM-DD'));
+    $('select#weekday').val(student_record.student_lesson_time.weekday);
+    $('input[name="startTime"]').val(moment(student_record.student_lesson_time.startTime).format('hh:DD A')); // 12:30
+    $('input[name="endTime"]').val(moment(student_record.student_lesson_time.endTime).format('hh:DD A')); // 01:30
+
 
   }); 
 }

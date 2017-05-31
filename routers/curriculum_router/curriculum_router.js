@@ -199,7 +199,7 @@ curriculum_router.post('/', (req, res) => {
       })
       .count()
       .then( (student_record) => {
-        console.log('this is inside the duplicate search')
+        console.log('this is inside the duplicate search');
         console.log(student_record);
         if (student_record) {
           return res.status(500).json({error: 'student already exists'});
@@ -305,12 +305,12 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
 
     console.log('This is the req.body from the add student project PUT request', req.body);
     const requiredFields = ['student_curriculum', 'id', 'index'];
-    const missingFields = {}
+    const missingFields = {};
     requiredFields.forEach( (field ) => {
       if (!(field in req.body)) {
         missingFields.push(field);
       }
-    })
+    });
 
     if (Object.keys(missingFields).length !== 0) {
       return res.status(400).json({missingFields});
@@ -327,10 +327,10 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
                 .save()
                 .then( (result) => {
 
-              console.log('student record after saving', result);
-              return res.status(201).json({
-                updated: result.apiView()
-              });
+                  console.log('student record after saving', result);
+                  return res.status(201).json({
+                    updated: result.apiView()
+                  });
                 });
 
             })
@@ -341,7 +341,7 @@ curriculum_router.put('/student-curriculum-projects/:id', (req, res) => {
               });
 
             });
-      }
+    }
     
   }
 

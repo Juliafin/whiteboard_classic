@@ -147,6 +147,10 @@ select {
   height: 3vw;
 }
 
+.mode_select {
+  text-align: center;
+}
+
 input#parent_first_name {
   width: 13vw;
 }
@@ -344,7 +348,8 @@ p.success {
 button.add_student_project,
 button.student_info,
 button.student_exit,
-button.edit_info {
+button.edit_info,
+button.student_curriculum {
   margin-top: 2vw;
   border-radius: 2px;
   outline: none;
@@ -388,7 +393,9 @@ button.student_info:focus,
 button.edit_info:hover,
 button.edit_info:focus,
 button.student_exit:hover,
-button.student_exit:focus {
+button.student_exit:focus
+button.student_curriculum:hover,
+button.student_curriculum:focus {
   background: rgb(33, 80, 97);
   filter: brightness(120%);
   transform: scale(1.1);
@@ -413,12 +420,13 @@ button.student_exit {
     color: white;
 }
 
-button.edit_info {
+button.edit_info, button.student_curriculum {
     display: inline-block;
     width: auto;
     height: 3vw;
     color: white;
 }
+
 
 .nav li:hover,
 .nav li:focus {
@@ -514,7 +522,7 @@ div.frame_right {
 }
 
 .columns {
-  column-count: 2;
+  column-count: 3;
   margin: 0 3vw;
 }
 
@@ -532,6 +540,11 @@ p.lesson_duration {
 
 p.parent_name {
   margin-bottom: 1vw;
+}
+
+.comments_container {
+    overflow: auto;
+    height: 75px;
 }
 
 .color_strip {
