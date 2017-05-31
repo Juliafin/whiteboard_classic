@@ -170,7 +170,9 @@ auth_router.post('/authenticate', express_jwt({
   res.status(200).json( {
 
     url: `/welcome/dashboard/${req.user._user.username}`,
-    username: req.user._user.username
+    username: req.user._user.username,
+    first_name: req.user._user.first_name,
+    last_name: req.user._user.last_name
 
   });
 

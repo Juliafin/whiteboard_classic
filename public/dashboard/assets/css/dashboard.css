@@ -50,6 +50,34 @@ h1 {
   font-size: 4vw;
 }
 
+h2.features {
+  color: antiquewhite;
+  margin-bottom: 3.5%;
+  margin-top: 4%;
+  font-family: Trocchi;
+  font-weight: 100;
+  margin-left: 10;
+  font-size: 1.8vw;
+  text-align: left;
+}
+
+h2.features.F_one {
+  margin-left: 3vw;
+  margin-top: 1vw;
+}
+
+h2.features.F_two {
+  margin-left: 12vw;
+}
+
+h2.features.F_three {
+  margin-left: 20vw;
+}
+
+h2.features.F_four {
+  margin-left: 28vw;
+}
+
 nav {
   position: fixed;
   display: block;
@@ -126,6 +154,16 @@ input {
   text-align: left;
   padding-left: 1vw;
   margin: 0 4vw 0px 1vw;
+}
+
+input#add_student_project {
+    height: 2vw;
+    width: 2vw;
+}
+
+input#edit_student_project {
+    height: 2vw;
+    width: 2vw;
 }
 
 textarea {
