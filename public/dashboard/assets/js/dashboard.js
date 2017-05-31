@@ -8,6 +8,14 @@ var state = {
 
       <form class="signup">
         <fieldset class="general_info"> General info
+
+        <div class="mode_select">
+          <label for="add_student" id="add_label">Add Student</label>            
+          <input type="radio" name="radSize" id="add_student" value="add_student" checked="checked">
+          <label for="edit_student" id="edit_label">Edit Student</label>
+          <input type="radio" name="radSize" id="edit_student" value="edit_student">
+        </div>
+
           <br>
           <label for="first_name">First name</label>
           <input type="text" name="first_name" id="first_name">
@@ -131,13 +139,6 @@ var state = {
         <textarea type="textarea" name="teacher_comments" id="teacher_comments">
         </textarea>
 
-        <div class="mode_select">
-          <label for="add_student" id="add_label">Add Student</label>            
-          <input type="radio" name="radSize" id="add_student" value="add_student" checked="checked">
-          <label for="edit_student" id="edit_label">Edit Student</label>
-          <input type="radio" name="radSize" id="edit_student" value="edit_student">
-        </div>
-
         <div class="button_container">
           <button type="submit" name="add_student">Add Student</button>
         </div>
@@ -159,7 +160,16 @@ var state = {
       <h1>Add a Project</h1>
       <p class="optional_text">Student name must match an existing student.<span class="optional">*</span></p>
 
+      
       <form class="project">
+
+          <div class="mode_select">
+          <label for="add_student_project" id="add_label">Add Student Project</label>            
+          <input type="radio" name="radSize" id="add_student_project" value="add_student_project" checked="checked">
+          <label for="edit_student_project" id="edit_label">Edit Student Project</label>
+          <input type="radio" name="radSize" id="edit_student_project" value="edit_student_project">
+        </div>
+
           <label for="first_name">Student's first name</label>
           <input type="text" name="student_first_name" id="student_first_name">
 
@@ -901,13 +911,9 @@ function renderStudentInfo(student_record, color) {
       if ( $(this).css('background-color') === "rgb(255, 193, 7)") {
         $(this).css('color', 'black');
       }
-
-
-
     }
   
   );
-
 
   if (student_record.parent_first_name === undefined && student_record.parent_last_name === undefined) {
     $('p.parent_name').html(parentEmpty);
@@ -924,8 +930,106 @@ function renderStudentInfo(student_record, color) {
 
   studentInfoExitListener();
   studentEditListener();
+  studentCurriculumListener();
 
 }
+
+function studentCurriculumListener() {
+  $('button.student_curriculum').click(function (event) {
+    console.log('student_curriculum listener');
+    renderStudentCurriculum();
+    exitStudentCurriculumListener();
+
+    
+  
+  });
+}
+
+
+function renderStudentCurriculum () {
+  var studentCurriculumModal = `
+  
+<div class="student_curriculum_container">
+  <section class="slider">
+    <div class="flexslider">
+
+      <div class="flex-viewport">
+
+        <ul class="slides">
+
+          <li class="clone" aria-hidden="true">
+            <img src="./assets/images/arrow_down.png" draggable="false">
+          </li>
+
+          <li class="" data-thumb-alt="">
+            <img src="./assets/images/arrow_up.png" draggable="false">
+          </li>
+
+          <li class="" data-thumb-alt="">
+            <img src="./assets/images/profle-icon.png" draggable="false">
+          </li>
+
+          <li class="" data-thumb-alt="">
+            <p>This is some sample text to test this!</p>
+            <button type="">This is a test button</button>
+          </li>
+
+          <li class="" data-thumb-alt="">
+            <img src="images/kitchen_adventurer_caramel.jpg" draggable="false">
+          </li>
+
+          
+
+        </ul>
+
+      </div>
+
+      <ol class="flex-control-nav flex-control-paging">
+
+      </ol>
+
+      <ul class="flex-direction-nav">
+        <li class="flex-nav-prev">
+          <a class="flex-prev" href="#">Previous</a>
+        </li>
+        <li class="flex-nav-next">
+          <a class="flex-next" href="#">Next</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <button class="exit_student_curriculum">
+  Exit Student Curriculum
+  </button>
+
+</div>
+    `;
+
+
+    $('button.student_exit, button.edit_info, button.student_curriculum, .frame_bottom, .frame_top, .frame_left, .frame_right').css('pointer-events', "none");
+
+    $('body').prepend(studentCurriculumModal);
+
+    $('.flexslider').flexslider({
+      animation: "slide"
+    });
+
+}
+
+function exitStudentCurriculumListener() {
+  $('button.exit_student_curriculum').click(function (event) {
+
+    //Re-enable listeners
+    $('button.student_exit, button.edit_info, button.student_curriculum, .frame_bottom, .frame_top, .frame_left, .frame_right').css('pointer-events', "auto");
+    
+    $('div.student_curriculum_container').fadeOut();
+    setTimeout(function () {
+      $('div.student_curriculum_container').remove();
+
+    }, 700);
+    })
+}
+
 
 function studentEditListener() {
   $('button.edit_info').click(function(event) {
@@ -941,11 +1045,6 @@ function studentEditListener() {
         return record;
       }
     });
-
-
-
-
-
 
 
 // Re-allow scrolling on main page
@@ -965,20 +1064,18 @@ function studentEditListener() {
 
     }, 700);
 
-
-
-
-    
+    // Scroll to top of page   
     setTimeout(function () {
         // console.log('scrolling up');
       $(this).scrollTop(0);
 
     }, 1);
 
+    // write HTML
     $('div.background').empty();
     $('div.background').html(state.templates.addStudent);
       
-      
+    // Add selected elements to Nav
     $('div.nav li')
       .filter(function(index) {
         return $(this).text() === "Add / Edit Student";
@@ -991,7 +1088,7 @@ function studentEditListener() {
       })
       .removeClass('selected');
 
-
+      // re-initialize Timepicki
     $('.time_element').timepicki({
       overflow_minutes: true,
       increase_direction: 'up',
@@ -1026,7 +1123,6 @@ function studentEditListener() {
     $('input[name="startTime"]').val(moment(student_record.student_lesson_time.startTime).format('hh:DD A')); // 12:30
     $('input[name="endTime"]').val(moment(student_record.student_lesson_time.endTime).format('hh:DD A')); // 01:30
 
-
   }); 
 }
 
@@ -1049,7 +1145,6 @@ function studentInfoExitListener() {
     // Remove scroll from the modal
     $('div.student_modal').css('overflow', 'auto');
 
-
     // Re-allow clicks on the main page
     $('.nav li, button.student_info, button.add_student_project').css('pointer-events', "auto");
 
@@ -1059,8 +1154,6 @@ function studentInfoExitListener() {
       $('div.student_modal').remove();
 
     }, 700);
-
-
 
   });
 }
@@ -1093,7 +1186,6 @@ function authenticateToken() {
     }
   });
 }
-
 
 function authenticateResult() {
   authenticateToken()
