@@ -623,6 +623,7 @@ p.parent_name {
 div.flex-viewport {
   overflow: hidden;
   position: relative;
+  height: auto;
 }
 
 div.flex-viewport li {
@@ -643,5 +644,25 @@ div.flex-viewport>ul.slides {
 }
 
 .flexslider {
-  height: 20vw;
+  height: 32vw;
+}
+
+ul.slides p {
+    color: white;
+    font-family: Trocchi;
+    font-size: 1.5vw;
+}
+
+p.no_projects {
+    margin-top: 6vw;
+    font-size: 3vw;
+}
+
+.project_container p.project_name {
+    margin-top: 1vw;
+    font-size: 3vw;
+}
+
+button.exit_student_curriculum {
+    margin-top: 4vw;
 }
