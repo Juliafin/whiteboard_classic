@@ -1,5 +1,7 @@
 var state = {
   student_records: [],
+  teacher_first_name: '',
+  teacher_last_name: '',
   templates: {
     addStudent: `
     <div class="addStudent popIn">
@@ -940,8 +942,6 @@ function studentCurriculumListener() {
     renderStudentCurriculum();
     exitStudentCurriculumListener();
 
-    
-  
   });
 }
 
@@ -1192,6 +1192,10 @@ function authenticateResult() {
     .then(function (result) {
       console.log(result);
       if (redirectHome() === false) {
+        console.log(result.first_name);
+        console.log(result.last_name);
+        state.teacher_first_name = result.first_name;
+        state.teacher_last_name = result.last_name;
         displayNav();
         studentInfoListener();
         addstudentProjecCardListener();
@@ -1222,6 +1226,27 @@ function redirectHome(err = null) {
   }
 }
 
+function renderWelcome () {
+  
+  var welcomeHTML = `
+
+    <h1 class="dashboard_welcome">Welcome ${state.teacher_first_name} ${state.teacher_last_name}!</h1>
+
+    <h2 class="features F_one">You currently have <strong>${state.student_records.length}</strong> students!</h2>
+
+    <h2 class="features F_two">To add a student, click the <strong>Add / Edit Student</strong> button.</h2>
+
+    <h2 class="features F_three">To add a student project, click the <strong>Add Student Project</strong> button. A project can only be added for an existing student.</h2>
+
+    <h2 class="features F_four">To view your student list, search and sort students, and view detailed student info and curriculum data, click the <strong>Student List and Schedule</strong> button.</h2>
+  `;
+  
+
+  $('div.background').html(welcomeHTML);
+
+}
+
+
 
 function saveStudentData() {
   getStudentData()
@@ -1231,12 +1256,14 @@ function saveStudentData() {
         record.order = index + 1;
         state.student_records.push(record);
       });
+      renderWelcome();
       console.log('state.student_records', state.student_records);
+      
     });
 }
 
-
-// Check for the existence of a token and render appropriate pages based on the result
+//-----------------Initialize the manager----------------//
+//-------------------------------------------------------//
 ($(document).ready(function () {
   $(this).scrollTop(0);
   authenticateResult();
