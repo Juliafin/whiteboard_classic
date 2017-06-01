@@ -512,7 +512,8 @@ input:focus {
   bottom: 0;
   margin: auto;
   border: 2px solid black;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.87);
+  overflow: auto;
 }
 
 .student_main_info {
@@ -588,6 +589,40 @@ div.frame_right {
   width: 9.5vw;
 }
 
+.curriculum_frame_right{
+  position: absolute;
+  right: -11.5vw;
+  height: 100%;
+  z-index: 1300;
+  width: 11.5vw;
+}
+
+.curriculum_frame_left {
+  position: absolute;
+  left: -11.5vw;
+  height: 100%;
+  z-index: 1300;
+  width: 11.5vw;
+}
+
+.curriculum_frame_top {
+  position: absolute;
+  top: -2vw;
+  height: 4.5vh;
+  z-index: 1300;
+  width: 99vw;
+  left: -11.5vw;
+}
+
+.curriculum_frame_bottom {
+  position: absolute;
+  bottom: -2vw;
+  height: 1.5vh;
+  z-index: 1300;
+  width: 100%;
+}
+
+
 .columns {
   column-count: 3;
   margin: 0 3vw;
@@ -647,7 +682,9 @@ div.flex-viewport>ul.slides {
 }
 
 .flexslider {
-  height: 32vw;
+  height: 24vw;
+  margin-bottom: 3vw;
+  text-align: center;
 }
 
 ul.slides p {
@@ -667,7 +704,7 @@ p.no_projects {
 }
 
 button.exit_student_curriculum {
-    margin-top: 4vw;
+    margin-top: 0vw;
     color: white;
     height: 4vw;
     font-size: 2vw;

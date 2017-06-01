@@ -888,7 +888,7 @@ function renderStudentInfo(student_record, color) {
   $('.color_strip, button.edit_info, button.student_exit, button.student_curriculum').css('background-color', color);
 
   if ($('.color_strip').css('background-color') === 'rgb(255, 193, 7)') {
-    $('button.edit_info, button.student_exit').css('color', 'black');
+    $('button.edit_info, button.student_exit, button.student_curriculum').css('color', 'black');
   }
 
   $('button.edit_info, button.student_exit, button.student_curriculum').hover(
@@ -927,7 +927,7 @@ function renderStudentInfo(student_record, color) {
 }
 
 function studentCurriculumListener(color) {
-  $('button.student_curriculum').click(function (event) {
+  $('button.student_curriculum ').click(function (event) {
     console.log('student_curriculum listener');
     var id = $(this).closest('.student_main_info').attr('id');
     console.log(id);
@@ -948,7 +948,13 @@ function studentCurriculumListener(color) {
 function renderStudentCurriculum (record, color) {
   var studentCurriculumModal = `
   
-<div class="student_curriculum_container">
+<div class="student_curriculum_container slowPopIn">
+  <div class="frame_top"></div>
+    <div class="curriculum_frame_bottom"></div>
+    <div class="curriculum_frame_left"></div>
+    <div class="curriculum_frame_right"></div>
+    <div class="curriculum_frame_top"></div>
+
   <section class="slider">
     <div class="flexslider">
 
@@ -1020,6 +1026,11 @@ function renderStudentCurriculum (record, color) {
 
     $('button.exit_student_curriculum').css('background-color', color);
 
+
+    if ($('div.flexslider').css('background-color') === 'rgb(255, 193, 7)') {
+    $('div.student_curriculum_container p').css('color', 'black');
+  };
+
     $('button.exit_student_curriculum').hover(
     function(event) {
       $(this).css('background-color', 'rgb(33, 80, 97)');
@@ -1048,14 +1059,14 @@ function exitStudentCurriculumListener() {
   $('button.exit_student_curriculum').click(function (event) {
 
     //Re-enable listeners
-    $('button.student_exit, button.edit_info, button.student_curriculum, .frame_bottom, .frame_top, .frame_left, .frame_right').css('pointer-events', "auto");
+    $('button.student_exit, button.edit_info, button.student_curriculum, .curriculum_frame_bottom, .curriculum_frame_top, .curriculum_frame_left, .curriculum_frame_right').css('pointer-events', "auto");
     
     $('div.student_curriculum_container').fadeOut();
     setTimeout(function () {
-      $('div.student_curriculum_container').remove();
+      $('div.student_curriculum_container, .curriculum_frame_bottom, .curriculum_frame_top, .curriculum_frame_left, .curriculum_frame_right').remove();
 
     }, 700);
-    })
+    });
 }
 
 function studentEditListener() {
